@@ -4,11 +4,11 @@ public class Common {
 
 	public void common () {
 		
-		System.out.println("HI");
+		
 	}
 	
 	
-	asdfasdf
+	
 }
 
 
