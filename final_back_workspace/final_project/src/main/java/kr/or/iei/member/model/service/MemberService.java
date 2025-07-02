@@ -22,9 +22,14 @@ public class MemberService {
 	@Autowired
 	private JwtUtils jwtUtils;
 	
-	//아이디 중복체크
+		//아이디 중복체크
 		public int chkMemberId(String memberId) {
 			return dao.chkMemberId(memberId);
+		}
+		
+		//이메일 중복체크
+		public int chkMemberEmail(String memberEmail) {
+			return dao.chkMemberEmail(memberEmail);
 		}
 
 		//회원가입
@@ -67,6 +72,7 @@ public class MemberService {
 			
 		}
 
+
 		//회원 1명 조회
 		public Member selectOneMember(String memberNo) {
 
@@ -76,4 +82,6 @@ public class MemberService {
 			
 			return member;
 		}
+
+
 }
