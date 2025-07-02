@@ -224,10 +224,10 @@ export default function Join() {
                 </div>
                 <div className="input-wrap">
                     <div className="input-title">
-                        <label htmlFor="memberName">이메일</label>
+                        <label htmlFor="memberEmail">이메일</label>
                     </div>
                     <div className="input-item">
-                        <input type="text" id="memberName" value={member.memberName} onChange={chgMember}/>
+                        <input type="text" id="memberEmail" value={member.memberEmail} onChange={chgMember}/>
                     </div>
                 </div>
                 <div className="input-wrap">
