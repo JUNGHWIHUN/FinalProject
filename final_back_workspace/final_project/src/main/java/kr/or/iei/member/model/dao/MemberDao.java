@@ -12,6 +12,8 @@ public interface MemberDao {
 	int insertMember(Member member);
 
 	Member memberLogin(String memberId);
+
+	int chkMemberEmail(String memberEmail);
 	
 }
 
