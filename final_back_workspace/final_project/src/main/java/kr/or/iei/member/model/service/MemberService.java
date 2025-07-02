@@ -45,6 +45,7 @@ public class MemberService {
 		public Member memberLogin(Member member) {
 			Member loginMember = dao.memberLogin(member.getMemberId());
 			
+			
 			if(loginMember == null) {
 				//아이디를 잘못 입력해 결과값이 null인 경우 즉시 메소드 종료
 				return null;

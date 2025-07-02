@@ -99,6 +99,8 @@ public class MemberController {
 				res = new ResponseDto(HttpStatus.OK, "아이디 및 비밀번호를 확인하세요.", null, "warning");
 			}else { // 로그인 성공 시 (JMT 정보 + 아이디 + 회원레벨을 가지고 있는 LoginMemberDto 객체 정보 반환, 따로 알림은 설정하지 않음)
 				res = new ResponseDto(HttpStatus.OK, "", loginMember, "");
+				
+
 			}
 			
 		}catch(Exception e) {
