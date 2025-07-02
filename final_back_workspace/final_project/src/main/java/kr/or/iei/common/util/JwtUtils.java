@@ -76,7 +76,7 @@ public class JwtUtils {
 	
 	//토큰 검증 로직 : 유효하다면 Member 객체, 만료시 HttpStatus 반환
 	public Object validateToken(String token) {
-		MemberDto member = new MemberDto();
+		Member member = new Member();
 		
 		try {
 			//1.토큰 해석을 위한 암호화 키 세팅
