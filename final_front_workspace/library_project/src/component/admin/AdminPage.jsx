@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios";
-
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function AdminPage(){
+
+    const [bookList, setBookList] = useState([]);
 
     const [books, setBooks] = useState({
         title : "", author : "", ISBN : ""
@@ -14,22 +16,29 @@ export default function AdminPage(){
         setBooks({...books});
     }
 
-    function selectBooks(){
-        let options = {};
-        options.url='http://localhost:9999/admin/selectBooks';
-        options.method = 'post';
-        options.data = books;
+    const navigate = useNavigate();
 
-        axios(options)
-        .then(function(res){
-            if(res.data > 0){
-                //리스트 페이지로 연결하기
-            }
-        })
-        .catch(function(err){
-           console.log(err); 
-        });
-    }
+        function selectBooks(){
+            let options = {};
+            options.url='http://localhost:9999/admin/selectBooks';
+            options.method = 'post';
+            options.data = books;
+
+            axios(options)
+            .then(function(res){
+                
+                if(res.data.resData.length > 0){
+                    setBookList(res.data.data);
+                    navigate("/admin/selectBook", { state: { bookList: res.data.data } });
+                }else{
+                    alert("검색결과 없음");
+                    setBookList([]);
+                }
+            })
+            .catch(function(err){
+            console.log(err); 
+            });
+        }
 
     return(
         <div>
