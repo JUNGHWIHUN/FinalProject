@@ -22,4 +22,24 @@
 	  from tbl_member
 	 where member_id = #{memberId}
 	</select>
+	
+	<!-- 회원 1명 조회 -->
+	<select id="selectOneMember" parameterType="String" resultType="Member">
+		select member_id as memberId,
+			   member_pw as memberPw,
+			   member_name as memberName,
+			   member_email as memberEmail,
+			   member_phone as memberPhone,
+			   is_admin as isAdmin,
+			   enroll_date as enrollDate,
+			   can_comment as canComment,
+			   overdue_day_count as overdueDayCount,
+			   borrowed_book_count as borrowedBookCount,
+			   max_borrow_count as maxBorrowCount,
+			   can_borrow as canBorrow,
+			   cant_borrow as cantBorrowDay,
+			   no_lent_count as noLentCount,
+			   can_request as canRequest
+			   from tbl_member where member_no = #{_parameter}
+	</select>
 </mapper>

@@ -137,7 +137,7 @@ export default function Join() {
                 console.log(res);
 
                 Swal.fire({
-                    tite : '알림',
+                    title : '알림',
                     text : res.data.clientMsg,
                     icon : res.data.alertIcon,
                     confirmButtonText : '확인'

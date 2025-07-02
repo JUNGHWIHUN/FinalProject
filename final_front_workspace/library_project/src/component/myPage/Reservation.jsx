@@ -21,7 +21,7 @@ export default function Reservation(){
 
         axiosInstacne(options)
         .then(function(res){
-            console.log(res);
+            console.log(res.data.resData);
         })
         .cathch(function(err){
             console.log(err);
