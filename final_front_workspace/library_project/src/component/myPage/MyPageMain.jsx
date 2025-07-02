@@ -8,10 +8,15 @@ import RequestBook from "./RequestBook";
 import MyInfo from "./Myinfo";
 
 
+
 export default function MyPageMain(){
+
+
+   
 
     return (
         <>
+        <Routes>
         <Route path="statistics" element={<StatisTics/>}/>
         <Route path="scrap" element={<Scrap/>}/>
         <Route path="reservation" element={<Reservation/>}/>
@@ -19,7 +24,7 @@ export default function MyPageMain(){
         <Route path="lentHistory" element={<LentHistory/>}/>
         <Route path="requestBook" element={<RequestBook/>}/>
         <Route path="myinfo" element={<MyInfo/>}/>
-        </>
-
+        </Routes>
+        </> 
     )
 }
