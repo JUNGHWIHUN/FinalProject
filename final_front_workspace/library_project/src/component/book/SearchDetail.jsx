@@ -5,9 +5,9 @@ export default function SearchDetail (){
 
     //검색도서 객체 초기값 : 이름, 저자, 출판사, isbn, 발행년도
     const [book, setBook] = useState({
-        bookName : "",
-        author : "",
-        publisher : "",
+        titleInfo : "",
+        authorInfo : "",
+        pubInfo : "",
         ISBN : "",
         pubYearFrom : "",
         pubYearTo : ""
@@ -26,15 +26,15 @@ export default function SearchDetail (){
 
     //검색 정보 제출 함수 : navigate 로 이동하며 저장된 book 객체를 함께 전달
     function search (){
-        navigate('/searchResultList', {state: {searchCriteria : book}}) //searchCriteria : 검색조건/키워드 전달 객체
+        navigate('/book/searchResultList', {state: {searchCriteria : book}}) //searchCriteria : 검색조건/키워드 전달 객체
     }
     
     //입력값 초기화 함수
     function valueReset(){
         setBook({
-            bookName : "",
-            author : "",
-            publisher : "",
+            titleInfo : "",
+            authorInfo : "",
+            pubInfo : "",
             ISBN : "",
             pubYearFrom : "",
             pubYearTo : ""
@@ -49,14 +49,14 @@ export default function SearchDetail (){
                   e.preventDefault(); //기본 submit 이벤트 제어 : 별도의 함수로 분리
                    search();             //회원가입 처리 함수 호출
                 }}>
-                    <label htmlFor="bookName">자료명</label>
-                    <input type='text' id='bookName' value={book.bookName} onChange={chgValue} placeholder="예 : 홍길동전" /><br/>
+                    <label htmlFor="titleInfo">자료명</label>
+                    <input type='text' id='titleInfo' value={book.titleInfo} onChange={chgValue} placeholder="예 : 홍길동전" /><br/>
 
-                    <label htmlFor="author">저자명</label>
-                    <input type='text' id='author' value={book.author} onChange={chgValue} placeholder="예 : 홍길동" /><br/>
+                    <label htmlFor="authorInfo">저자명</label>
+                    <input type='text' id='authorInfo' value={book.authorInfo} onChange={chgValue} placeholder="예 : 홍길동" /><br/>
 
-                    <label htmlFor="publisher">출판사</label>
-                    <input type='text' id='publisher' value={book.publisher} onChange={chgValue} placeholder="예 : 대한출판사" /><br/>
+                    <label htmlFor="pubInfo">출판사</label>
+                    <input type='text' id='pubInfo' value={book.pubInfo} onChange={chgValue} placeholder="예 : 대한출판사" /><br/>
 
                     <label htmlFor="ISBN">ISBN</label>
                     <input type='number' id='ISBN' maxLength='13' value={book.ISBN} onChange={chgValue} placeholder="책 고유의 13자리 숫자입니다."/>

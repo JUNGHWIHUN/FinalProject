@@ -21,10 +21,24 @@
 	</insert>
 	
 	<!-- 로그인 -->
-	<select id='memberLogin' parameterType='string' resultType='Member'>
-	select member_id memberId,
-		   member_pw memberPw
-	  from tbl_member
-	 where member_id = #{_parameter}
-	</select>
+   <select id='memberLogin' parameterType='string' resultType='Member'>
+   select member_no as memberNo,
+         member_id as memberId,
+         member_pw as memberPw,
+         member_name as memberName,
+         member_email as memberEmail,
+         member_phone as memberPhone,
+         is_admin as isAdmin,
+         enroll_date as enrollDate,
+         can_comment as canComment,
+         overdue_day_count as overdueDayCount,
+         borrowed_book_count as borrowedBookCount,
+         max_borrow_count as maxBorrowCount,
+         can_borrow as canBorrow,
+         cant_borrow_day as cantBorrowDay,
+         no_lent_count as noLentCount,
+         can_request as canRequest
+     from tbl_member
+    where member_id = #{_parameter}
+   </select>
 </mapper>

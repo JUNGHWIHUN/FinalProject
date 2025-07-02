@@ -17,7 +17,12 @@ public class Book {
 	private String regDate;		//도서 비치일
 	private String ISBN;		//isbn
 	private String placeInfo;	//도서 비치 장소
-	private String imgUrl;		//책 표지 이미지 url 주소
+	private String imageUrl;	//책 표지 이미지 url 주소
 	private String canLend;		//대출 상태 (T : 대출가능 / F : 대출불가 / R : 예약됨 / L : 대출중)
 	private String remark;		//비고란 : 도서정보 수정시 기록
+	
+	//도서검색을 위한 변수 추가 : 연도 범위
+	private String pubYearFrom;
+	private String pubYearTo;
+	
 }
