@@ -20,9 +20,6 @@ function App() {
 
 
     <Header />
-     
-  
-
       <main>
         <Routes>
           <Route path='/' element={<Main />}/>
