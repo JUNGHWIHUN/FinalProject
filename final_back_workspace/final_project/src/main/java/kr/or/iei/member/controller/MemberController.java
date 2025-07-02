@@ -112,7 +112,7 @@ public class MemberController {
 	}
 	
 	//내 정보 - 회원 1명 조회
-	@GetMapping("/memberNo")
+	@GetMapping("/{memberNo}")
 	public ResponseEntity<ResponseDto> selectOneMember(@PathVariable String memberNo){
 		//초기 응답 DTO를 오류 상태로 설정
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "회원 조회 중, 오류가 발생하였습니다.", null	, "error");

@@ -14,18 +14,7 @@ export default function Reservation(){
     
 
     useEffect(function(){
-        //랜더링 후, 회원 정보 조회
-        let options = {};
-        options.url = serverUrl + '/member/' + loginMember.memberNo; 
-        options.method = 'get';
-
-        axiosInstacne(options)
-        .then(function(res){
-            console.log(res.data.resData);
-        })
-        .catch(function(err){
-            console.log(err);
-        })
+       console.log(loginMember);
 
     },[]);
 

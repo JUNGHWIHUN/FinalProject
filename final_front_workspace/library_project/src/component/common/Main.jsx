@@ -32,9 +32,12 @@ export default function Main () {
 
 
             <Link to='/book'>도서검색 페이지</Link>
+           
 
             <h3><a href='/join'>회원가입 링크</a></h3>
             <h3><a href='/login'>로그인 링크</a></h3>
+
+            <Link to='/mypage'>마이페이지</Link>
         
 
             <h3>
