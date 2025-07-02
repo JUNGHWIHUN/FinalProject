@@ -16,7 +16,7 @@ export default function Reservation(){
     useEffect(function(){
         //랜더링 후, 회원 정보 조회
         let options = {};
-        options.url = serverUrl + '/myPage/' + loginMember.memberNo;
+        options.url = serverUrl + '/myPage/' + loginMember.memberNo; 
         options.method = 'get';
 
         axiosInstacne(options)
