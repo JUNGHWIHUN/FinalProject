@@ -28,13 +28,11 @@ function App() {
           <Route path='/join' element={<Join />}/>
           <Route path='/login' element={<Login />}/>
           <Route path='/adminPage' element={<AdminPage />} />
-<<<<<<< HEAD
-          <Route path='/myPage/*' element={<MyPageMain/>}/>
-=======
+
           <Route path='/admin/selectBook' element={<SelectBook />} />
           <Route path = "/myPage/*" element={<MyPageMain/>}/>
           <Route path="/book/*" element={<BookSearchMain />}/>
->>>>>>> master
+
         </Routes>
       </main>
 
