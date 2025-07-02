@@ -25,12 +25,16 @@ public class AdminController {
 	@Autowired
 	private AdminService service;
 	
+	
+	//대출을 위해 책제목, 저작자, ISBN 중 하나 이상을 받아서 검색하기.
 	@PostMapping("/selectBooks")
 	public ResponseEntity<ResponseDto> selectBookList(@RequestBody BookSelectDto bookSelectDto){
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "게시글 조회 중, 오류가 발생하였습니다.", null, "error");
 		
 		try {
 			ArrayList<BookList> list = service.selectBookList(bookSelectDto);
+			res = new ResponseDto(HttpStatus.OK, "", list, "");
+			
 			
 		}catch(Exception e){
 		e.printStackTrace();
