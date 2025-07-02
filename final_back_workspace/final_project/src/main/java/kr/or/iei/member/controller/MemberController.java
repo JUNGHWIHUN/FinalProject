@@ -29,7 +29,7 @@ public class MemberController {
 	@NoTokenCheck // 메소드 시작 전 토큰 체크를 하지 않을 메소드를 사용자 어노테이션으로 지정합니다.
 	public ResponseEntity<ResponseDto> chkMemberId (@PathVariable String memberId){
 		// 초기 응답 DTO를 오류 상태로 설정합니다.
-		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "아이디 중복 체크 중, 오류가 발생하였습니다.", false, "error");
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "아이디 중복 체크 중 통신 오류가 발생하였습니다.", false, "error");
 		
 		try {
 			int count = service.chkMemberId(memberId); // 서비스 계층에서 아이디 중복 여부를 확인합니다.
@@ -38,6 +38,25 @@ public class MemberController {
 		}catch(Exception e) {
 			e.printStackTrace(); // 예외 발생 시 스택 트레이스를 출력합니다.
 		}
+				
+		// 최종 응답 DTO와 HTTP 상태 코드를 포함하여 ResponseEntity를 반환합니다.
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//이메일 중복 체크
+	@GetMapping("/{memberEmail}/chkEmail") 
+	@NoTokenCheck // 메소드 시작 전 토큰 체크를 하지 않을 메소드를 사용자 어노테이션으로 지정합니다.
+	public ResponseEntity<ResponseDto> chkMemberEmail (@PathVariable String memberEmail){
+		// 초기 응답 DTO를 오류 상태로 설정합니다.
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 중복 체크 중 통신 오류가 발생하였습니다.", false, "error");
+		
+		try {
+			int count = service.chkMemberEmail(memberEmail); // 서비스 계층에서 아이디 중복 여부를 확인합니다.
+			// 중복 체크 성공 시, 응답 상태를 OK로 변경하고 결과를 포함합니다.
+			res = new ResponseDto(HttpStatus.OK, "", count, "success");
+		}catch(Exception e) {
+			e.printStackTrace(); // 예외 발생 시 스택 트레이스를 출력합니다.
+		} 
 				
 		// 최종 응답 DTO와 HTTP 상태 코드를 포함하여 ResponseEntity를 반환합니다.
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());

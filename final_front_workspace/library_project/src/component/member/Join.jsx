@@ -118,6 +118,38 @@ export default function Join() {
         }
     }
 
+    const [emailChk, setEmailChk] = useState("");
+
+    //이메일 유효성 검사
+    function checkMemberEmail(e){
+        //이메일 정규 표현식
+        const emailRegExp = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
+
+        if(!emailRegExp.test(member.memberEmail)){  //유효성 검증에 실패한 경우
+            setEmailChk(2);
+        } else {    //유효성 검증에 성공 시 DB에서 중복여부 확인
+            let options = {};
+            options.url = serverUrl + '/member/' + member.memberEmail + '/chkEmail'; 
+            options.method = 'get';
+
+            //커스터마이징한 axios 사용
+            axiosInstance(options)
+            .then(function(res){
+                console.log(res);
+                //res.data == ResponseDto
+                //res.data.resData == count == 중복체크 결과
+                if(res.data.resData == 1){  //중복 이메일 존재
+                    setEmailChk(3);
+                } else {    //중복 이메일 없음
+                    setEmailChk(1);    //회원가입 가능
+                }
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+        }
+    }
+
     const navigate = useNavigate();
 
     //회원가입 처리 함수
@@ -180,10 +212,10 @@ export default function Join() {
                             idChk == 0 
                             ? ''
                                 : idChk == 1
-                                ? '사용 가능한 아이디입니다'
+                                ? '사용 가능한 아이디입니다.'
                                     : idChk == 2
-                                    ? '아이디는 영어 대/소문자와 숫자를 포함한 8~20자 입니다'
-                                        : '이미 사용중인 아이디입니다'
+                                    ? '아이디는 영어 대/소문자와 숫자를 포함한 8~20자 입니다.'
+                                        : '이미 사용중인 아이디입니다.'
                         }
                     </p>
                 </div>
@@ -207,10 +239,10 @@ export default function Join() {
                             pwChk == 0
                             ? ''
                                 : pwChk == 1
-                                ? '비밀번호가 정상적으로 입력되었습니다'
+                                ? '비밀번호가 정상적으로 입력되었습니다.'
                                     : pwChk == 2
-                                    ? '비밀번호는 영어, 숫자, 특수문자로 6~30글자를 입력하세요'
-                                        : '비밀번호와 비밀번호 확인값이 일치하지 않습니다'
+                                    ? '비밀번호는 영어, 숫자, 특수문자로 6~30글자를 입력하세요.'
+                                        : '비밀번호와 비밀번호 확인값이 일치하지 않습니다.'
                         }
                     </p>
                 </div>
@@ -227,8 +259,19 @@ export default function Join() {
                         <label htmlFor="memberEmail">이메일</label>
                     </div>
                     <div className="input-item">
-                        <input type="text" id="memberEmail" value={member.memberEmail} onChange={chgMember}/>
+                        <input type="text" id="memberEmail" value={member.memberEmail} onChange={chgMember} onBlur={checkMemberEmail}/>
                     </div>
+                    <p className={"input-msg" + (emailChk == 0 ? '' : emailChk == 1 ? ' valid' : ' invalid')} > 
+                        {
+                            emailChk == 0 
+                            ? ''
+                                : emailChk == 1
+                                ? '사용 가능한 이메일입니다.'
+                                    : emailChk == 2
+                                    ? '올바른 이메일 형식을 입력하세요.'
+                                        : '이미 사용중인 이메일입니다.'
+                        }
+                    </p>
                 </div>
                 <div className="input-wrap">
                     <div className="input-title">

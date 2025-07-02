@@ -7,6 +7,11 @@
 	select count(*) from tbl_member where member_id = #{_parameter}
 	</select>
 	
+	<!-- 이메일 중복체크 -->
+	<select id='chkMemberEmail' parameterType='string'>
+	select count(*) from tbl_member where member_email = #{_parameter}
+	</select>
+	
 	<!-- 회원가입 -->
 	<insert id='insertMember' parameterType='Member'>
 	insert into tbl_member values (
@@ -20,7 +25,7 @@
 	select member_id memberId,
 		   member_pw memberPw
 	  from tbl_member
-	 where member_id = #{memberId}
+	 where member_id = #{_parameter}
 	</select>
 	
 	<!-- 회원 1명 조회 -->
