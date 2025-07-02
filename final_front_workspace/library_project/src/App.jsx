@@ -11,6 +11,7 @@ import Main from './component/common/Main'
 import Join from './component/member/Join'
 import Login from './component/member/Login'
 import MyPageMain from './component/myPage/MyPageMain';
+import BookSearchMain from './component/book/BookSearchMain';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path='/login' element={<Login />}/>
           <Route path='/adminPage' element={<AdminPage />} />
           <Route path = "/myPage/*" element={<MyPageMain/>}/>
+          <Route path="/book/*" element={<BookSearchMain />}/>
         </Routes>
       </main>
  
