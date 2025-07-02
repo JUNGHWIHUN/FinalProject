@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class BookList {
-
+	
 	private String bookNo;
 	private String author;
 	private String title;

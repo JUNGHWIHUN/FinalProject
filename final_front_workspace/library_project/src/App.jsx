@@ -11,6 +11,8 @@ import Main from './component/common/Main'
 import Join from './component/member/Join'
 import Login from './component/member/Login'
 import MyPageMain from './component/myPage/MyPageMain';
+import BookSearchMain from './component/book/BookSearchMain';
+import SelectBook from './component/admin/SelectBook';
 
 
 function App() {
@@ -26,7 +28,13 @@ function App() {
           <Route path='/join' element={<Join />}/>
           <Route path='/login' element={<Login />}/>
           <Route path='/adminPage' element={<AdminPage />} />
+<<<<<<< HEAD
           <Route path='/myPage/*' element={<MyPageMain/>}/>
+=======
+          <Route path='/admin/selectBook' element={<SelectBook />} />
+          <Route path = "/myPage/*" element={<MyPageMain/>}/>
+          <Route path="/book/*" element={<BookSearchMain />}/>
+>>>>>>> master
         </Routes>
       </main>
 
