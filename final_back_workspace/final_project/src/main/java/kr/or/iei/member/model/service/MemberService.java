@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.iei.common.util.JwtUtils;
 import kr.or.iei.member.model.dao.MemberDao;
+import kr.or.iei.member.model.dto.LoginMember;
 import kr.or.iei.member.model.dto.Member;
 
 @Service
@@ -22,9 +23,14 @@ public class MemberService {
 	@Autowired
 	private JwtUtils jwtUtils;
 	
-	//아이디 중복체크
+		//아이디 중복체크
 		public int chkMemberId(String memberId) {
 			return dao.chkMemberId(memberId);
+		}
+		
+		//이메일 중복체크
+		public int chkMemberEmail(String memberEmail) {
+			return dao.chkMemberEmail(memberEmail);
 		}
 
 		//회원가입
@@ -37,26 +43,26 @@ public class MemberService {
 		}
 
 		//로그인
-		public Member memberLogin(Member member) {
-			Member loginMember = dao.memberLogin(member.getMemberId());
+		public LoginMember memberLogin(Member member) {
+			Member chkMember = dao.memberLogin(member.getMemberId());
 			
-			if(loginMember == null) {
+			if(chkMember == null) {
+
 				//아이디를 잘못 입력해 결과값이 null인 경우 즉시 메소드 종료
 				return null;
 			}
 			
-			if(encoder.matches(member.getMemberPw(), loginMember.getMemberPw())) {	
+			if(encoder.matches(member.getMemberPw(), chkMember.getMemberPw())) {	
 				//사용자가 입력한 평문(전자)을 암호화해 DB에 저장된 암호(후자)와 비교, 일치할 경우 로그인 성공
-				//jwt 토큰 발급
-				String accessToken = jwtUtils.createAccessToken(loginMember.getMemberId());
-				String refreshToken = jwtUtils.createRefreshToken(loginMember.getMemberId());
+				//jwt 토큰 발급, 최소한의 정보만 저장
+				String accessToken = jwtUtils.createAccessToken(chkMember.getMemberId());
+				String refreshToken = jwtUtils.createRefreshToken(chkMember.getMemberId());
 				
 				//비밀번호는 해당 메소드에서 검증하는 역할 외에 필요가 없으므로, 스토리지에 비밀번호가 저장되지 않도록 처리
-				loginMember.setMemberPw(null);
+				chkMember.setMemberPw(null);
 				
-				//Member 객체에 정보를 담아 반환
-				loginMember.setAccessToken(accessToken);
-				loginMember.setRefreshToken(refreshToken);
+				//별도로 생성한 LoginMemberDto 객체에 정보를 담아 반환
+				LoginMember loginMember = new LoginMember(chkMember, accessToken, refreshToken);
 				
 				return loginMember;
 			}else {
@@ -66,4 +72,17 @@ public class MemberService {
 				
 			
 		}
+
+
+		//회원 1명 조회
+		public Member selectOneMember(String memberNo) {
+
+			//DB에서 회원 정보 조회하여 리턴
+			Member member = dao.selectOneMember(memberNo);
+			member.setMemberPw(null);
+			
+			return member;
+		}
+
+
 }

@@ -84,9 +84,14 @@ export default function Login() {
 
                     //스토리지 데이터 변경 : 로그인 여부, 로그인 정보, 토큰
                     setIsLogined(true);
-                    setLoginMember(res.data.resData.member);
+                    setLoginMember(res.data.resData);   //Member객체
                     setAccessToken(res.data.resData.accessToken);
                     setRefreshToken(res.data.resData.refreshToken);
+
+                    console.log(res.data.resData.member)
+                    console.log(res.data.resData.accessToken)
+                    console.log(res.data.resData.refreshToken)
+
 
                     //메인 컴포넌트로 전환
                     navigate('/');

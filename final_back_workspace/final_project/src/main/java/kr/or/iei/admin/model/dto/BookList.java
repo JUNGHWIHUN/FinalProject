@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class BookList {
-
+	
 	private String bookNo;
 	private String author;
 	private String title;
 	private String pub;
 	private String pubYear;
 	private String regDate;
-	private int ISBN;
+	private int isbn;
 	private String place;
 	private String imageUrl;
 	private String canLent;

@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.or.iei.admin.model.dao.AdminDao">
+
+	<!-- 대출을 위해 책 제목, 저작자, ISBN으로 검색하기 -->
+	<select id="selectBookList" 
+	parameterType="BookSelectDto"
+	resultType="BookList">
+		select call_no as bookNo,
+			   author_info as author,
+			   title_info as title,
+			   pub_info as pub,
+			   pub_year_info as pubYear,
+			   reg_date as regDate,
+			   isbn as isbn,
+			   place_info as place,
+			   image_url as imageUrl,
+			   can_lend as canLent,
+			   remark as remark
+		 from tbl_book
+		where 1=1 
+		<if test= 'title != "" '>
+		and title_info like '%' || #{title} || '%'
+		</if>
+		<if test = 'author != "" '>
+		and author_info like '%' || #{author} || '%'
+		</if>
+		<if test = 'isbn != null and isbn != ""'>
+		and isbn = #{isbn}
+		</if>
+		
+	</select>
   
 </mapper>
+<!-- 
+
+
+ -->
