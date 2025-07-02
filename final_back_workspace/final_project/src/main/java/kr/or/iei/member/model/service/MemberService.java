@@ -47,6 +47,7 @@ public class MemberService {
 			Member chkMember = dao.memberLogin(member.getMemberId());
 			
 			if(chkMember == null) {
+
 				//아이디를 잘못 입력해 결과값이 null인 경우 즉시 메소드 종료
 				return null;
 			}
@@ -71,5 +72,17 @@ public class MemberService {
 				
 			
 		}
+
+
+		//회원 1명 조회
+		public Member selectOneMember(String memberNo) {
+
+			//DB에서 회원 정보 조회하여 리턴
+			Member member = dao.selectOneMember(memberNo);
+			member.setMemberPw(null);
+			
+			return member;
+		}
+
 
 }

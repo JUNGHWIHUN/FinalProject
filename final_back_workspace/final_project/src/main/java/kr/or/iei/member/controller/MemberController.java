@@ -100,6 +100,8 @@ public class MemberController {
 				res = new ResponseDto(HttpStatus.OK, "아이디 및 비밀번호를 확인하세요.", null, "warning");
 			}else { // 로그인 성공 시 (JMT 정보 + 아이디 + 회원레벨을 가지고 있는 LoginMemberDto 객체 정보 반환, 따로 알림은 설정하지 않음)
 				res = new ResponseDto(HttpStatus.OK, "", loginMember, "");
+				
+
 			}
 			
 		}catch(Exception e) {
@@ -109,4 +111,22 @@ public class MemberController {
 		// 최종 응답 DTO와 HTTP 상태 코드를 포함하여 ResponseEntity를 반환합니다.
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
+	
+	//내 정보 - 회원 1명 조회
+	@GetMapping("/{memberNo}")
+	public ResponseEntity<ResponseDto> selectOneMember(@PathVariable String memberNo){
+		//초기 응답 DTO를 오류 상태로 설정
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "회원 조회 중, 오류가 발생하였습니다.", null	, "error");
+		
+		try {
+			Member member = service.selectOneMember(memberNo);
+			res = new ResponseDto(HttpStatus.OK, "", member, "");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		// 최종 응답 DTO와 HTTP 상태 코드를 포함하여 ResponseEntity를 반환합니다.
+				return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
 }

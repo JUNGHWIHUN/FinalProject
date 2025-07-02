@@ -13,7 +13,11 @@ public interface MemberDao {
 
 	Member memberLogin(String memberId);
 
+
+	Member selectOneMember(String memberNo);
+
 	int chkMemberEmail(String memberEmail);
+
 	
 }
 

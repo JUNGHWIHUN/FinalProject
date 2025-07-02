@@ -12,25 +12,7 @@
 			   pub_info as pub,
 			   pub_year_info as pubYear,
 			   reg_date as regDate,
-			   ISBN as ISBN,
-			   place_info as place,
-			   image_url as imageUrl,
-			   can_lend as canLent,
-			   remark as remark
-		 from tbl_book
-		 where title_info like '%' || #{title} || '%' 
-		
-	</select>
-  
-</mapper>
-<!-- 
-select call_no as bookNo,
-			   author_info as author,
-			   title_info as title,
-			   pub_info as pub,
-			   pub_year_info as pubYear,
-			   reg_date as regDate,
-			   ISBN as ISBN,
+			   isbn as isbn,
 			   place_info as place,
 			   image_url as imageUrl,
 			   can_lend as canLent,
@@ -43,8 +25,14 @@ select call_no as bookNo,
 		<if test = 'author != "" '>
 		and author_info like '%' || #{author} || '%'
 		</if>
-		<if test = 'ISBN != null and ISBN != ""'>
-		and isbn = #{ISBN}
+		<if test = 'isbn != null and isbn != ""'>
+		and isbn = #{isbn}
 		</if>
+		
+	</select>
+  
+</mapper>
+<!-- 
+
 
  -->

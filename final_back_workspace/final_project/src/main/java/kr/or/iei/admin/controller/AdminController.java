@@ -34,6 +34,7 @@ public class AdminController {
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "게시글 조회 중, 오류가 발생하였습니다.", null, "error");
 		
 		try {
+			System.out.println(bookSelectDto);
 			ArrayList<BookList> list = service.selectBookList(bookSelectDto);
 			res = new ResponseDto(HttpStatus.OK, "", list, "");
 			

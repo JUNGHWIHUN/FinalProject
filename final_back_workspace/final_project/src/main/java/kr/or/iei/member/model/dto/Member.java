@@ -21,7 +21,7 @@ public class Member {
 	private int borrowedBookCount;	//현재 대출도서 권수
 	private int maxBorrowCount;		//최대 대출가능권수
 	private String canBorrow;		//대출가능여부 (T/F)
-	private int cantBorrwDay;		//대출불가일수 (연체시)
+	private int cantBorrowDay;		//대출불가일수 (연체시)
 	private int noLentCount;		//예약 후 미대출 건수
 	private String canRequest;		//신규도서 신청권한 (T/F)
 }
