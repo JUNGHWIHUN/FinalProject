@@ -1,15 +1,21 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Main from './component/common/Main'
+import Join from './component/member/Join'
+import Login from './component/member/Login'
+import { Route, Routes } from 'react-router-dom'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      hello world!
-      
+      <main>
+        <Routes>
+          <Route path='/' element={<Main />}/>
+          <Route path='/join' element={<Join />}/>
+          <Route path='/login' element={<Login />}/>
+        </Routes>
+      </main>
     </>
   )
 }
