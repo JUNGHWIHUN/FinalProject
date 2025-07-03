@@ -17,6 +17,7 @@ export default function Main () {
     function logout(e){
         e.preventDefault();
 
+        setLoginMember(null);
         setIsLogined(false);
         setAccessToken(null);
         setRefreshToken(null);
