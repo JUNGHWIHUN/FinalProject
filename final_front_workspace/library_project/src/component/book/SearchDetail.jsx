@@ -41,34 +41,32 @@ export default function SearchDetail (){
         })
     }
 
-
     return (
-        <>
-            <div className="search-wrap">
-                <form onSubmit={function(e){
-                  e.preventDefault(); //기본 submit 이벤트 제어 : 별도의 함수로 분리
-                   search();             //회원가입 처리 함수 호출
-                }}>
-                    <label htmlFor="titleInfo">자료명</label>
-                    <input type='text' id='titleInfo' value={book.titleInfo} onChange={chgValue} placeholder="예 : 홍길동전" /><br/>
+        <div className="search-wrap">
+            <form onSubmit={function(e){
+                e.preventDefault(); //기본 submit 이벤트 제어 : 별도의 함수로 분리
+                search();          //검색 함수 호출
+            }}>
+                <label htmlFor="titleInfo">자료명</label>
+                <input type='text' id='titleInfo' value={book.titleInfo} onChange={chgValue} placeholder="예 : 홍길동전" /><br/>
 
-                    <label htmlFor="authorInfo">저자명</label>
-                    <input type='text' id='authorInfo' value={book.authorInfo} onChange={chgValue} placeholder="예 : 홍길동" /><br/>
+                <label htmlFor="authorInfo">저자명</label>
+                <input type='text' id='authorInfo' value={book.authorInfo} onChange={chgValue} placeholder="예 : 홍길동" /><br/>
 
-                    <label htmlFor="pubInfo">출판사</label>
-                    <input type='text' id='pubInfo' value={book.pubInfo} onChange={chgValue} placeholder="예 : 대한출판사" /><br/>
+                <label htmlFor="pubInfo">출판사</label>
+                <input type='text' id='pubInfo' value={book.pubInfo} onChange={chgValue} placeholder="예 : 대한출판사" /><br/>
 
-                    <label htmlFor="ISBN">ISBN</label>
-                    <input type='number' id='ISBN' maxLength='13' value={book.ISBN} onChange={chgValue} placeholder="책 고유의 13자리 숫자입니다."/>
+                <label htmlFor="ISBN">ISBN</label>
+                <input type='number' id='ISBN' maxLength='13' value={book.ISBN} onChange={chgValue} placeholder="책 고유의 13자리 숫자입니다."/>
 
-                    <label htmlFor="ISBN">출판연도</label>
-                    <input type='number' id='pubYearFrom' maxLength='4' value={book.pubYearFrom} onChange={chgValue}/> ~ 
-                    <input type='number' id='pubYearTo' maxLength='4' value={book.pubYearTo} onChange={chgValue}/><br/>
+                <label htmlFor="ISBN">출판연도</label>
+                <input type='number' id='pubYearFrom' maxLength='4' value={book.pubYearFrom} onChange={chgValue}/> ~ 
+                <input type='number' id='pubYearTo' maxLength='4' value={book.pubYearTo} onChange={chgValue}/><br/>
 
-                    <button type='submit'>검색</button>
-                    <button type='button' onClick={valueReset}>입력값 초기화</button>
-                </form>
-            </div>
-        </>
+                <button type='submit'>검색</button>
+                <button type='button' onClick={valueReset}>입력값 초기화</button>
+            </form>
+        </div>
+
     )
 }

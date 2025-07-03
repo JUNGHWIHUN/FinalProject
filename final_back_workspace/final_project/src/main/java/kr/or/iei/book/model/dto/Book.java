@@ -1,5 +1,7 @@
 package kr.or.iei.book.model.dto;
 
+import java.util.ArrayList;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,5 +26,8 @@ public class Book {
 	//도서검색을 위한 변수 추가 : 연도 범위
 	private String pubYearFrom;
 	private String pubYearTo;
+	
+	//도서 상세보기에서 서평목록을 저장할 변수
+	private ArrayList<BookComment> commentList;
 	
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import useUserStore from "../../store/useUserStore";
 import createInstance from "../../axios/Interceptor";
 
@@ -15,6 +15,12 @@ export default function Login() {
 
     //스토리지에 저장한 데이터 추출
     const {isLogined, setIsLogined, setLoginMember, setAccessToken, setRefreshToken} = useUserStore();
+    
+    //로그인 페이지로 진입할 때의 location 객체 (state 정보 포함 : 헤더 이외의 방법에서 로그인했을 경우)
+    const location = useLocation(); 
+
+    //로그인 후 돌아갈 경로 지정
+    const fromPath = location.state?.from || '/'; // location.state?.from 있으면 그 경로, 없으면 메인 페이지('/')
 
     useEffect(function(){
         if(!isLogined){ //외부에서 강제 로그아웃된 경우
@@ -94,7 +100,7 @@ export default function Login() {
 
 
                     //메인 컴포넌트로 전환
-                    navigate('/');
+                    navigate(fromPath, { replace: true }); //메인페이지 또는 기존 페이지로 돌아감, replace: true로 히스토리를 교체하여 뒤로가기 시 로그인 페이지 스킵
                 }
             })
             .catch(function(err){

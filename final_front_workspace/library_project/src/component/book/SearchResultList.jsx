@@ -2,17 +2,24 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import createInstance from "../../axios/Interceptor";
 import PageNavi from "../common/PageNavi";
+import useUserStore from "../../store/useUserStore";
 
 export default function SearchResultList (){
 
     const serverUrl = import.meta.env.VITE_BACK_SERVER;
 
-    const location = useLocation(); //location 객체 : SearchDetail에서 Maps 함수를 통해 전달한 state 객체에 접근하기 위해 사용 -> location.state.searchCriteria 로 검색값 가져오기 가능
-    const [currentSearchCriteria, setCurrentSearchCriteria] = useState({}); //현재 검색 조건 저장
+    //location 객체 : SearchDetail에서 Maps 함수를 통해 전달한 state 객체에 접근하기 위해 사용 -> location.state.searchCriteria 로 검색값 가져오기 가능
+    const location = useLocation(); 
+
+    //현재 검색 조건 저장 : 이후 결과내 재검색에 사용할 경우 필요
+    const [currentSearchCriteria, setCurrentSearchCriteria] = useState({}); 
 
     //페이지네이션을 위한 요청 페이지/페이지네이션 정보
     const [reqPage, setReqPage] = useState(1);      //요청 페이지 초기값을 1로 설정해 검색시 1페이지부터 출력하도록       
     const [pageInfo, setPageInfo] = useState({});
+
+    //로그인 회원 정보 (예약, 내 서재 버튼을 위해)
+    const {isLogined, loginMember} = useUserStore();
 
     //검색결과 리스트 초기값
     const [searchResultList, setSearchResultList] = useState([]);
@@ -30,7 +37,7 @@ export default function SearchResultList (){
         }
 
         const searchCriteria = location.state.searchCriteria;   //SearchDetail 에서 받아온 검색정보를 객체로 저장
-        const finalCriteria = { ...searchCriteria , reqPage : reqPage };    //해당 객체에 요청 페이지 추가  
+        const finalCriteria = { ...searchCriteria , reqPage : reqPage };    //해당 객체에 요청 페이지 속성 추가  
         setCurrentSearchCriteria(finalCriteria); // 현재 검색 조건 저장
         
         axiosInstance.post(serverUrl + '/book/searchBookList', finalCriteria)
@@ -78,7 +85,7 @@ function BookItem (props){
             //상세보기 (BoardView) 컴포넌트 전환
             navigate('/book/searchResultDetail/' + book.callNo);
         }}>
-            <div className="posting-content-wrapper"> {/* 이미지와 정보를 감싸는 래퍼 */}
+            <div className="posting-content-wrapper" style={{display : 'flex'}}> {/* 이미지와 정보를 감싸는 래퍼 */}
                 <div className="posting-img">
                     <img src={book.imageUrl} />
                 </div>
@@ -100,7 +107,7 @@ function BookItem (props){
                            : 'L' ? '대출중'
                                 : '대출불가'
                     }
-                    <button className="btn btn-add-mylibrary" onClick={addToMyLibrary}>내 서재에 등록</button>
+                    <button className="btn-add-mylibrary" onClick={addToMyLibrary}>내 서재에 등록</button>
         </li>
     );
 }

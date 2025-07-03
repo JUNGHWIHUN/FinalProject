@@ -3,14 +3,13 @@ package kr.or.iei.book.model.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import kr.or.iei.admin.model.dto.BookList;
 import kr.or.iei.book.model.dao.BookDao;
 import kr.or.iei.book.model.dto.Book;
+import kr.or.iei.book.model.dto.BookComment;
 import kr.or.iei.common.model.dto.PageInfoDto;
 import kr.or.iei.common.util.PageUtil;
 
@@ -24,45 +23,95 @@ public class BookService {
 	private PageUtil pageUtil;
 	
 	//도서검색
-	public HashMap<String, Object> selectBookList(Book book, int reqPage) {
-
-		int bookCnt = 8;							//한 페이지당 보여줄 검색리스트의 책 권 수
-		int pageNaviSize = 5;						//페이지네이션 길이
-		
-		 // 1. 검색 조건에 맞는 '모든' 책 검색 결과 가져오기 (HashMap 형태로)
-        ArrayList<Book> allMatchedBooks = dao.selectBookList(book); 
-        System.out.println("DAO에서 가져온 검색 조건에 맞는 전체 책 개수 (페이지네이션 전): " + allMatchedBooks.size());
-
-        // 2. 검색결과의 전체 책 권수
-        int totalCount = allMatchedBooks.size();     
+    public HashMap<String, Object> selectBookList(Book book, int reqPage) {
         
-        // 3. PageUtil 클래스로 보내 페이지네이션 정보 처리
+        int bookCnt = 8;        // 한 페이지당 보여줄 검색리스트의 책 권 수
+        int pageNaviSize = 5;   // 페이지네이션 길이
+
+        // 1. 검색 조건에 맞는 전체 책 권수만 DB에서 조회
+        int totalCount = dao.selectBookCount(book); 
+
+        // 2. PageUtil 클래스로 보내 페이지네이션 정보 처리
         PageInfoDto pageInfo = pageUtil.getPageInfo(reqPage, bookCnt, pageNaviSize, totalCount);
-        System.out.println("계산된 페이지 정보: " + pageInfo.toString());
 
-        // 4. 계산된 페이지 정보(start, end)를 바탕으로 List<Map>에서 현재 페이지의 데이터만 잘라내기
-        List<Book> pagedBookList; // 반환 타입 변경
-        if (totalCount == 0) {
-            pagedBookList = new ArrayList<>(); 
-        } else {
-            int startIndex = pageInfo.getStart() - 1; 
-            int endIndex = pageInfo.getEnd(); 
+        // 3. DAO에 전달할 파라미터 맵 생성
+        HashMap<String, Object> paramMap = new HashMap<>();
+        paramMap.put("book", book);       // 검색 조건 Book 객체
+        paramMap.put("pageInfo", pageInfo); // 페이지 정보 객체
 
-            if (startIndex >= totalCount) {
-                pagedBookList = new ArrayList<>();
-            } else {
-                endIndex = Math.min(endIndex, totalCount);
-                pagedBookList = allMatchedBooks.subList(startIndex, endIndex);
-            }
-        }
-        
-        System.out.println("Java 코드에서 필터링된 현재 페이지 책 리스트: " + pagedBookList.size() + "권");
+        // 4. DB에서 해당 페이지의 책 목록만 조회
+        List<Book> pagedBookList = dao.selectBookList(paramMap); 
         
         // 5. HashMap에 페이지네이션된 책 목록과 페이지 정보를 담아 반환
         HashMap<String, Object> resultMap = new HashMap<>();
-        resultMap.put("searchResultList", pagedBookList); // List<Map> 형태의 데이터
+        resultMap.put("searchResultList", pagedBookList); 
         resultMap.put("pageInfo", pageInfo);                 
         
         return resultMap;
+    }
+
+	//도서 1권 조회(상세보기)
+	public Book selectOneBook(String callNo) {
+		return dao.selectOneBook(callNo);
+	}
+	
+	//서평 목록 조회
+    public HashMap<String, Object> selectCommentList(String callNo, Integer reqPage) {
+		
+		int commentCnt = 5;		//한 페이지당 보여줄 서평 수
+		int pageNaviSize = 5;	//페이지네이션 길이
+		
+		// 1. 해당하는 책의 모든 서평 총 개수만 DB에서 가져오기
+        int totalCount = dao.selectCommentCount(callNo); 
+
+        // 2. PageUtil 클래스로 보내 페이지네이션 정보 처리
+        //    reqPage가 null일 수 있으므로 null 체크 및 기본값 설정
+        int currentPage = (reqPage != null) ? reqPage : 1; 
+        PageInfoDto pageInfo = pageUtil.getPageInfo(currentPage, commentCnt, pageNaviSize, totalCount);
+
+        // 3. DAO에 전달할 파라미터 맵 생성
+        HashMap<String, Object> paramMap = new HashMap<>();
+        paramMap.put("callNo", callNo);
+        paramMap.put("pageInfo", pageInfo);
+
+        // 4. DB에서 해당 페이지의 서평 목록만 조회
+        List<BookComment> pagedCommentList = dao.selectCommentList(paramMap); 
+                
+        // 5. HashMap에 페이지네이션된 서평 목록과 페이지 정보를 담아 반환
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("commentList", pagedCommentList); // 프론트의 res.data.resData.commentList에 매핑
+        resultMap.put("pageInfo", pageInfo);                 
+        
+        return resultMap;
+	}
+
+	//서평 작성
+	public int insertComment(BookComment comment) {
+		int result = 0;		//처리 결과값을 저장할 변수 설정
+		
+		//서평 중복작성 여부 확인
+		String memberId = comment.getMemberId();
+		String callNo = comment.getCallNo();
+				
+		result = dao.commentCheck(memberId, callNo);
+		
+		if(result > 0) {
+			result = -1;	//이미 작성한 경우 -1 을 반환
+		} else {
+			result = dao.insertComment(comment);
+		}
+		
+		return result;
+		
+	}
+
+	//이 분야 인기도서 조회
+	public List<Book> getPopularBooksByGenre(String genreCode) {
+        return dao.selectPopularBooksByGenre(genreCode);
+	}
+
+	//이 분야 신착도서 조회
+	public List<Book> getNewArrivalsByGenre(String genreCode) {
+        return dao.selectNewArrivalBooksByGenre(genreCode);
 	}
 }
