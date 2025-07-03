@@ -30,6 +30,17 @@
 		</if>
 		
 	</select>
+	
+	<!-- 대출을 위해 유저의 번호 받아서 검색하기.  -->
+	<select id="selectOneUser"
+	parameterType="UserOne"
+	resultType="UserOne">
+	select member_no as memberNo,
+		   member_Name as memberName,
+		   can_borrow as memberBorrow
+		 from tbl_member
+		where member = #{memberNo}
+	</select>
   
 </mapper>
 <!-- 
