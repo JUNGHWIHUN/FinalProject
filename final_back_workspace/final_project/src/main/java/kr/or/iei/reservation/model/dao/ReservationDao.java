@@ -11,7 +11,7 @@ import kr.or.iei.reservation.model.dto.Reservation;
 @Mapper
 public interface ReservationDao {
 
-	int selectReservationCount();
+	int selectReservationCount(String memberNo);
 
 	ArrayList<Reservation> selectReservationList(HashMap<String, Object> paramMap);
 	

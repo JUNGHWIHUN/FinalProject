@@ -25,21 +25,22 @@ public class ReservationService {
 		
 		int viewCnt = 10;
 		int pageNaviSize = 5;
-		int totalCount = dao.selectReservationCount();
+		int totalCount = dao.selectReservationCount(memberNo);
 		
 		//페이지 네비게이션 정보
 		PageInfoDto pageInfo = pageUtil.getPageInfo(reqPage, viewCnt, pageNaviSize, totalCount);
 		
-		HashMap<String, Object> paramMap = new HashMap<>();
-		paramMap.put("start", pageInfo.getStart());
-		paramMap.put("end", pageInfo.getEnd());
-		paramMap.put("memberNo", memberNo);
+	    HashMap<String, Object> paramMap = new HashMap<>();
+	    paramMap.put("pageInfo", pageInfo);
+	    paramMap.put("memberNo", memberNo);
 
+		
+	
 		ArrayList<Reservation> reservationList = dao.selectReservationList(paramMap);
 		HashMap<String, Object> reservationMap = new HashMap<String, Object>();
 		reservationMap.put("reservationList", reservationList);
 		reservationMap.put("pageInfo", pageInfo);
-		reservationMap.put("memberNo", memberNo);
+		
 		
 		
 		
