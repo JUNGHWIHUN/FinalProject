@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.or.iei.book.model.dao.BookDao">
 	
-	<!-- 도서 검색 결과 리스트-->
-<select id='searchBookList' parameterType='Book' resultType='Book'>
-    SELECT call_no AS callNo,
-           author_info AS authorInfo,
+	<select id='selectBookList' parameterType='Book' resultType='Book'> 
+    SELECT 
+    	   call_no AS callNo,
+    	   author_info AS authorInfo,
            title_info AS titleInfo,
            pub_info AS pubInfo,
            pub_year_info AS pubYear,
@@ -24,19 +24,15 @@
                 OR LOWER(pub_info) LIKE '%' || LOWER(#{titleInfo}) || '%'
             )
         </if>
-
         <if test="authorInfo != null and !authorInfo.isEmpty()">
             AND LOWER(author_info) LIKE '%' || LOWER(#{authorInfo}) || '%'
         </if>
-
         <if test="pubInfo != null and !pubInfo.isEmpty()">
             AND LOWER(pub_info) LIKE '%' || LOWER(#{pubInfo}) || '%'
         </if>
-
         <if test="ISBN != null and !ISBN.isEmpty()">
             AND ISBN = #{ISBN}
         </if>
-
         <if test="pubYearFrom != null and !pubYearFrom.isEmpty()">
             AND pub_year_info &gt;= #{pubYearFrom}
         </if>
@@ -44,5 +40,6 @@
             AND pub_year_info &lt;= #{pubYearTo}
         </if>
     </where>
+    ORDER BY title_info ASC 
 </select>
 </mapper>
