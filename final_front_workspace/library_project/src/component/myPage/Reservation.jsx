@@ -20,21 +20,22 @@ export default function Reservation(){
     const [pageInfo, setPageInfo] = useState({});
 
 
-    useEffect(function(){
 
-        if(!loginMember) return;
-
+    useEffect(function(){        
         let options = {};
-        options.url = serverUrl + "/reservation/" + reqPage + "?memberNo=" + loginMember.memberNo ;
-        options.method = "get"
-
-        console.log(loginMember.memeberNo);
+        options.url = serverUrl + "/reservation/" + reqPage;
+        options.method = "get";
+        options.params = {
+            memberNo: loginMember.memberNo
+        }
 
         axiosInstacne(options)
         .then(function(res){
             
+            
+
             setReservations(res.data.resData.reservationList);
-            console.log(res.data.resData.reservationList);
+            
 
             setPageInfo(res.data.resData.pageInfo);
             
@@ -46,6 +47,7 @@ export default function Reservation(){
     },[reqPage, loginMember]);
 
    
+    //예약취소하기 버튼 누를 시 호출할 함수
     function delReservation(props){
         const reservationCallNo = props.reservationCallNo;
         const reservationNo = props.reservationNo;
@@ -69,7 +71,6 @@ export default function Reservation(){
 
 
             })
-            
         })
         .catch(function(err){
             console.log(err);

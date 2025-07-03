@@ -94,9 +94,7 @@ export default function Login() {
                     setAccessToken(res.data.resData.accessToken);
                     setRefreshToken(res.data.resData.refreshToken);
 
-                    console.log(res.data.resData.member)
-                    console.log(res.data.resData.accessToken)
-                    console.log(res.data.resData.refreshToken)
+              
 
 
                     //메인 컴포넌트로 전환
