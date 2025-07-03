@@ -1,4 +1,216 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.or.iei.book.model.dao.BookDao">
+
+	<!-- 검색도서 총 권수 -->
+    <select id="selectBookCount" parameterType="Book" resultType="int">
+     SELECT COUNT(*)
+       FROM tbl_book
+       <where>
+           <if test="titleInfo != null and !titleInfo.isEmpty()">
+               (
+                   LOWER(title_info) LIKE '%' || LOWER(#{titleInfo}) || '%'
+                   OR LOWER(author_info) LIKE '%' || LOWER(#{titleInfo}) || '%'
+                   OR LOWER(pub_info) LIKE '%' || LOWER(#{titleInfo}) || '%'
+               )
+           </if>
+           <if test="authorInfo != null and !authorInfo.isEmpty()">
+               AND LOWER(author_info) LIKE '%' || LOWER(#{authorInfo}) || '%'
+           </if>
+           <if test="pubInfo != null and !pubInfo.isEmpty()">
+               AND LOWER(pub_info) LIKE '%' || LOWER(#{pubInfo}) || '%'
+           </if>
+           <if test="ISBN != null and !ISBN.isEmpty()">
+               AND ISBN = #{ISBN}
+           </if>
+           <if test="pubYearFrom != null and !pubYearFrom.isEmpty()">
+               AND pub_year_info &gt;= #{pubYearFrom}
+           </if>
+           <if test="pubYearTo != null and !pubYearTo.isEmpty()">
+               AND pub_year_info &lt;= #{pubYearTo}
+           </if>
+       </where>
+    </select>
+	
+	<!-- 검색도서 리스트 + 페이지네이션 -->
+	<select id='selectBookList' parameterType='java.util.HashMap' resultType='Book'>
+    SELECT 
+        call_no AS callNo,
+        author_info AS authorInfo,
+        title_info AS titleInfo,
+        pub_info AS pubInfo,
+        pub_year_info AS pubYear,
+        reg_date AS regDate,
+        ISBN AS ISBN,
+        place_info AS placeInfo,
+        image_url AS imageUrl,
+        can_lend AS canLend,
+        remark AS remark
+    FROM (
+        SELECT ROWNUM rnum, a.*
+        FROM (
+            SELECT 
+                call_no,
+                author_info,
+                title_info,
+                pub_info,
+                pub_year_info,
+                reg_date,
+                ISBN,
+                place_info,
+                image_url,
+                can_lend,
+                remark
+            FROM tbl_book
+            <where>
+                <if test="book.titleInfo != null and !book.titleInfo.isEmpty()">
+                    (
+                        LOWER(title_info) LIKE '%' || LOWER(#{book.titleInfo}) || '%'
+                        OR LOWER(author_info) LIKE '%' || LOWER(#{book.titleInfo}) || '%'
+                        OR LOWER(pub_info) LIKE '%' || LOWER(#{book.titleInfo}) || '%'
+                    )
+                </if>
+                <if test="book.authorInfo != null and !book.authorInfo.isEmpty()">
+                    AND LOWER(author_info) LIKE '%' || LOWER(#{book.authorInfo}) || '%'
+                </if>
+                <if test="book.pubInfo != null and !book.pubInfo.isEmpty()">
+                    AND LOWER(pub_info) LIKE '%' || LOWER(#{book.pubInfo}) || '%'
+                </if>
+                <if test="book.ISBN != null and !book.ISBN.isEmpty()">
+                    AND ISBN = #{book.ISBN}
+                </if>
+                <if test="book.pubYearFrom != null and !book.pubYearFrom.isEmpty()">
+                    AND pub_year_info &gt;= #{book.pubYearFrom}
+                </if>
+                <if test="book.pubYearTo != null and !book.pubYearTo.isEmpty()">
+                    AND pub_year_info &lt;= #{book.pubYearTo}
+                </if>
+            </where>
+            ORDER BY title_info ASC, pub_year_info DESC 
+        ) a
+    )
+    WHERE rnum BETWEEN #{pageInfo.start} AND #{pageInfo.end}
+    </select>
+
+	<!-- 도서 1권 조회 (상세조회) -->
+	<select id='selectOneBook' parameterType='string' resultType='Book'>
+	select call_no as callNo,
+    	   author_info as authorInfo,
+           title_info as titleInfo,
+           pub_info as pubInfo,
+           pub_year_info as pubYear,
+           reg_date as regDate,
+           ISBN as ISBN,
+           place_info as placeInfo,
+           image_url as imageUrl,
+           can_lend as canLend,
+           remark as remark
+      from tbl_book
+     where call_no = #{_parameter} 
+	</select>
+	
+	<!-- 각 도서의 서평 갯수 조회 -->
+    <select id="selectCommentCount" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM tbl_comment
+        WHERE call_no = #{_parameter}
+    </select>
+	
+	
+	<!-- 서평 목록 조회 + 페이지네이션 -->
+	<select id='selectCommentList' parameterType='java.util.HashMap' resultType='BookComment'>
+    SELECT 
+        comment_no AS commentNo,
+        comment_content AS commentContent,
+        member_id AS memberId,
+        call_no AS callNo,
+        comment_date AS commentDate,
+        comment_update_date AS updateDate
+    FROM (
+        SELECT ROWNUM rnum, a.*
+        FROM (
+            SELECT 
+                comment_no,
+                comment_content,
+                member_id, 
+                call_no,
+                comment_date,
+                comment_update_date
+            FROM tbl_comment	   
+            WHERE call_no = #{callNo} -- paramMap의 "callNo" 키 사용
+            ORDER BY comment_date DESC -- 최신 서평이 먼저 오도록 정렬
+        ) a
+    )
+    WHERE rnum BETWEEN #{pageInfo.start} AND #{pageInfo.end}
+	</select>
+	
+	<!-- 서평 작성 여부 확인 -->
+	<select id='commentCheck' parameterType='string' resultType='_int'>
+	select count(*) from tbl_comment where member_id = #{memberId} and call_no = #{callNo}
+	</select>
+	
+	<!-- 서평 작성 -->
+	<insert id='insertComment' parameterType='BookComment'>
+	insert into tbl_comment values (
+		to_char(sysdate,'yymmdd') || lpad(seq_comment.nextval, 4,'0'),
+		#{commentContent}, #{callNo}, sysdate, null, #{memberId}
+	)
+	</insert>
+	
+	<!-- 인기도서 5개 조회 -->
+ 	<select id="selectPopularBooksByGenre" parameterType="String" resultType="Book">
+    SELECT *
+    FROM (
+        SELECT
+            b.call_no AS callNo,
+            b.author_info AS authorInfo,
+            b.title_info AS titleInfo,
+            b.pub_info AS pubInfo,
+            b.pub_year_info AS pubYear,
+            b.image_url AS imageUrl,
+            ROWNUM rnum
+        FROM
+            tbl_book b
+        JOIN (
+            SELECT
+                call_no,
+                COUNT(lentbook_no) AS lend_count
+            FROM
+                tbl_lent_book
+            WHERE
+                SUBSTR(call_no, 1, 2) = #{_parameter}
+            GROUP BY
+                call_no
+        ) lc ON b.call_no = lc.call_no
+        WHERE
+            SUBSTR(b.call_no, 1, 2) = #{_parameter}
+        ORDER BY
+            lc.lend_count DESC,
+            b.reg_date DESC
+    )
+    WHERE rnum &lt;= 5
+    </select>
+    
+    <!-- 신착도서 5개 조회 -->
+    <select id="selectNewArrivalBooksByGenre" parameterType="String" resultType="Book">
+    SELECT *
+    FROM (
+        SELECT
+            call_no AS callNo,
+            author_info AS authorInfo,
+            title_info AS titleInfo,
+            pub_info AS pubInfo,
+            pub_year_info AS pubYear,
+            image_url AS imageUrl,
+            ROWNUM rnum
+        FROM
+            tbl_book
+        WHERE
+            SUBSTR(call_no, 1, 2) = #{_parameter}
+        ORDER BY
+            reg_date DESC
+    )
+    WHERE rnum &lt;= 5
+    </select>
+
 </mapper>

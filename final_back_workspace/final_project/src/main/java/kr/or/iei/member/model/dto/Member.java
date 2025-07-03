@@ -24,8 +24,4 @@ public class Member {
 	private int cantBorrowDay;		//대출불가일수 (연체시)
 	private int noLentCount;		//예약 후 미대출 건수
 	private String canRequest;		//신규도서 신청권한 (T/F)
-	
-	//로그인 상태를 확인할 액세스/리프레시 토큰
-	private String accessToken;
-	private String refreshToken;
 }

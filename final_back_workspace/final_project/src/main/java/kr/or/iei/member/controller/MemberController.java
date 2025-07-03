@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.iei.common.annotation.NoTokenCheck;
 import kr.or.iei.common.model.dto.ResponseDto;
+import kr.or.iei.member.model.dto.LoginMember;
 import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.member.model.service.MemberService;
 
@@ -93,7 +94,7 @@ public class MemberController {
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "로그인 중, 오류가 발생하였습니다.", null, "error");
 		
 		try {
-			Member loginMember = service.memberLogin(member); // 서비스 계층에서 로그인 처리를 합니다.
+			LoginMember loginMember = service.memberLogin(member); // 서비스 계층에서 로그인 처리를 합니다.
 			
 			if(loginMember == null) { // 로그인 실패 시 (아이디 또는 비밀번호 불일치)
 				res = new ResponseDto(HttpStatus.OK, "아이디 및 비밀번호를 확인하세요.", null, "warning");
