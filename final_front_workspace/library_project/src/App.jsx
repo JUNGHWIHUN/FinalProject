@@ -13,6 +13,8 @@ import Login from './component/member/Login'
 import MyPageMain from './component/myPage/MyPageMain';
 import BookSearchMain from './component/book/BookSearchMain';
 import SelectBook from './component/admin/SelectBook';
+import LentBookDetail from './component/admin/LentBookDetail';
+
 
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
           <Route path='/join' element={<Join />}/>
           <Route path='/login' element={<Login />}/>
           <Route path='/adminPage' element={<AdminPage />} />
+          <Route path='/LentBookDetail' element={<LentBookDetail />} />
+          
 
           <Route path='/admin/selectBook' element={<SelectBook />} />
           <Route path = "/myPage/*" element={<MyPageMain/>}/>
