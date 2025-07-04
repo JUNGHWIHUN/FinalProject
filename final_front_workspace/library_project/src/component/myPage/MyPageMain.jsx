@@ -21,6 +21,7 @@ export default function MyPageMain(){
         {url : '/mypage/statistics', text : "독서 통계"},
         {url : '/mypage/requestBook', text : "희망도서 신청내역"},
         {url : '/mypage/statistics', text : "개인정보 수정"},
+        {url : '/mypage/lentHistory', text : "대출 이력"}
         
     ]);
    
