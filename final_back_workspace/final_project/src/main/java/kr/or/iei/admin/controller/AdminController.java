@@ -16,6 +16,7 @@ import kr.or.iei.admin.model.dto.BookLenterDto;
 import kr.or.iei.admin.model.dto.BookList;
 import kr.or.iei.admin.model.dto.BookSelectDto;
 import kr.or.iei.admin.model.dto.LentBookDto;
+import kr.or.iei.admin.model.dto.LentBookList;
 import kr.or.iei.admin.model.dto.UserOne;
 import kr.or.iei.admin.model.service.AdminService;
 import kr.or.iei.common.annotation.NoTokenCheck;
@@ -84,15 +85,41 @@ public class AdminController {
 	}
 	
 	
-//	//반납을 위해 청구기호 기준으로 검색
-//	@PostMapping("/selectRetrunBooks")
-//	@NoTokenCheck
-//	public ResponseEntity<ResponseDto> selectLentBook(@RequestBody LentBookDto lentBook){
-//		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "책 검색중 오류 발생..", null, "error");
-//		
-//		try {
-//			ArrayList<E> = service.selectLentBook(lentBook)
-//		}
-//	}
+
+	//반납을 위해 청구기호 기준으로 검색
+	@PostMapping("/selectRetrunBooks")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> selectLentBook(@RequestBody LentBookDto lentBook){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "책 검색중 오류 발생..", null, "error");
+		
+		try {
+			ArrayList<LentBookList> list = service.selectLentBook(lentBook);
+			res = new ResponseDto(HttpStatus.OK, "", list, "");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+
+	
+	//반납 처리
+	@PostMapping("/retrunBook")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> retrunBook(@RequestBody LentBookList lentBook){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "책 검색중 오류 발생..", null, "error");
+		
+		try {
+			int result = service.returnBook(lentBook);
+			if(result > 0) {
+	            res = new ResponseDto(HttpStatus.OK, "반납 완료", null, "");
+	        }
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
 	
 }

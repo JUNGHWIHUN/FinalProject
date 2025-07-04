@@ -1,12 +1,16 @@
 package kr.or.iei.admin.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.or.iei.admin.model.dto.BookLenterDto;
 import kr.or.iei.admin.model.dto.BookList;
 import kr.or.iei.admin.model.dto.BookSelectDto;
+import kr.or.iei.admin.model.dto.LentBookDto;
+import kr.or.iei.admin.model.dto.LentBookList;
 import kr.or.iei.admin.model.dto.UserOne;
 
 @Mapper
@@ -23,5 +27,17 @@ public interface AdminDao {
 	int updateMemberBorrowCount(String memberNo);
 
 	int updateMemberCanBorrow(String memberNo);
+
+	ArrayList<LentBookList> selectLentBook(LentBookDto lentBook);
+
+	int updateactual(String lentbookNo);
+
+	void updatecanLend(String callNo);
+
+	void updateborrowedcount(String memberNo);
+
+	void updateOverdueDayCount(HashMap<String, String> param);
+
+	void updateborrowed(String memberNo);
 
 }

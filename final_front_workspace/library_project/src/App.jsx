@@ -14,6 +14,8 @@ import MyPageMain from './component/myPage/MyPageMain';
 import BookSearchMain from './component/book/BookSearchMain';
 import SelectBook from './component/admin/SelectBook';
 import LentBookDetail from './component/admin/LentBookDetail';
+import SelectLentBook from './component/admin/SelectLentBook';
+import LenterBookDetil from './component/admin/LenterBookDetil';
 
 
 
@@ -31,6 +33,8 @@ function App() {
           <Route path='/login' element={<Login />}/>
           <Route path='/adminPage' element={<AdminPage />} />
           <Route path='/LentBookDetail' element={<LentBookDetail />} />
+          <Route path='/admin/selectReTrunBook' element={<SelectLentBook />}/>
+          <Route path='/LenterBookDetil' element={<LenterBookDetil />} />
           
 
           <Route path='/admin/selectBook' element={<SelectBook />} />
