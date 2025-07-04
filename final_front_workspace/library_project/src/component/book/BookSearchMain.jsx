@@ -2,6 +2,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import SearchDetail from "./SearchDetail";
 import SearchResultList from "./SearchResultList";
 import SearchResultDetail from "./SearchResultDetail";
+import BookComment from "./BookComment";
 
 
 export default function BookSearchMain (){
@@ -14,6 +15,7 @@ export default function BookSearchMain (){
                 <Route path="/searchDetail" element={<SearchDetail />}/>
                 <Route path="/searchResultList" element={<SearchResultList />}/>
                 <Route path="/searchResultDetail/:callNo" element={<SearchResultDetail />}/>
+                <Route path="/commnet" element={<BookComment />}/>
             </Routes>
         </>
     )
