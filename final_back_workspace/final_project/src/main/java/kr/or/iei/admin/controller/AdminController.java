@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.or.iei.admin.model.dto.BookLenterDto;
 import kr.or.iei.admin.model.dto.BookList;
 import kr.or.iei.admin.model.dto.BookSelectDto;
+import kr.or.iei.admin.model.dto.LentBookDto;
 import kr.or.iei.admin.model.dto.UserOne;
 import kr.or.iei.admin.model.service.AdminService;
 import kr.or.iei.common.annotation.NoTokenCheck;
@@ -64,6 +65,7 @@ public class AdminController {
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
 	
+	//대출 처리
 	@PostMapping("/lentBook")
 	@NoTokenCheck
 	public ResponseEntity<ResponseDto> insertbook(@RequestBody BookLenterDto bookLenter){
@@ -79,6 +81,18 @@ public class AdminController {
 		}
 		
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	
+	//반납을 위해 청구기호 기준으로 검색
+	@PostMapping("/selectRetrunBooks")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> selectLentBook(@RequestBody LentBookDto lentBook){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "책 검색중 오류 발생..", null, "error");
+		
+		try {
+			ArrayList<E> = service.selectLentBook(lentBook)
+		}
 	}
 	
 }
