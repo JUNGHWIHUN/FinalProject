@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.or.iei.myPage.reservation.model.dao.ReservationDao">
+
+  <!-- 도서 예약 -->
+  <insert id='reservateBook' parameterType="kr.or.iei.myPage.reservation.model.dto.Reservation">
+  insert into tbl_reservation values(
+	to_char(sysdate,'yymmdd') || lpad(seq_reservation.nextval, 4,'0'),	#{reservationMemberNo},	#{reservationCallNo}, sysdate, null
+  )
+  </insert>
+  
+  <!-- 도서 예약 후 도서 예약상태 변경 -->
+  <update id="updateBookIsReservated" parameterType="string">
+  	update tbl_book set can_lend = 'R' where call_no = #{_parameter}
+  </update>
   
   <!-- 예약 갯수 조회 -->
   <select id="selectReservationCount" parameterType="string" resultType="_int">

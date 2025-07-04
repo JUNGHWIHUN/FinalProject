@@ -186,15 +186,15 @@
             tbl_book b
         JOIN (
             SELECT
-                call_no,
-                COUNT(lentbook_no) AS lend_count
+                lent_call_no,
+                COUNT(lent_book_no) AS lend_count
             FROM
                 tbl_lent_book
             WHERE
-                SUBSTR(call_no, 1, 2) = #{_parameter}
+                SUBSTR(lent_call_no, 1, 2) = #{_parameter}
             GROUP BY
-                call_no
-        ) lc ON b.call_no = lc.call_no
+                lent_call_no
+        ) lc ON b.call_no = lc.lent_call_no
         WHERE
             SUBSTR(b.call_no, 1, 2) = #{_parameter}
         ORDER BY

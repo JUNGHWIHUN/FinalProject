@@ -84,15 +84,15 @@ public class AdminController {
 	}
 	
 	
-	//반납을 위해 청구기호 기준으로 검색
-	@PostMapping("/selectRetrunBooks")
-	@NoTokenCheck
-	public ResponseEntity<ResponseDto> selectLentBook(@RequestBody LentBookDto lentBook){
-		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "책 검색중 오류 발생..", null, "error");
-		
-		try {
-			ArrayList<E> = service.selectLentBook(lentBook)
-		}
-	}
+//	//반납을 위해 청구기호 기준으로 검색
+//	@PostMapping("/selectRetrunBooks")
+//	@NoTokenCheck
+//	public ResponseEntity<ResponseDto> selectLentBook(@RequestBody LentBookDto lentBook){
+//		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "책 검색중 오류 발생..", null, "error");
+//		
+//		try {
+//			ArrayList<E> = service.selectLentBook(lentBook)
+//		}
+//	}
 	
 }

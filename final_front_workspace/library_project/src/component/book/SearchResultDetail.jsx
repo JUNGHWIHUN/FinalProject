@@ -29,6 +29,8 @@ export default function SearchResultDetail (){
     //로그인 회원 정보 (예약, 내 서재 버튼을 위해)
     const {isLogined, loginMember} = useUserStore();
 
+    console.log("상세보기 페이지" + loginMember.memberId)
+
     //페이지 이동을 위한 네비게이트
     const navigate = useNavigate();
 
@@ -86,9 +88,41 @@ export default function SearchResultDetail (){
                 text : '로그인이 필요합니다',
                 icon : 'warning',
                 confirmButtonText : '확인'
+                
             })
             navigate('/login', { state: { from: location.pathname } });
         }
+    }
+
+    //도서 예약 함수
+    function reservation(){
+        Swal.fire({
+            tite : '알림',
+            text : '도서를 예약하시겠습니까?',
+            icon : 'warning',
+            showCancelButton: true,
+            confirmButtonText : '확인',
+            cancelButtonText : '취소'
+        })
+        .then(function(result){
+            if (result.isConfirmed) {
+                axiosInstance.post(serverUrl + '/reservation/reservateBook', { 
+                    reservationMemberNo : loginMember.memberNo,
+                    reservationCallNo : callNo
+                })
+                .then(res => {
+                    Swal.fire({
+                        title: '알림',
+                        text: res.data.clientMsg, 
+                        icon: res.data.alertIcon,
+                    })
+                    setRefreshTrigger();    //화면 새로고침
+                })
+                .catch(function(err){
+
+                });
+            }
+        });
     }
 
     return (
@@ -140,7 +174,12 @@ export default function SearchResultDetail (){
                                 : '대출불가'}
                             </td>
                             <td className="return-date-cell">-</td> 
-                            <td className="reservation-cell">예약가능</td> 
+                            <td className="reservation-cell">
+                            {book.canLend === 'L' ? 
+                            <button onClick={reservation}>예약하기</button>
+                            : ""
+                            }    
+                            </td> 
                         </tr>
                     </tbody>
                 </table>
