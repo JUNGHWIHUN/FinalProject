@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 export default function LentBookDetail() {
   const location = useLocation();
@@ -16,7 +17,7 @@ export default function LentBookDetail() {
   });
 
   function changeUser(){
-    user[e.target.memberNo] = e.target.value;
+    user[e.target.id] = e.target.value;
     setUser({...user});
   };
 
