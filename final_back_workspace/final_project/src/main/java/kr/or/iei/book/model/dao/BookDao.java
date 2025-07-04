@@ -24,6 +24,10 @@ public interface BookDao {
 	int insertComment(BookComment comment);
 	
     int selectCommentCount(String callNo); 
+    
+    int updateComment(BookComment comment);
+    
+    int deleteComment(String commentNo);
 
     List<BookComment> selectCommentList(HashMap<String, Object> paramMap);
     

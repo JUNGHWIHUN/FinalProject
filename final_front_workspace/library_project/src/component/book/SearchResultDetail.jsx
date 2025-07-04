@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
 import Swal from "sweetalert2";
-import PageNavi from "../common/PageNavi";
+import BookComment from "./BookComment";
 
 export default function SearchResultDetail (){
 
@@ -19,15 +19,8 @@ export default function SearchResultDetail (){
     //보여줄 책의 초기값 (빈 객체)
     const [book , setBook] = useState({}); 
 
-    //서평 작성, 내 서재에 등록 시 새로고침할 변수
+    //새로고침용 변수
     const [refreshTrigger, setRefreshTrigger] = useState(0); 
-
-    //한줄서평 작성값을 저장할 변수
-    const [commentInputValues, setCommentInputValues] = useState({
-        commentContent : "",
-        memberId : "",
-        callNo : callNo
-    });
 
     //이 분야 신착도서 / 인기도서 저장할 변수
     const [popularBooks, setPopularBooks] = useState([]); 
@@ -42,13 +35,8 @@ export default function SearchResultDetail (){
     //화면 렌더링 : 처음, 서평이 업데이트되었을 때, 예약되었을 때
     useEffect(() =>{
 
-        // 현재 책의 callNo에서 분야 코드 추출 (앞 2자리)
-        // callNo가 '381.75-24-15' 라면 '38'을 추출
-        const genreCode = callNo.substring(0, 2); 
-        if (genreCode.length !== 2 || isNaN(parseInt(genreCode))) { // 유효한 2자리 숫자가 아니면
-                console.warn("유효하지 않은 분야 코드:", genreCode);
-                // 또는 적절히 처리 (예: 기본 분야 코드 사용 또는 관련 도서 로드 안함)
-        }
+        //별도로 분리한 장르 코드 추출 함수
+        const genreCode = extractGenreCode(callNo);
 
         //Promise.all을 사용하여 모든 비동기 작업을 병렬로 처리
         Promise.all([
@@ -73,44 +61,21 @@ export default function SearchResultDetail (){
         
     },[refreshTrigger])
 
-    //서평 입력값 업데이트 함수
-    function commentInput(e){
-        commentInputValues[e.target.id] = e.target.value;
-        commentInputValues.memberId = loginMember.memberId;
-        setCommentInputValues({...commentInputValues});
-    }
-
-    //서평 작성 후 전송
-    function commentSubmit(){
-
-        //서평 입력칸이 비었을 때 (공백 포함)
-        if (commentInputValues.commentContent.trim() === "") { 
-            Swal.fire({
-                title: '알림',
-                text: '서평 내용을 입력해주세요.',
-                icon: 'warning',
-                confirmButtonText: '확인'
-            });
-            return;
+    //유사 장르 도서 불러오기를 위한 청구기호 첫 2자리 숫자 추출
+    function extractGenreCode(callNo) {
+        if (!callNo || typeof callNo !== 'string') {
+            return ""; //입력값이 없거나 문자열이 아니면 빈 문자열 반환
         }
 
-        //서평 내용 전송 후 결과값 받아오기
-        axiosInstance.post(serverUrl + '/book/insertComment', commentInputValues)
-        .then(function(res){
-            console.log(res.data.resData);
-            Swal.fire({
-                title: '알림',
-                text: res.data.clientMsg,
-                icon: res.data.alertIcon,
-                confirmButtonText: '확인'
-            });
+        //정규표현식: 문자열에서 처음 나오는 2자리 숫자(\d{2})
+        //\d는 숫자를 의미하고, {2}는 두 번 반복을 의미
+        const match = callNo.match(/\d{2}/); 
 
-            setRefreshTrigger(prev => prev + 1); //화면 새로고침
-            setCommentInputValues({commentContent : ""});   //입력값 초기화
-        })
-        .catch(function(err){
-
-        })
+        if (match) {
+            return match[0]; //매칭된 첫 번째 문자열(두 자리 숫자) 반환
+        } else {
+            return ""; //2자리 숫자가 발견되지 않으면 빈 문자열 반환
+        }
     }
 
     //로그인 체크 함수
@@ -125,7 +90,6 @@ export default function SearchResultDetail (){
             navigate('/login', { state: { from: location.pathname } });
         }
     }
-
 
     return (
         <div className="detail-page-wrap">
@@ -198,31 +162,8 @@ export default function SearchResultDetail (){
                 <p>※ 보존서고 자료는 대출이 불가하며, 방문하셔서 열람하실 수 있습니다.</p>
             </div>
 
-            {/* 자유로운 한줄평 섹션 */}
-            <div className="comment-section">
-                <h3 className="section-title">한줄 서평</h3>
-                <form onSubmit={function(e){
-                  e.preventDefault(); //기본 submit 이벤트 제어 : 별도의 함수로 분리
-                   commentSubmit();          //등록 함수 호출
-                }}>
-                    <div className="comment-input-area">
-                        <textarea type="text" placeholder="비방, 욕설, 인신공격성 글은 삭제 처리될 수 있습니다." id='commentContent' className="comment-content" 
-                        value={commentInputValues.commentContent} onFocus={isLoginedCheck} onChange={commentInput}
-                        style={{width : '500px', height : '30px'}} maxLength={100}/>
-                        <button type='submit'className="btn-comment-submit">등록</button>
-                    </div>
-                </form>
-
-                {/* 서평 출력란을 별도의 컴포넌트로 분리 */}
-                <CommentList 
-                    callNo={callNo} 
-                    refreshTrigger={refreshTrigger} 
-                    setRefreshTrigger={setRefreshTrigger}
-                    axiosInstance={axiosInstance} 
-                    serverUrl={serverUrl}
-                />
-
-            </div>
+            {/* 서평란 섹션 : 별도의 컴포넌트로 분리 */}
+            <BookComment callNo={callNo} axiosInstance={axiosInstance} serverUrl={serverUrl}/>
 
             {/* 이 분야의 인기 도서 섹션 */}
             <div className="related-books-section popular-books">
@@ -230,7 +171,7 @@ export default function SearchResultDetail (){
                 <div className="book-carousel">
                     {popularBooks.length > 0 ? (
                         popularBooks.map((bookItem, index) => (
-                            <BookSmallItem key={index} book={bookItem} navigate={navigate} serverUrl={serverUrl} /> 
+                            <SameGenreBooks key={index} book={bookItem} navigate={navigate} /> 
                         ))
                     ) : (
                         <p className="no-related-books">인기 도서 정보가 없습니다.</p>
@@ -244,7 +185,7 @@ export default function SearchResultDetail (){
                 <div className="book-carousel">
                     {newArrivalBooks.length > 0 ? (
                         newArrivalBooks.map((bookItem, index) => (
-                            <BookSmallItem key={index} book={bookItem} navigate={navigate} serverUrl={serverUrl} /> 
+                            <SameGenreBooks key={index} book={bookItem} navigate={navigate} /> 
                         ))
                     ) : (
                         <p className="no-related-books">신착 도서 정보가 없습니다.</p>
@@ -255,88 +196,17 @@ export default function SearchResultDetail (){
     );
 }
 
-//commentList를 관리하는 컴포넌트 : 페이지네이션과 함께 출력
-function CommentList({ callNo, refreshTrigger, setRefreshTrigger, axiosInstance, serverUrl }){
-    const [comments, setComments] = useState([]); //이 컴포넌트에서 관리할 서평 목록
-    const [reqPage, setReqPage] = useState(1); //서평 페이지네이션 현재 페이지
-    const [pageInfo, setPageInfo] = useState({}); //서평 페이지네이션 정보
-
-    //callNo, currentPage, refreshTrigger 변경 시 서평 목록 조회
-    useEffect(() => {
-        if (!callNo) {
-            setComments([]);
-            setPageInfo({});
-            return;
-        }
-
-        //서평 목록을 가져오는 백엔드 API 호출 : callNo 와 reqPage 를 파라미터로 받고, 서평 목록과 페이지 정보를 반환
-        axiosInstance.post(serverUrl + '/book/commentList', { callNo: callNo, reqPage: reqPage })
-        .then(function(res){
-            if (res.data && res.data.resData && Array.isArray(res.data.resData.commentList)) {
-                setComments(res.data.resData.commentList);
-                setPageInfo(res.data.resData.pageInfo);
-            } else {
-                console.warn("CommentList: 서평 목록 데이터가 배열이 아니거나 없음", res.data);
-                setComments([]);
-                setPageInfo({});
-            }
-        })
-        .catch(function(err){
-            console.error("CommentList: 서평 목록 가져오는 중 오류:", err);
-            setComments([]);
-            setPageInfo({});
-        });
-
-    }, [callNo, reqPage, refreshTrigger, axiosInstance, serverUrl]); // 의존성 배열
-
-    return (
-        <>
-            <div className="comment-list">
-                {comments.length > 0 ? (
-                    comments.map((comment, index) => (
-                        <div className="comment-item" key={'comment'+index}> 
-                            <p className="comment-content">
-                                {comment.commentContent}: <span className="comment-meta">{comment.memberId} 작성일: {comment.commentDate}</span>
-                            </p>
-                            <div className="comment-actions">
-                                <button className="btn btn-update-comment">수정</button>
-                                <button className="btn btn-report-comment">신고</button>
-                            </div>
-                        </div>
-                    ))
-                ) : (
-                    <p className="no-comments-message">아직 등록된 서평이 없습니다.</p>
-                )}
-            </div>
-
-            {/* 페이지네이션 (CommentList 내부에서 관리) */}
-            <div className="comment-pagination">
-                <PageNavi pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage} />
-            </div>
-        </>
-    );
-}
-
 //인기도서/신규도서를 출력할 컴포넌트
-function BookSmallItem({ book, navigate, serverUrl }) {
-    const handleClick = () => {
-        
-        // 작은 카드를 클릭하면 해당 책의 상세 페이지로 이동
-        if (book && book.callNo) {
-            navigate('/book/searchResultDetail/' + book.callNo);
-        } else {
-            console.warn("이 책은 callNo가 없거나 book 객체가 유효하지 않습니다:", book);
-            alert("이 책은 상세 정보가 없습니다.");
-        }
+function SameGenreBooks({ book, navigate }) {
+    
+    //책 표지를 클릭하면 해당 책의 상세 페이지로 이동
+    const clickImg = () => {
+        navigate('/book/searchResultDetail/' + book.callNo);
     };
 
     return (
-        <div className="book-small-item" onClick={handleClick}>
-            <img 
-                src={book && book.imageUrl ? `${serverUrl}${book.imageUrl}` : '/path/to/default/small_cover.png'} 
-                alt={book && book.titleInfo ? book.titleInfo : '책 표지'} 
-                className="book-small-cover"
-            />
+        <div className="book-small-item" onClick={clickImg}>
+            <img src={book.imageUrl} className="book-small-cover" />
             <div className="book-small-title">
                 {book?.titleInfo}
             </div>

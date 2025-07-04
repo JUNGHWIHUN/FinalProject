@@ -109,7 +109,7 @@ public class BookController {
 			
 			if(result > 0) {
 				res = new ResponseDto(HttpStatus.OK, "서평이 작성되었습니다", result, "success");			
-			} else if (result == -1) {
+			} else if (result < 0) {
 				res = new ResponseDto(HttpStatus.OK, "이미 서평을 작성했습니다", result, "warning");			
 			} else {
 				res = new ResponseDto(HttpStatus.OK, "서평 작성 도중 오류가 발생했습니다", result, "warning");			
@@ -121,6 +121,53 @@ public class BookController {
 	
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
+	
+	//서평 수정
+	@PostMapping("/updateComment")
+	public ResponseEntity<ResponseDto> updateComment(@RequestBody BookComment comment){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "서평 수정 중 통신 오류가 발생하였습니다.", null, "error");
+		
+		try {
+			//검색정보와 요청 페이지 정보를 함께 전달해 service 객체에서 처리
+			int result = service.updateComment(comment);
+			
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "서평이 수정되었습니다", result, "success");			
+			} else {
+				res = new ResponseDto(HttpStatus.OK, "서평 수정 도중 오류가 발생했습니다", result, "warning");			
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//서평 삭제
+	@PostMapping("/deleteComment")
+	public ResponseEntity<ResponseDto> deleteComment(@RequestBody BookComment comment){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "서평 삭제 중 통신 오류가 발생하였습니다.", null, "error");
+		
+		String commentNo = comment.getCommentNo();
+		
+		try {
+			//검색정보와 요청 페이지 정보를 함께 전달해 service 객체에서 처리
+			int result = service.deleteComment(commentNo);	
+			
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "서평이 삭제되었습니다", result, "success");			
+			} else {
+				res = new ResponseDto(HttpStatus.OK, "서평 삭제 도중 오류가 발생했습니다", result, "warning");			
+			}
+						
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	
 	
     //이 분야의 인기 도서 조회
     @GetMapping("/popular/{genreCode}")
@@ -149,5 +196,7 @@ public class BookController {
         }
         return new ResponseEntity<>(res, res.getHttpStatus());
     }
+    
+    
 	
 }
