@@ -1,4 +1,4 @@
-package kr.or.iei.reservation.model.dto;
+package kr.or.iei.myPage.reservation.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

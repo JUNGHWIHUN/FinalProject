@@ -1,4 +1,4 @@
-package kr.or.iei.reservation.controller;
+package kr.or.iei.myPage.reservation.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.iei.common.model.dto.ResponseDto;
-import kr.or.iei.reservation.model.dto.Reservation;
-import kr.or.iei.reservation.model.service.ReservationService;
+import kr.or.iei.myPage.reservation.model.dto.Reservation;
+import kr.or.iei.myPage.reservation.model.service.ReservationService;
+
 
 @RestController
 @CrossOrigin("*")

@@ -1,4 +1,4 @@
-package kr.or.iei.reservation.model.dao;
+package kr.or.iei.myPage.reservation.model.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +6,8 @@ import java.util.HashMap;
 import org.apache.ibatis.annotations.Mapper;
 
 import kr.or.iei.common.model.dto.PageInfoDto;
-import kr.or.iei.reservation.model.dto.Reservation;
+import kr.or.iei.myPage.reservation.model.dto.Reservation;
+
 
 @Mapper
 public interface ReservationDao {

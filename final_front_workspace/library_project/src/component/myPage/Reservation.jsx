@@ -19,6 +19,8 @@ export default function Reservation(){
     //페이지 하단 페이지 네비게이션 저장 변수
     const [pageInfo, setPageInfo] = useState({});
 
+    //새로고침 (리렌더링) 을 위한 State 변수 추가
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
 
 
     useEffect(function(){        
@@ -44,7 +46,7 @@ export default function Reservation(){
             console.log(err);
         })
 
-    },[reqPage, loginMember]);
+    },[reqPage, loginMember, refreshTrigger]);
 
    
     //예약취소하기 버튼 누를 시 호출할 함수
@@ -69,8 +71,10 @@ export default function Reservation(){
                 icon : "success",
                 confirmButtonText : '확인'
 
-
             })
+
+            const deleteRefreshTrigger = refreshTrigger +1 
+            setRefreshTrigger(deleteRefreshTrigger);
         })
         .catch(function(err){
             console.log(err);

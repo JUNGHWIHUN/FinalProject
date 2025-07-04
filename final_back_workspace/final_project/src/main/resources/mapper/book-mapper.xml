@@ -157,6 +157,19 @@
 	)
 	</insert>
 	
+	<!-- 서평 수정 -->
+	<update id="updateComment" parameterType="BookComment">
+	update tbl_comment
+	   set comment_content =  #{commentContent},
+	       comment_update_date = sysdate
+	 where comment_no = #{commentNo}
+	</update>
+	
+	<!-- 서평 삭제 -->
+	<delete id="deleteComment" parameterType="string">
+	delete tbl_comment where comment_no = #{_parameter}
+	</delete>
+	
 	<!-- 인기도서 5개 조회 -->
  	<select id="selectPopularBooksByGenre" parameterType="String" resultType="Book">
     SELECT *

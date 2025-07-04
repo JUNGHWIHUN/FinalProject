@@ -1,4 +1,4 @@
-package kr.or.iei.reservation.model.service;
+package kr.or.iei.myPage.reservation.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,8 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.iei.common.model.dto.PageInfoDto;
 import kr.or.iei.common.util.PageUtil;
-import kr.or.iei.reservation.model.dao.ReservationDao;
-import kr.or.iei.reservation.model.dto.Reservation;
+import kr.or.iei.myPage.reservation.model.dao.ReservationDao;
+import kr.or.iei.myPage.reservation.model.dto.Reservation;
+
 
 @Service
 public class ReservationService {
