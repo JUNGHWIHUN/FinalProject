@@ -53,7 +53,6 @@ public class AdminService {
 	    System.out.println("4단계 성공");
 	    result++;
 	    
-
 	    System.out.println("result :" + result);
 	    return result;
 	}
