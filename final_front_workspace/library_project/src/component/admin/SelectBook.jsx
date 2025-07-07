@@ -1,4 +1,6 @@
 import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 export default function SelectBook(){
 
    
@@ -26,22 +28,24 @@ export default function SelectBook(){
                         </tr>
                     </thead>
                     <tbody>
-                        {bookList.map((book, idx) => (
+                        {bookList.map(function(book, idx){
+
+                            return(
                             <tr key={idx}>
-                                <td>{book.title}</td>
+                                <td><Link  to="/LentBookDetail" state={{ book: book }}  >{book.title} </Link></td>
                                 <td>{book.pub}</td>
                                 <td>{book.author}</td>
                                 <td>{book.bookNo}</td>
                                 <td>{book.canLent}</td>
                             </tr>
-                        ))}
+                            )
+                        })}
                     </tbody>
                 </table>
             ) : (
                 <p>검색 결과가 없습니다.</p>
             )}
         </>
-        
-        
     )
 }
+

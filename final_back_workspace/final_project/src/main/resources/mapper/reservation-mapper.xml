@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.iei.myPage.reservation.model.dao.ReservationDao">
+
+  <!-- 도서 예약 -->
+  <insert id='reservateBook' parameterType="kr.or.iei.myPage.reservation.model.dto.Reservation">
+  insert into tbl_reservation values(
+	to_char(sysdate,'yymmdd') || lpad(seq_reservation.nextval, 4,'0'),	#{reservationMemberNo},	#{reservationCallNo}, sysdate, null
+  )
+  </insert>
+  
+  <!-- 도서 예약 후 도서 예약상태 변경 -->
+  <update id="updateBookIsReservated" parameterType="string">
+  	update tbl_book set can_lend = 'R' where call_no = #{_parameter}
+  </update>
+  
+  <!-- 예약 갯수 조회 -->
+  <select id="selectReservationCount" parameterType="string" resultType="_int">
+  	select count(*) from tbl_reservation where reservation_member_no = #{_parameter}
+  </select>
+  
+  <!-- 예약 목록 조회 -->
+  <select id="selectReservationList" parameterType="map" resultType="kr.or.iei.myPage.reservation.model.dto.Reservation">
+  	 SELECT reservationNo, reservationMemberNo ,reservationCallNo ,title, author, publisher, reservationDate, status, canLend
+  FROM (
+    SELECT rownum AS rnum, a.*
+    FROM (
+      SELECT 
+        r.reservation_no as reservationNo,
+        r.reservation_member_no as reservationMemberNo,
+        r.reservation_call_no as reservationCallNo,
+        b.title_info AS title,
+        b.author_info AS author,
+        b.pub_info AS publisher,
+        TO_CHAR(r.reservation_date, 'YYYY-MM-DD') AS reservationDate,
+        CASE 
+          WHEN r.actual_return_date IS NULL THEN '예약중'
+          ELSE '대출 가능'
+        END AS status,
+        b.can_lend as canLend
+      FROM tbl_reservation r
+      JOIN tbl_book b ON r.reservation_call_no = b.call_no
+      where r.reservation_member_no = #{memberNo} and b.can_lend = 'L'
+      ORDER BY r.reservation_date DESC
+    ) a
+  )
+  WHERE rnum BETWEEN #{pageInfo.start} AND #{pageInfo.end}
+  </select>
+  
+  <!-- 책 대충 상태 변경 -->
+  <update id="updateBookCanLend" parameterType="string">
+  	update tbl_book set can_lend = 'T' where call_no = #{_parameter}
+  </update>
+  
+  <!-- 예약 취소하기 -->
+  <delete id="deleteReservation" parameterType="_long">
+  	delete from tbl_reservation where reservation_no = #{_parameter} 
+  </delete>
+</mapper>
