@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.iei.myPage.statistics.model.dao.StatisTicsDao">
+
+<!-- 독서 통계 (카테고리별 갯수 조회) -->
+	<select id="selectStatisTics" parameterType="map" resultType="kr.or.iei.myPage.statistics.model.dto.StatisTics">
+		select 
+			case substr(lent_call_no, 1, 1)
+			when '0' then '총류'
+			when '1' then '철학'
+			when '2' then '종교'
+			when '3' then '사회과학'
+			when '4' then '순수과학'
+			when '5' then '기술과학'
+			when '6' then '예술'
+			when '7' then '언어'
+			when '8' then '문학'
+			when '9' then '역사'
+			else '기타'
+			end as category,
+			count(*) as cnt
+			from tbl_lent_book 
+			where lent_member_no = #{memberNo}
+			and actual_return_date is not null
+			and to_char(To_Date(lent_date, 'YYYYMMDD'), 'YYYY-MM') = #{month}
+			group by
+				case substr(lent_call_no , 1, 1)
+				when '0' then '총류'
+				when '1' then '철학'
+				when '2' then '종교'
+				when '3' then '사회과학'
+				when '4' then '순수과학'
+				when '5' then '기술과학'
+				when '6' then '예술'
+				when '7' then '언어'
+				when '8' then '문학'
+				when '9' then '역사'
+				else '기타'
+			end
+		order by category
+	</select>
+
+</mapper>
