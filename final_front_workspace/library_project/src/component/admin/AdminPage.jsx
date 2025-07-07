@@ -85,6 +85,8 @@ export default function AdminPage(){
             });
         }
 
+       
+
     return(
         <div>
          <a href="#" onClick={() => setMode("allBook")}>도서관리</a> |

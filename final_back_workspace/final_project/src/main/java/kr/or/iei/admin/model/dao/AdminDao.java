@@ -45,6 +45,16 @@ public interface AdminDao {
 
 	ArrayList<BookList> selectAllBookList(PageInfoDto pageInfo);
 
+	int selectAllLendBookCount();
+
+	ArrayList<LentBookList> selectAllLendBookList(PageInfoDto pageInfo);
+
+	String selectMemberName(String memberNo);
+
+	String selectBookTitle(String bookNo);
+
+	
+
 	
 
 	

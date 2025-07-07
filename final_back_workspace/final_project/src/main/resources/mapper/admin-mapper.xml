@@ -42,9 +42,19 @@
 		where member_no = #{memberNo}
 	</select>
 	
+	<!-- 대출할 유저 번호로 유저이름 가져오기 -->
+	<select id="selectMemberName" parameterType="String" resultType="String">
+	select member_name from tbl_member where member_no = #{memberNo}
+	</select>
+	
+	<!-- 대출할 책 번호로 책이름 가져오기 -->
+	<select id="selectBookTitle" parameterType="String" resultType="String">
+	select title_info from tbl_book where call_no = #{bookNo}
+	</select>
+	
 	<!-- 대출된 도서 테이블에 도서 등록 -->
 	<insert id="insertLentBook" parameterType="BookLenterDto">
-	insert into tbl_lent_book values(seq_lentbook.nextval, sysdate+14, default, #{memberNo}, #{bookNo}, default, null, sysdate)
+	insert into tbl_lent_book values(seq_lentbook.nextval, sysdate+14, default, #{memberNo}, #{bookNo}, default, null, sysdate, #{bookName}, #{memberName})
 	</insert>
 	
 	<!-- 대출등록 후 책 대출 가능 상태 변경 -->
@@ -128,7 +138,7 @@
 	</select>
 	
 	<!-- 전체 책 조회 -->
-	<select id="selectAllBookList" parameterType="PageInfoDto" resultType="BookList">
+	<select id="selectAllBookList"  parameterType="PageInfoDto" resultType="BookList">
 	select call_no as bookNo,
 			   author_info as author,
 			   title_info as title,
@@ -160,5 +170,46 @@
 	  	   ) a
 	 where rnum between #{start} and #{end}
 	</select>
+	
+	<!-- 현재 대출중인 책 갯수 -->
+	<select id="selectAllLendBookCount" resultType="_int">
+	select count(*)
+	  from tbl_lent_book
+	  where actual_return_date is null
+	  </select>
+	  
+	  <!-- 현재 대출중인 책 리스트 -->
+	 <select id="selectAllLendBookList" parameterType="PageInfoDto" resultType="LentBookList">
+	   SELECT lent_book_no as lentbookNo,
+           return_date as returnDate,
+           reservation,
+           lent_member_no as memberNo,
+           lent_call_no as callNo,
+           can_renew as canRenew,
+           actual_return_date as actualRetrun,
+           lent_date as lentDate,
+           title_info as title,
+           member_name as memberName
+    FROM (
+        SELECT ROWNUM rnum, A.*
+        FROM (
+            SELECT
+                lent_book_no,
+                return_date,
+                reservation,
+                lent_member_no,
+                lent_call_no,
+                can_renew,
+                actual_return_date,
+                lent_date,
+                title_info,
+                member_name
+            FROM tbl_lent_book
+            WHERE actual_return_date IS NULL
+            ORDER BY lent_date DESC
+        ) A
+    )
+    WHERE rnum BETWEEN #{start} AND #{end}
+	  </select>
   	
 </mapper>
