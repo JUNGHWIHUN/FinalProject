@@ -28,22 +28,44 @@ public class ReservationController {
 	@Autowired
 	private ReservationService service;
 	
-		//예약 목록 조회
-		@GetMapping("/{reqPage}")
-		public ResponseEntity<ResponseDto> selectReservationList(@PathVariable int reqPage ,@RequestParam String memberNo){
-			ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "예약현황 조회 중, 오류가 발생하였습니다.", null, "error");
+	//도서 예약
+	@PostMapping("/reservateBook")
+	public ResponseEntity<ResponseDto> reservateBook(@RequestBody Reservation reservateBook){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "예약 중 통신 오류가 발생하였습니다.", null, "error");
+		
+		try {
+			int result = service.reservateBook(reservateBook);
 			
-			try {
-				HashMap<String, Object> reservationMap = service.selectReservationList(reqPage,memberNo);
-				res = new ResponseDto(HttpStatus.OK, "", reservationMap, "");
-				
-			}catch(Exception e) {
-				e.printStackTrace();
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "예약되었습니다", result, "success");						
+			} else {
+				res = new ResponseDto(HttpStatus.OK, "서평 작성 도중 오류가 발생했습니다", result, "warning");			
 			}
 			
-			return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
 	
+	//예약 목록 조회
+	@GetMapping("/{reqPage}")
+	public ResponseEntity<ResponseDto> selectReservationList(@PathVariable int reqPage ,@RequestParam String memberNo){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "예약현황 조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		try {
+			HashMap<String, Object> reservationMap = service.selectReservationList(reqPage,memberNo);
+			res = new ResponseDto(HttpStatus.OK, "", reservationMap, "");
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//예약 취소
 	@PostMapping("/delete")
 	public ResponseEntity<ResponseDto> deleteReservation(@RequestBody Reservation reservation ){
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "예약 취소 중 , 오류가 발생하였습니다.", null, "error");

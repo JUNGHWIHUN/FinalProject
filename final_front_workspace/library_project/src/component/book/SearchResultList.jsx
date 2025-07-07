@@ -6,6 +6,7 @@ import useUserStore from "../../store/useUserStore";
 
 export default function SearchResultList (){
 
+    //백엔드 포트 번호
     const serverUrl = import.meta.env.VITE_BACK_SERVER;
 
     //location 객체 : SearchDetail에서 Maps 함수를 통해 전달한 state 객체에 접근하기 위해 사용 -> location.state.searchCriteria 로 검색값 가져오기 가능

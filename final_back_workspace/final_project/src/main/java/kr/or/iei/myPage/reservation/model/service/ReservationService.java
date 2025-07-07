@@ -22,6 +22,21 @@ public class ReservationService {
 	@Autowired
 	private PageUtil pageUtil;
 
+	//도서 예약
+	@Transactional
+	public int reservateBook(Reservation reservateBook) {
+		int result = dao.reservateBook(reservateBook);
+		String callNo = reservateBook.getReservationCallNo();
+		
+		if(result > 0) {
+			//정상적으로 예약되었을 때 해당 책의 대출상태를 '예약중' 으로 변경
+			dao.updateBookIsReservated(callNo);
+		}
+		
+		return result;
+	}
+	
+	//예약현황 조회
 	public HashMap<String, Object> selectReservationList(int reqPage , String memberNo) {
 		
 		int viewCnt = 10;
@@ -48,6 +63,7 @@ public class ReservationService {
 		return reservationMap;
 	}
 
+	//예약취소
 	@Transactional
 	public int deleteReservation(Reservation reservation) {
 		//책 테이블 can_lend 도서 대출 가능 여부 L-> T로 업데이트
@@ -67,6 +83,7 @@ public class ReservationService {
 		
 		return result;
 	}
+
 
 	
 }
