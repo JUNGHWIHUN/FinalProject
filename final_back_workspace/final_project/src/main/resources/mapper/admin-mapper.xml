@@ -165,6 +165,7 @@
                            can_lend,
                            remark
                       from tbl_book
+                      <!-- 여기에 검색 조건 달아보기 -->
                      order by call_no desc
 	  		  	   ) a
 	  	   ) a

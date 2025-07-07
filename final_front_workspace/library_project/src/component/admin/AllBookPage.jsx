@@ -68,6 +68,12 @@ export default function AllbookPage(){
             {subMode === "bookList" && (
                 <>
                 <h4>전체 도서 목록</h4>
+                <select>
+                     <option value="title">제목</option>
+                     <option value="publisher">출판사</option>
+                     <option value="author">저작자</option>
+                </select>
+                <input type="text" id="title"></input> <button>검색하기</button>
                     <table border="1">
                         <thead>
                           <tr>
