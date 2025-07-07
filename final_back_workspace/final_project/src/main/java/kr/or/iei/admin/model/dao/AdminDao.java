@@ -12,6 +12,7 @@ import kr.or.iei.admin.model.dto.BookSelectDto;
 import kr.or.iei.admin.model.dto.LentBookDto;
 import kr.or.iei.admin.model.dto.LentBookList;
 import kr.or.iei.admin.model.dto.UserOne;
+import kr.or.iei.common.model.dto.PageInfoDto;
 
 @Mapper
 public interface AdminDao {
@@ -39,5 +40,13 @@ public interface AdminDao {
 	void updateOverdueDayCount(HashMap<String, String> param);
 
 	void updateborrowed(String memberNo);
+
+	int selectAllBookCount();
+
+	ArrayList<BookList> selectAllBookList(PageInfoDto pageInfo);
+
+	
+
+	
 
 }

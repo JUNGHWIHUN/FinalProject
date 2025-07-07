@@ -15,12 +15,17 @@ import kr.or.iei.admin.model.dto.BookSelectDto;
 import kr.or.iei.admin.model.dto.LentBookDto;
 import kr.or.iei.admin.model.dto.LentBookList;
 import kr.or.iei.admin.model.dto.UserOne;
+import kr.or.iei.common.model.dto.PageInfoDto;
+import kr.or.iei.common.util.PageUtil;
 
 @Service
 public class AdminService {
 
 	@Autowired
 	private AdminDao dao;
+	
+	@Autowired
+	private PageUtil pageUtil;
 
 	
 	public ArrayList<BookList> selectBookList(BookSelectDto bookSelectDto) {
@@ -100,6 +105,27 @@ public class AdminService {
 		
 		
 		return 1;
+	}
+
+
+	public HashMap<String, Object> selectAllBook(int reqPage) {
+		int viewCnt = 10;						//한 페이지당 게시글 수
+		int pageNaviSize = 5;					//페이지 네비게이션 길이
+		int totalCount = dao.selectAllBookCount();//전체 게시글 수
+		
+		//페이징 정보
+		PageInfoDto pageInfo = pageUtil.getPageInfo(reqPage, viewCnt, pageNaviSize, totalCount);
+				
+		//게시글 목록
+		ArrayList<BookList> BookList = dao.selectAllBookList(pageInfo);
+			
+		HashMap<String, Object> bookMap = new HashMap<String, Object>();
+		bookMap.put("bookList", BookList);
+		bookMap.put("pageInfo", pageInfo);
+				
+		return bookMap;
+		
+	
 	}
 	
 	

@@ -16,22 +16,19 @@ export default function AllbookPage(){
     const [lendTotalCount, setLendTotalCount] = useState(0);
 
     // 페이지 정보
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const [reqPage, setReqPage] = useState(1); 
+    const [pageInfo, setPageInfo] = useState({});
 
     function fetchAllBooks(){
          let options = {};
-            options.url='http://localhost:9999/admin/allBookList';
-            options.method = 'post';
-            options.data = returnBooks;
+            options.url='http://localhost:9999/admin/allBookList/'+ reqPage;
+            options.method = 'get';
+            
 
             axios(options)
             .then(function(res){
-               if(res.data.resData > 0){
-                setAllBookList(res.data.books);
-                setTotalCount(res.data.totalCount);
-                setCurrentPage(page);
-               }
+              setAllBookList(res.data.resData.bookList)
+              setPageInfo(res.data.resData.pageInfo)
             })
             .catch(function(err){
             console.log(err); 
@@ -46,17 +43,25 @@ export default function AllbookPage(){
 
             {subMode === "bookList" && (
                 <>
-                    <h4>전체 도서 목록</h4>
-                    {allBookList.length > 0 ? (
-                        <>
-                            <ul>
-                                {allBookList.map((book, index) => (
-                                    <li key={index}>{book.title} / {book.author} / {book.pub} / {book.bookNo} / {book.canLent}</li>
-                                ))}
-                            </ul>
-                            {renderPagination(totalCount, fetchAllBooks)}
-                        </>
-                    ) : <p>목록이 없습니다.</p>}
+                <h4>전체 도서 목록</h4>
+                    <table border="1">
+                        <thead>
+                          <tr>
+                             <th>책 제목</th>
+                               <th>출판사</th>
+                              <th>저자</th>
+                              <th>청구기호</th>
+                              <th>대출 가능 여부</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {allBookList.map(function(book, index){
+                             //게시글 1개에 대한 JSX를 BoardItem이 return한 JSX로
+                             return <BookItem key={"book"+index} book={book}/>
+                          })}
+                         </tbody>
+                  </table>
+                   
                 </>
             )}
 
@@ -78,4 +83,24 @@ export default function AllbookPage(){
         </>
     
     )
+}
+
+function BookItem(props){
+    const book = props.book;
+
+
+    return(
+        <>
+        <tr>
+            <td>{book.title}</td>
+            <td>{book.pub}</td>
+            <td>{book.author}</td>
+            <td>{book.bookNo}</td>
+            <td>{book.canLent}</td>
+        </tr>
+        </>
+    )
+
+
+
 }
