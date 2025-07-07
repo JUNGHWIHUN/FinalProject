@@ -16,6 +16,7 @@ import kr.or.iei.common.model.dto.ResponseDto;
 import kr.or.iei.member.model.dto.LoginMember;
 import kr.or.iei.member.model.dto.Member;
 import kr.or.iei.member.model.service.MemberService;
+import kr.or.iei.myPage.myLibrary.model.dto.MyLibrary;
 
 @RestController // 이 클래스가 RESTful 웹 서비스의 컨트롤러임을 나타냅니다.
 @CrossOrigin("*") // 모든 도메인에서의 요청을 허용합니다 (CORS 설정).
@@ -24,6 +25,10 @@ public class MemberController {
 	
 	@Autowired // MemberService의 의존성을 주입합니다.
 	private MemberService service;
+	
+	//회원가입시 자동으로 생성될 '내 서재' 를 위해 해당 패키지의 의존성 주입
+	@Autowired
+	private kr.or.iei.myPage.myLibrary.model.service.MyLibraryService myLibraryService;
 	
 	// 아이디 중복 체크
 	@GetMapping("/{memberId}/chkId") // GET 요청으로 {memberId}/chkId 경로에 매핑됩니다.
@@ -75,6 +80,16 @@ public class MemberController {
 			
 			if(result > 0) { // 회원가입 성공 시
 				res = new ResponseDto(HttpStatus.OK, "회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.", true, "success");
+
+				//회원가입 시 자동으로 생성되는 '내 서재' 추가 				
+				String memberNo = member.getMemberNo();
+				String name = "내 서재";
+				String isDefault = "T";
+				
+				MyLibrary myLibrary = new MyLibrary(null, memberNo, name, isDefault);
+								
+				myLibraryService.addNewMyLibrary(myLibrary);
+				
 			}else { // 회원가입 실패 시
 				res = new ResponseDto(HttpStatus.OK, "회원가입 중, 오류가 발생하였습니다.", false, "warning");
 			}

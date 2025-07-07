@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.iei.book.model.dao.BookDao;
 import kr.or.iei.book.model.dto.Book;
@@ -84,6 +85,7 @@ public class BookService {
 	}
 
 	//서평 작성
+    @Transactional
 	public int insertComment(BookComment comment) {
 		int result = 0;		//처리 결과값을 저장할 변수 설정
 		
@@ -104,11 +106,13 @@ public class BookService {
 	}
 	
 	//서평 수정
+    @Transactional
 	public int updateComment(BookComment comment) {
 		return dao.updateComment(comment);
 	}
 	
 	//서평 삭제
+    @Transactional
 	public int deleteComment(String commentNo) {
 		return dao.deleteComment(commentNo);
 	}

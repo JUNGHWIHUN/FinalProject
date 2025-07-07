@@ -21,5 +21,9 @@ public interface ReservationDao {
 	
 	int deleteReservation(long reservationNo);
 
+	int reservateBook(Reservation reservateBook);
+
+	void updateBookIsReservated(String callNo);
+
 
 }
