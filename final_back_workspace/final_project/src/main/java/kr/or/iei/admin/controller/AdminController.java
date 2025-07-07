@@ -1,15 +1,18 @@
 package kr.or.iei.admin.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.iei.admin.model.dto.BookLenterDto;
@@ -85,7 +88,6 @@ public class AdminController {
 	}
 	
 	
-
 	//반납을 위해 청구기호 기준으로 검색
 	@PostMapping("/selectRetrunBooks")
 	@NoTokenCheck
@@ -100,7 +102,6 @@ public class AdminController {
 		}
 		
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
-
 	}
 	
 	//반납 처리
@@ -121,6 +122,36 @@ public class AdminController {
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
 	
-
+	//모든 책 리스트
+	@GetMapping("/allBookList/{reqPage}")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> allBookList(@PathVariable int reqPage){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		System.out.println("reqPage: "+reqPage);
+		try {
+			HashMap<String, Object> allBookMap = service.selectAllBook(reqPage);
+			res = new ResponseDto(HttpStatus.OK, "", allBookMap, "");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//대출한 책 리스트
+	@GetMapping("allLendBookList/{reqPage}")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> allLendBookList(@PathVariable int reqPage){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "조회 중, 오류가 발생하였습니다.", null, "error");
+		System.out.println("reqPage: "+reqPage);
+		try {
+			HashMap<String, Object> allBookMap = service.selectAllLendBook(reqPage);
+			res = new ResponseDto(HttpStatus.OK, "", allBookMap, "");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
 	
 }

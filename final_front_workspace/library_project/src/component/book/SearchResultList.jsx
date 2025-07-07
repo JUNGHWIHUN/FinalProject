@@ -3,6 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import createInstance from "../../axios/Interceptor";
 import PageNavi from "../common/PageNavi";
 import useUserStore from "../../store/useUserStore";
+import MyLibraryModal from "./MyLibraryModal";
+import useMyLibraryAddition from '../../hooks/useMyLibraryAddition'; //Modal 용 커스텀 훅 임포트
+
 
 export default function SearchResultList (){
 
@@ -18,9 +21,6 @@ export default function SearchResultList (){
     //페이지네이션을 위한 요청 페이지/페이지네이션 정보
     const [reqPage, setReqPage] = useState(1);      //요청 페이지 초기값을 1로 설정해 검색시 1페이지부터 출력하도록       
     const [pageInfo, setPageInfo] = useState({});
-
-    //로그인 회원 정보 (예약, 내 서재 버튼을 위해)
-    const {isLogined, loginMember} = useUserStore();
 
     //검색결과 리스트 초기값
     const [searchResultList, setSearchResultList] = useState([]);
@@ -59,7 +59,7 @@ export default function SearchResultList (){
                 <ul className="posting-wrap">
                     {searchResultList.map(function(book, index){
                         //책 1개에 대한 jsx를 BoardItem 이 반환한 jsx로
-                        return <BookItem key={"book"+index} book={book}/>
+                        return <BookItem key={"book"+index} book={book} axiosInstance={axiosInstance} serverUrl={serverUrl}/>
                     })}
                 </ul>
             </div>
@@ -74,15 +74,75 @@ export default function SearchResultList (){
 //책 1개 정보를 받아올 컴포넌트
 function BookItem (props){
     const book = props.book;
+    const callNo = book.callNo;
     const navigate = useNavigate();
+    const axiosInstance = props.axiosInstance;
+    const serverUrl = props.serverUrl;
 
-    function addToMyLibrary (){
+    //로그인 회원 정보 (예약, 내 서재 버튼을 위해)
+    const {isLogined, loginMember} = useUserStore();
+
+    //이하, '내 서재에 등록' 버튼을 눌렀을 때 팝업창 (Modal) 을 띄우기 위해 필요한 변수와 함수들
+    //모달 표시 여부 상태 (부모 컴포넌트에서 관리)
+    const [isVisible, setIsVisible] = useState(false);
+
+    //'내 서재에 등록' 버튼 클릭 핸들러 (모달을 띄우는 함수)
+    const openMyLibraryModal = (e) => {
+        e.stopPropagation();    //li 태그에 설정된 onClick 이벤트보다 해당 버튼의 onClick 우선
+
+        // 로그인 체크
+        isLoginedCheck();
         
+        setIsVisible(true); // 모달을 띄우는 상태를 true로 설정
+    };
+
+    //모달을 닫는 함수
+    const closeMyLibraryModal = () => {
+        setIsVisible(false); // 모달 닫는 상태로 변경
+    };
+
+    //모달 내에서 '확인' 버튼 클릭 시 호출될 함수 : 실제 내 서재에 해당 도서를 등록하는 로직
+    const addToMyLibrary = (selectedMyLibrary, callNo) => {
+
+        const postData = { 
+            myLibraryNo : selectedMyLibrary, 
+            myLibraryCallNo : callNo
+        }
+
+        axiosInstance.post(serverUrl + `/myLibrary/addToMyLibrary`, postData)
+            .then(function(res){
+                Swal.fire({
+                    title: '알림',
+                    text: res.data.clientMsg, 
+                    icon: res.data.alertIcon, 
+                    confirmButtonText: '확인'
+                })
+            })
+            .catch(function(err){
+
+            });
+
+        // 등록 성공/실패 알림 (Swal) 후 모달 닫기
+        closeMyLibraryModal(); 
+    };
+
+    //로그인 체크 함수
+    function isLoginedCheck(){
+        if(!isLogined){
+            Swal.fire({
+                tite : '알림',
+                text : '로그인이 필요합니다',
+                icon : 'warning',
+                confirmButtonText : '확인'
+                
+            })
+            navigate('/login', { state: { from: location.pathname } });
+        }
     }
-      
+
     return (
         // 전체 li에 클릭 이벤트 유지 (상세보기)
-        <li className="posting-item" onClick={function(){
+        <li className="posting-item" onClick={isVisible? null : function(){     //Modal 창이 열려있을 때는 함수를 제거해 페이지 이동 막기
             //상세보기 (BoardView) 컴포넌트 전환
             navigate('/book/searchResultDetail/' + book.callNo);
         }}>
@@ -108,7 +168,18 @@ function BookItem (props){
                            : 'L' ? '대출중'
                                 : '대출불가'
                     }
-                    <button className="btn-add-mylibrary" onClick={addToMyLibrary}>내 서재에 등록</button>
+                    <button className="btn-add-mylibrary" onClick={(e) => openMyLibraryModal(e)}>내 서재에 등록</button>
+
+                    {/* isVisible 상태가 true일 때만 모달을 렌더링 */}
+                    {isVisible && (
+                        <MyLibraryModal
+                            isVisible={isVisible}               // 모달 표시 여부
+                            closeMyLibraryModal={closeMyLibraryModal} // 모달 닫기 함수
+                            callNo={book.callNo}                //누른 책의 청구기호
+
+                            addToMyLibrary={addToMyLibrary}     // 모달에서 '등록' 완료 시 호출될 콜백
+                        />
+                    )}
         </li>
     );
 }

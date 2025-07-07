@@ -1,5 +1,6 @@
 package kr.or.iei.myPage.myLibrary.model.dto;
 
+import kr.or.iei.book.model.dto.Book;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,4 +14,7 @@ public class MyLibraryBook {
     private String myLibraryNo;         //이 책이 속한 내 서재의 번호 (FK)
     private String myLibraryCallNo;     //해당 책의 청구기호 (FK)
     private String registeredDate;      //내 서재에 이 책이 등록된 날짜
+    
+    //내 서재 페이지에서 해당 책의 정보를 보여주기 위한 Book 객체
+    private Book book;
 }

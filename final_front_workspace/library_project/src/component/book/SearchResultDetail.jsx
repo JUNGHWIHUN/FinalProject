@@ -4,6 +4,9 @@ import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
 import Swal from "sweetalert2";
 import BookComment from "./BookComment";
+import MyLibraryModal from "./MyLibraryModal";
+import useMyLibraryAddition from '../../hooks/useMyLibraryAddition'; //Modal 용 커스텀 훅 임포트
+
 
 export default function SearchResultDetail (){
 
@@ -29,10 +32,52 @@ export default function SearchResultDetail (){
     //로그인 회원 정보 (예약, 내 서재 버튼을 위해)
     const {isLogined, loginMember} = useUserStore();
 
-    console.log("상세보기 페이지" + loginMember.memberId)
-
     //페이지 이동을 위한 네비게이트
     const navigate = useNavigate();
+
+
+    //이하, '내 서재에 등록' 버튼을 눌렀을 때 팝업창 (Modal) 을 띄우기 위해 필요한 변수와 함수들
+    //모달 표시 여부 상태 (부모 컴포넌트에서 관리)
+    const [isVisible, setIsVisible] = useState(false);
+
+    //'내 서재에 등록' 버튼 클릭 핸들러 (모달을 띄우는 함수)
+    const openMyLibraryModal = () => {
+        // 로그인 체크
+        isLoginedCheck();
+        
+        setIsVisible(true); // 모달을 띄우는 상태를 true로 설정
+    };
+
+    //모달을 닫는 함수
+    const closeMyLibraryModal = () => {
+        setIsVisible(false); // 모달 닫는 상태로 변경
+    };
+
+    //모달 내에서 '확인' 버튼 클릭 시 호출될 함수 : 실제 내 서재에 해당 도서를 등록하는 로직
+    const addToMyLibrary = (selectedMyLibrary, callNo) => {
+
+        const postData = { 
+            myLibraryNo : selectedMyLibrary, 
+            myLibraryCallNo : callNo
+        }
+
+        axiosInstance.post(serverUrl + `/myLibrary/addToMyLibrary`, postData)
+            .then(function(res){
+                Swal.fire({
+                    title: '알림',
+                    text: res.data.clientMsg, 
+                    icon: res.data.alertIcon, 
+                    confirmButtonText: '확인'
+                })
+            })
+            .catch(function(err){
+
+            });
+
+        // 등록 성공/실패 알림 (Swal) 후 모달 닫기
+        closeMyLibraryModal(); 
+    };
+
 
     //화면 렌더링 : 처음, 서평이 업데이트되었을 때, 예약되었을 때
     useEffect(() =>{
@@ -143,10 +188,21 @@ export default function SearchResultDetail (){
                     <p className="book-isbn">ISBN: {book.isbn || '정보 없음'}</p>
                     <p className="book-publisher">발행처: {book.pubInfo || '정보 없음'}</p>
                     <p className="book-pubyear">발행년도: {book.pubYear || '정보 없음'}</p>
-                    <p className="book-callno">청구기호: {book.callNo || '정보 없음'}</p>                    
-                    <div className="book-actions">
-                        <button className="btn btn-add-mylibrary">내 서재에 등록</button>
-                    </div>
+                    <p className="book-callno">청구기호: {book.callNo || '정보 없음'}</p>    
+
+                    {/* '내 서재에 등록' 버튼 : 팝업창 (모달) 띄우기 (SearchResultDetail 컴포넌트 내) */}
+                    <button onClick={() => openMyLibraryModal()} className="btn btn-add-mylibrary">내 서재에 등록</button>
+
+                    {/* isVisible 상태가 true일 때만 모달을 렌더링 */}
+                    {isVisible && (
+                        <MyLibraryModal
+                            isVisible={isVisible}               // 모달 표시 여부
+                            closeMyLibraryModal={closeMyLibraryModal} // 모달 닫기 함수
+
+                            callNo={book.callNo} // 모달에 전달할 책 정보
+                            addToMyLibrary={addToMyLibrary}     // 모달에서 '등록' 완료 시 호출될 콜백
+                        />
+                    )}
                 </div>
             </div>
 
@@ -176,8 +232,8 @@ export default function SearchResultDetail (){
                             <td className="return-date-cell">-</td> 
                             <td className="reservation-cell">
                             {book.canLend === 'L' ? 
-                            <button onClick={reservation}>예약하기</button>
-                            : ""
+                                <button onClick={reservation}>예약하기</button>
+                                : ""
                             }    
                             </td> 
                         </tr>
