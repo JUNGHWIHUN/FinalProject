@@ -56,9 +56,9 @@ export default function AdminPage(){
 
         function changeBookReturn(e){
             returnBooks[e.target.id] = e.target.value;
-            setRetrunBooks([...returnBooks]);
+            setRetrunBooks({...returnBooks});
         }
-        //isbn 기준으로 반납도서 찾기
+        
         function selectReturnBooks(){
             let options = {};
             options.url='http://localhost:9999/admin/selectRetrunBooks';
@@ -67,7 +67,6 @@ export default function AdminPage(){
 
             axios(options)
             .then(function(res){
-                
                 if(res.data.resData.length > 0){
                     setreturnBooksList(res.data.resData);
                     
