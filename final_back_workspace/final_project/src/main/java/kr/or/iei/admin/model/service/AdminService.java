@@ -15,12 +15,17 @@ import kr.or.iei.admin.model.dto.BookSelectDto;
 import kr.or.iei.admin.model.dto.LentBookDto;
 import kr.or.iei.admin.model.dto.LentBookList;
 import kr.or.iei.admin.model.dto.UserOne;
+import kr.or.iei.common.model.dto.PageInfoDto;
+import kr.or.iei.common.util.PageUtil;
 
 @Service
 public class AdminService {
 
 	@Autowired
 	private AdminDao dao;
+	
+	@Autowired
+	private PageUtil pageUtil;
 
 	
 	public ArrayList<BookList> selectBookList(BookSelectDto bookSelectDto) {
@@ -40,18 +45,29 @@ public class AdminService {
 		//작업을 완료했는지 디버깅용
 		int result = 0;
 		
+		
+		String memberName = dao.selectMemberName(bookLenter.getMemberNo());
+		String bookTitle = dao.selectBookTitle(bookLenter.getBookNo());
+		bookLenter.setBookName(bookTitle);
+		bookLenter.setMemberName(memberName);
+		
+		
+		
+		//등록
 		dao.insertLentBook(bookLenter);
 		System.out.println("1단계 성공");
 		result++;
 		
+		//책 상태 변경
 		dao.updateBookStatus(bookLenter.getBookNo());
 	    System.out.println("2단계 성공");
 	    result++;
 	    
+	    //유저 상태 변경
 	    dao.updateMemberBorrowCount(bookLenter.getMemberNo());
 	    System.out.println("3단계 성공");
 	    result++;
-	   
+	   //유저 상태 변경
 	    dao.updateMemberCanBorrow(bookLenter.getMemberNo());
 	    System.out.println("4단계 성공");
 	    result++;
@@ -100,6 +116,50 @@ public class AdminService {
 		
 		
 		return 1;
+	}
+
+
+	public HashMap<String, Object> selectAllBook(int reqPage) {
+		int viewCnt = 10;						//한 페이지당 게시글 수
+		int pageNaviSize = 5;					//페이지 네비게이션 길이
+		int totalCount = dao.selectAllBookCount();//전체 게시글 수
+		
+		//페이징 정보
+		PageInfoDto pageInfo = pageUtil.getPageInfo(reqPage, viewCnt, pageNaviSize, totalCount);
+				
+		//게시글 목록
+		ArrayList<BookList> BookList = dao.selectAllBookList(pageInfo);
+			
+		HashMap<String, Object> bookMap = new HashMap<String, Object>();
+		bookMap.put("bookList", BookList);
+		bookMap.put("pageInfo", pageInfo);
+				
+		return bookMap;
+		
+	
+	}
+
+
+	public HashMap<String, Object> selectAllLendBook(int reqPage) {
+		int viewCnt = 10;						//한 페이지당 게시글 수
+		int pageNaviSize = 5;					//페이지 네비게이션 길이
+		int totalCount = dao.selectAllLendBookCount();//전체 게시글 수
+		
+		System.out.println("전체 글 수 "  + totalCount);
+		
+		//페이징 정보
+		PageInfoDto pageInfo = pageUtil.getPageInfo(reqPage, viewCnt, pageNaviSize, totalCount);
+		
+		
+		
+		//게시글 목록
+		ArrayList<LentBookList> BookList = dao.selectAllLendBookList(pageInfo);
+		System.out.println("리스트 정보 조회");
+		HashMap<String, Object> bookMap = new HashMap<String, Object>();
+		bookMap.put("bookList", BookList);
+		bookMap.put("pageInfo", pageInfo);
+				
+		return bookMap;
 	}
 	
 	

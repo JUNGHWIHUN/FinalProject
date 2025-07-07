@@ -2,10 +2,12 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import AllbookPage from "./AllBookPage";
 
 export default function AdminPage(){
 
     const [mode, setMode] = useState("lend");//대출,반납 페이지 전환용
+    const [subMode, setSubMode] = useState("");//보조 페이지 전환용
 
     const [bookList, setBookList] = useState([]);//받아온 책 전체 담아두기
 
@@ -28,7 +30,7 @@ export default function AdminPage(){
     
 
     const navigate = useNavigate();
-
+        //책 대출 책 찾기
         function selectBooks(){
             let options = {};
             options.url='http://localhost:9999/admin/selectBooks';
@@ -58,7 +60,7 @@ export default function AdminPage(){
             returnBooks[e.target.id] = e.target.value;
             setRetrunBooks({...returnBooks});
         }
-        
+        //반납 책 찾기
         function selectReturnBooks(){
             let options = {};
             options.url='http://localhost:9999/admin/selectRetrunBooks';
@@ -83,10 +85,19 @@ export default function AdminPage(){
             });
         }
 
+       
+
     return(
         <div>
+         <a href="#" onClick={() => setMode("allBook")}>도서관리</a> |
+         <a href="#" onClick={() => setMode("allMember")}>회원관리</a> |
+         <a href="#" onClick={() => setMode("suggestion")}>건의 사항</a> |
+         <a href="#" onClick={() => setMode("bookRequest")}>희망도서</a> | {" "}
          <a href="#" onClick={() => setMode("lend")}>대출</a> |{" "}
-         <a href="#" onClick={() => setMode("return")}>반납</a>
+         <a href="#" onClick={() => setMode("return")}>반납</a> 
+
+        {mode == "allBook" && <AllbookPage />} 
+
 
         {mode == "lend" && (
             <>

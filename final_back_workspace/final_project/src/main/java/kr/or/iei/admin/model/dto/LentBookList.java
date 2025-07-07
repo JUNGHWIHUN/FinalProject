@@ -16,10 +16,6 @@ public class LentBookList {
 	private String canRenew;		//도서대출연장가능 여부
 	private String actualRetrun;	//실제반납날짜
 	private String lentDate;		//대출한 날짜.
-	
 	private String title;          // 책 제목 
 	private String memberName;     // 회원 이름 
-
-	
-	
 }
