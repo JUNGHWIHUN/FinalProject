@@ -11,4 +11,6 @@ public interface StatisTicsDao {
 
 	ArrayList<StatisTics> selectStatisTics(String memberNo, String month);
 
+	ArrayList<StatisTics> selectAvailableMonths(String memberNo);
+
 }

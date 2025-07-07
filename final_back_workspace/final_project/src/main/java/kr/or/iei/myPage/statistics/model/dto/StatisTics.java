@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class StatisTics {
 	private String category;
 	private int cnt;
+	private String month;
 }

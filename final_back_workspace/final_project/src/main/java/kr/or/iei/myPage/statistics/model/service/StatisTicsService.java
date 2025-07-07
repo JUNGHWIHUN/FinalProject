@@ -18,4 +18,10 @@ public class StatisTicsService {
 
 		return dao.selectStatisTics(memberNo, month);
 	}
+
+	//월 별 목록 조회하기
+	public ArrayList<StatisTics> selectAvailableMonths(String memberNo) {
+		// TODO Auto-generated method stub
+		return dao.selectAvailableMonths(memberNo);
+	}
 }

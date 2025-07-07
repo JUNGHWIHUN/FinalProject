@@ -23,6 +23,27 @@ public class StatisTicsController {
 	@Autowired
 	private StatisTicsService service;
 	
+	
+	
+	//사용자가 대출한 월 목록 조회
+	@GetMapping("/months")
+	public ResponseEntity<ResponseDto> selectAvailalbeMonths(@RequestParam String memberNo){
+		ResponseDto res = new ResponseDto(HttpStatus.OK, "월 목록 조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		try {
+			ArrayList<StatisTics> statisTics = service.selectAvailableMonths(memberNo);
+			
+			
+			
+			res= new ResponseDto(HttpStatus.OK, "", statisTics, "");
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	
 	//독서 통계를 위한 대출된 도서 조회
 	@GetMapping
 	public ResponseEntity<ResponseDto> selectStatisTics(@RequestParam String memberNo, @RequestParam String month){

@@ -33,7 +33,6 @@ export default function MyPageMain(){
         <Routes>
 
             <Route path="statistics" element={<StatisTics/>}/>
-            <Route path="scrap" element={<Scrap/>}/>
             <Route path="reservation" element={<Reservation/>}/>
             <Route path="lentBookList" element={<LentBookList/>}/>
             <Route path="lentHistory" element={<LentHistory/>}/>
