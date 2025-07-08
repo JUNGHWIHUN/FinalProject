@@ -4,10 +4,11 @@ import Reservation from "./Reservation";
 import LentBookList from "./lentBookList";
 import LentHistory from "./LentHistory";
 import RequestBookList from './RequestBookList';
-import MyInfo from "./Myinfo";
+
 import { useState } from "react";
 import LeftMenu from "../common/LeftMenu";
 import MyLibrary from "./MyLibrary";
+import MyInfo from "./MyInfo";
 
 
 
