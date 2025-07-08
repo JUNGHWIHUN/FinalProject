@@ -20,6 +20,10 @@ export default function AllbookPage(){
     const [reqPage, setReqPage] = useState(1); 
     const [pageInfo, setPageInfo] = useState({});
 
+    //검색설정.
+    const [filterType, setFilterType] = useState("title");
+    const [keyword, setKeyword] = useState("");
+
     function fetchAllBooks(){
          let options = {};
             options.url='http://localhost:9999/admin/allBookList/'+ reqPage;
@@ -68,7 +72,7 @@ export default function AllbookPage(){
             {subMode === "bookList" && (
                 <>
                 <h4>전체 도서 목록</h4>
-                <select>
+                <select value={filterType} onChange={k}>
                      <option value="title">제목</option>
                      <option value="publisher">출판사</option>
                      <option value="author">저작자</option>
