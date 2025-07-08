@@ -22,6 +22,7 @@ import kr.or.iei.admin.model.dto.LentBookDto;
 import kr.or.iei.admin.model.dto.LentBookList;
 import kr.or.iei.admin.model.dto.UserOne;
 import kr.or.iei.admin.model.service.AdminService;
+import kr.or.iei.book.model.dto.Book;
 import kr.or.iei.common.annotation.NoTokenCheck;
 import kr.or.iei.common.model.dto.ResponseDto;
 
@@ -122,14 +123,16 @@ public class AdminController {
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
 	
-	//모든 책 리스트
+	//모든 책 리스트 + 검색
 	@GetMapping("/allBookList/{reqPage}")
 	@NoTokenCheck
-	public ResponseEntity<ResponseDto> allBookList(@PathVariable int reqPage){
+	public ResponseEntity<ResponseDto> allBookList(@PathVariable int reqPage, @RequestParam String type, @RequestParam String keyword){
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
 		System.out.println("reqPage: "+reqPage);
+		System.out.println("type: "+type);
+		System.out.println("keyword: "+keyword);
 		try {
-			HashMap<String, Object> allBookMap = service.selectAllBook(reqPage);
+			HashMap<String, Object> allBookMap = service.selectAllBook(reqPage, type, keyword);
 			res = new ResponseDto(HttpStatus.OK, "", allBookMap, "");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -141,11 +144,11 @@ public class AdminController {
 	//대출한 책 리스트
 	@GetMapping("allLendBookList/{reqPage}")
 	@NoTokenCheck
-	public ResponseEntity<ResponseDto> allLendBookList(@PathVariable int reqPage){
+	public ResponseEntity<ResponseDto> allLendBookList(@PathVariable int reqPage, @RequestParam String type, @RequestParam String keyword){
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "조회 중, 오류가 발생하였습니다.", null, "error");
 		System.out.println("reqPage: "+reqPage);
 		try {
-			HashMap<String, Object> allBookMap = service.selectAllLendBook(reqPage);
+			HashMap<String, Object> allBookMap = service.selectAllLendBook(reqPage, type, keyword);
 			res = new ResponseDto(HttpStatus.OK, "", allBookMap, "");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -153,5 +156,84 @@ public class AdminController {
 		
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
+	
+	//책 수정하기
+	@PostMapping("/fixBook")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> fixBook(@RequestBody Book book){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		try {
+			int result = service.fixBook(book);
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "수정 완료", null, "");
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//책 삭제
+	@PostMapping("/deleteBook")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> deleteBook(@RequestBody Book book){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		try {
+			int result = service.deleteBook(book);
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "수정 완료", null, "");
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//책 등록
+	@PostMapping("/inputNewBook")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> inputNewBook(@RequestBody Book book){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		
+		try {
+			int result = service.insertBook(book);
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "수정 완료", null, "");
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+		
+		
+	}
+	//모든 회원 리스트
+	@GetMapping("/allMemberList")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> allMemberList(@PathVariable int reqPage, @RequestParam String type, @RequestParam String keyword){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		System.out.println("reqPage: "+reqPage);
+		System.out.println("type: "+type);
+		System.out.println("keyword: "+keyword);
+		
+		try {
+			HashMap<String, Object> allMemberMap = service.selectAllMember(reqPage, type, keyword);
+			res = new ResponseDto(HttpStatus.OK, "", allMemberMap, "");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
 	
 }
