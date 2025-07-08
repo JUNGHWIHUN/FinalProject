@@ -14,16 +14,16 @@ export default function Login() {
     const location = useLocation(); 
 
     //로그인 후 돌아갈 경로 지정
-    const fromPath = location.state?.from || '/'; // location.state?.from 있으면 그 경로, 없으면 메인 페이지('/')
+    const fromPath = location.state?.from || '/';
 
     useEffect(function(){
-        if(!isLogined){ //외부에서 강제 로그아웃된 경우
-            setLoginMember(null);   //이 경우에만 loginMember 를 null 처리
+        if(!isLogined){
+            setLoginMember(null);
         }
     },[]);
 
     //.env에 저장된 환경변수 값 가져오기
-    const serverUrl = import.meta.env.VITE_BACK_SERVER; // http://localhost:9999
+    const serverUrl = import.meta.env.VITE_BACK_SERVER;
 
     //인터셉터에서 커스터마이징한 axios instance 사용하기
     const axiosInstance = createInstance();
@@ -45,43 +45,57 @@ export default function Login() {
 
     //로그인 요청
     function login(){
-        if(member.memberId != '' && member.memberPw != ''){ //두 값이 모두 입력되었을 때 서버에 요청
+        if(member.memberId !== '' && member.memberPw !== ''){ // 변경: !== 사용
             let options = {};
             options.url = serverUrl + '/member/login';
-            options.method = 'post';    //Rest 원칙에는 어긋나나, 로그인과 같이 민감한 정보를 포함한 때에는 기존처럼 Post로 전달
+            options.method = 'post';
             options.data = member;
 
-            //커스터마이징한 axios 사용
             axiosInstance(options)
             .then(function(res){
                 console.log(res);
                 //res.data == ResponseDto
                 //res.data.resData == LoginMember (Member 객체와 토큰을 포함하고 있는 객체)
                 //res.data.resData.member == Member
-                //res.data.resData.accessToken  == 요청시마다 헤더에 포함시킬 토큰
+                //res.data.resData.accessToken == 요청시마다 헤더에 포함시킬 토큰
                 //res.data.resData.refreshToken == accessToken 만료 시 재발급 요청에 필요한 토큰
-                if(res.data.resData == null){   //로그인 실패했을 경우
+
+                if(res.data.resData === null){ // 변경: === 사용 // 로그인 실패했을 경우
+                    let alertText = res.data.clientMsg;
+
+                    // 이메일 미인증 상태에 대한 메시지 추가 (백엔드에서 메시지를 명확히 구분하여 보낼 경우 활용)
+                    // 현재 백엔드 로직에서는 단순히 null을 반환하므로, '아이디 및 비밀번호를 확인하세요.'로 표시될 수 있습니다.
+                    // 필요하다면 백엔드 ResponseDto에 추가적인 status 또는 code를 포함시켜 구분할 수 있습니다.
+                    if (res.data.clientMsg === '아이디 및 비밀번호를 확인하세요.') {
+                        // 여기서는 특정 조건으로 이메일 미인증 메시지를 구분하기 어려울 수 있으니
+                        // 백엔드에서 좀 더 명확한 응답 메시지를 주도록 하는 것이 좋습니다.
+                        // 예: "이메일 인증이 필요합니다." 와 같은 특정 메시지가 올 경우 분기
+                    }
+
                     Swal.fire({
                         title : '알림',
-                        text : res.data.clientMsg,
+                        text : alertText, // "아이디 및 비밀번호를 확인하세요."
                         icon : res.data.alertIcon,
                         confirmButtonText : '확인'
-                    })
+                    });
                 }else { //정상적으로 로그인된 경우
-
-                    //스토리지 데이터 변경 : 로그인 여부, 로그인 정보, 토큰
                     setIsLogined(true);
-                    setLoginMember(res.data.resData.member);   //Member객체
+                    setLoginMember(res.data.resData.member);
                     setAccessToken(res.data.resData.accessToken);
                     setRefreshToken(res.data.resData.refreshToken);
 
-                    //메인 컴포넌트로 전환
-                    navigate(fromPath, { replace: true }); //메인페이지 또는 기존 페이지로 돌아감, replace: true로 히스토리를 교체하여 뒤로가기 시 로그인 페이지 스킵
+                    navigate(fromPath, { replace: true });
                 }
             })
             .catch(function(err){
                 console.log(err);
-            })
+                Swal.fire({
+                    title : '오류',
+                    text : '로그인 요청 중 서버 오류가 발생했습니다.',
+                    icon : 'error',
+                    confirmButtonText : '확인'
+                });
+            });
 
         }else {
             Swal.fire({
@@ -89,23 +103,23 @@ export default function Login() {
                 text : '아이디 또는 비밀번호를 입력하세요.',
                 icon : 'warning',
                 confirmButtonText : '확인'
-            })
+            });
         }
     }
 
     return (
         <section className="section login-wrap">
             <div className="page-title">로그인</div>
-            <form autoComplete="off" onSubmit={function(e){ //자동완성 기능 해제 (input type-password 요소에서 비밀번호 유출 경고 끄기 위한 목적도 있음)
-                e.preventDefault(); //form 태그 기본 이벤트 제어
-                login();            //로그인 요청 함수 호출
+            <form autoComplete="off" onSubmit={function(e){
+                e.preventDefault();
+                login();
             }}>
                 <div className="input-wrap">
                     <div className="input-title">
                         <label htmlFor="memberId">아이디</label>
                     </div>
                     <div className="input-item">
-                        <input type="text"    id="memberId" value={member.memberId} onChange={chgMember}/>
+                        <input type="text" id="memberId" value={member.memberId} onChange={chgMember}/>
                     </div>
                 </div>
                 <div className="input-wrap">
@@ -120,6 +134,12 @@ export default function Login() {
                     <button type="submit" className="btn-primary lg">
                         로그인
                     </button>
+                </div>
+                {/* 비밀번호 찾기 링크 추가 */}
+                <div className="link-box">
+                    <p>
+                        <span onClick={() => navigate('/find-password')} className="find-link">비밀번호 찾기</span>
+                    </p>
                 </div>
             </form>
         </section>

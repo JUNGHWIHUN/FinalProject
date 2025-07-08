@@ -37,6 +37,8 @@ export default function Main () {
                 <div>
                     <h3><a href='/join'>회원가입 링크</a></h3>
                     <h3><a href='/login'>로그인 링크</a></h3>
+
+                    <h4><Link to='/find-password'>비밀번호 찾기</Link></h4>
                 </div>
                 :
                 <h3>
