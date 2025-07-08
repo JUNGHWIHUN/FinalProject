@@ -144,22 +144,42 @@ public class MemberController {
         }
     }
 
-    // 비밀번호 찾기 (임시 비밀번호 발송 및 DB 업데이트)
-    @PostMapping("/find-password")
+    // --- 아이디 찾기 로직 (이메일로 아이디 조회 및 마스킹) ---
+    @PostMapping("/find-id") // 아이디 찾기 엔드포인트
     @NoTokenCheck
-    public ResponseEntity<ResponseDto> findPassword(@RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<ResponseDto> findId(@RequestBody Map<String, String> requestBody) {
         String memberEmail = requestBody.get("memberEmail");
-        ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "비밀번호 찾기 중, 알 수 없는 오류가 발생했습니다.", false, "error"); // 기본 에러 메시지
+        ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "아이디 찾기 중, 오류가 발생했습니다.", null, "error");
 
         try {
-            boolean success = service.processPasswordReset(memberEmail); // 서비스에서 모든 로직 처리
-            if (success) {
-                // 성공 시 응답 DTO 명확하게 구성
-                res = new ResponseDto(HttpStatus.OK, "임시 비밀번호가 이메일로 전송되었습니다. 이메일을 확인해주세요.", true, "info"); // clientMsg와 alertIcon 수정
+            String maskedMemberId = service.findMaskedMemberId(memberEmail); // 서비스 호출
+            if (maskedMemberId != null) {
+                res = new ResponseDto(HttpStatus.OK, "아이디를 찾았습니다.", maskedMemberId, "success");
             } else {
-                // 실패 시 응답 DTO 명확하게 구성 (회원 없음 또는 이메일 전송 실패)
-                // 서비스 계층에서 반환하는 false가 어떤 의미인지에 따라 메시지 구체화 가능
-                res = new ResponseDto(HttpStatus.OK, "입력하신 이메일로 등록된 회원이 없거나, 임시 비밀번호 전송에 실패했습니다.", false, "warning");
+                res = new ResponseDto(HttpStatus.OK, "입력하신 이메일로 등록된 아이디가 없습니다.", null, "warning");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류로 인해 아이디 찾기에 실패했습니다.", null, "error");
+        }
+        return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+    }
+
+
+    // --- 비밀번호 찾기 (아이디와 이메일로 임시 비밀번호 발송) ---
+    @PostMapping("/find-password") // 비밀번호 찾기 엔드포인트 유지
+    @NoTokenCheck
+    public ResponseEntity<ResponseDto> findPassword(@RequestBody Map<String, String> requestBody) {
+        String memberId = requestBody.get("memberId"); // 아이디 추가로 받음
+        String memberEmail = requestBody.get("memberEmail");
+        ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "비밀번호 찾기 중, 알 수 없는 오류가 발생했습니다.", false, "error");
+
+        try {
+            boolean success = service.processPasswordReset(memberId, memberEmail); // 서비스 호출 시 아이디와 이메일 모두 전달
+            if (success) {
+                res = new ResponseDto(HttpStatus.OK, "임시 비밀번호가 이메일로 전송되었습니다. 이메일을 확인해주세요.", true, "info");
+            } else {
+                res = new ResponseDto(HttpStatus.OK, "아이디와 이메일 정보가 일치하는 회원이 없거나, 임시 비밀번호 전송에 실패했습니다.", false, "warning");
             }
         } catch (Exception e) {
             e.printStackTrace();

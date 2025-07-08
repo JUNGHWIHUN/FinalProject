@@ -58,16 +58,35 @@ public class MemberService {
         return dao.updateMemberStatus(memberEmail, authCode);
     }
 
-    // 비밀번호 찾기: 이메일로 임시 비밀번호 발송 및 DB 업데이트
+    // --- 아이디 찾기 로직 (이메일로 아이디 찾기) ---
+    public String findMaskedMemberId(String memberEmail) {
+        String memberId = dao.findMemberIdByEmail(memberEmail); // DAO에서 아이디 조회
+        
+        if (memberId != null && !memberId.isEmpty()) {
+            // 아이디 마스킹 처리 (기존 로직 활용)
+            int idLength = memberId.length();
+            String first = memberId.substring(0, Math.min(2, idLength)); // 최소 2글자
+            String last = "";
+            if (idLength > 4) { // 전체 길이가 4보다 커야 마지막 두 글자 마스킹 가능
+                last = memberId.substring(idLength - 2);
+            }
+            String marker = "*".repeat(Math.max(0, idLength - first.length() - last.length()));
+            
+            return first + marker + last;
+        }
+        return null; // 조회 결과 없으면 null 반환
+    }
+
+    // --- 비밀번호 찾기 로직 (아이디, 이메일로 임시 비밀번호 발송) ---
     @Transactional
-    public boolean processPasswordReset(String memberEmail) {
-        //1. 이메일로 활성화된 회원 존재하는지 확인
-        int memberCount = dao.countActiveMemberByEmail(memberEmail);
+    public boolean processPasswordReset(String memberId, String memberEmail) {
+        // 1. 아이디와 이메일로 활성화된 회원 존재하는지 확인
+        int memberCount = dao.countActiveMemberByIdAndEmail(memberId, memberEmail);
         if (memberCount == 0) {
-            return false; // 회원이 존재하지 않거나, 아직 이메일 인증이 완료되지 않음
+            return false; // 회원이 존재하지 않거나, 이메일 인증이 완료되지 않음
         }
 
-        //2. 임시 비밀번호 생성
+        // 2. 임시 비밀번호 생성 (기존 로직 그대로 사용)
         String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lower = "abcdefghijklmnopqrstuvwxyz";
         String digit = "0123456789";
@@ -91,13 +110,13 @@ public class MemberService {
         }
         String newRandomPw = new String(charArr);
 
-        //3. DB에 임시 비밀번호 업데이트 (암호화하여 저장)
-        int updateResult = dao.updatePasswordByEmail(memberEmail, encoder.encode(newRandomPw));
+        // 3. DB에 임시 비밀번호 업데이트 (암호화하여 저장)
+        int updateResult = dao.updatePasswordByIdAndEmail(memberId, memberEmail, encoder.encode(newRandomPw));
         if (updateResult == 0) {
             return false; // DB 업데이트 실패
         }
 
-        //4. 임시 비밀번호 이메일 발송
+        // 4. 임시 비밀번호 이메일 발송
         String emailSubject = "임시 비밀번호 안내";
         String emailContent = "회원님의 임시 비밀번호는 <span style='color:red;'>" + newRandomPw + " </span> 입니다. <br><br> 마이페이지에서 비밀번호를 꼭 변경해주시기 바랍니다.";
         
