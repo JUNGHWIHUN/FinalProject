@@ -11,7 +11,6 @@ import MyLibrary from "./MyLibrary";
 
 
 
-
 export default function MyPageMain(){
 
     const [menuList, setMenuList] = useState([
@@ -22,7 +21,6 @@ export default function MyPageMain(){
         {url : '/mypage/requestBook', text : "희망도서 신청내역"},
         {url : '/mypage/myInfo', text : "개인정보 수정"},
         {url : '/mypage/lentHistory', text : "대출 이력"}
-        
     ]);
    
 
@@ -39,6 +37,7 @@ export default function MyPageMain(){
             <Route path="requestBook" element={<RequestBook/>}/>
             <Route path="myinfo" element={<MyInfo/>}/>
             <Route path="myLibrary" element={<MyLibrary />}/>
+
 
         </Routes>
         </> 

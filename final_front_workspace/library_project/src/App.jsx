@@ -16,6 +16,7 @@ import SelectBook from './component/admin/SelectBook';
 import LentBookDetail from './component/admin/LentBookDetail';
 import SelectLentBook from './component/admin/SelectLentBook';
 import LenterBookDetil from './component/admin/LenterBookDetil';
+import FindPassword from './component/myPage/FindPassword'; // MyPage 폴더 하위로 경로 변경
 
 
 
@@ -39,7 +40,11 @@ function App() {
 
           <Route path='/admin/selectBook' element={<SelectBook />} />
           <Route path = "/myPage/*" element={<MyPageMain/>}/>
+
           <Route path="/book/*" element={<BookSearchMain />}/>
+
+          {/* 비밀번호 찾기 페이지 라우트 추가 */}
+          <Route path="/find-password" element={<FindPassword />} />
 
         </Routes>
       </main>
