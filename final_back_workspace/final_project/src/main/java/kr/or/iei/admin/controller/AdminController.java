@@ -216,6 +216,24 @@ public class AdminController {
 		
 		
 	}
+	//모든 회원 리스트
+	@GetMapping("/allMemberList")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> allMemberList(@PathVariable int reqPage, @RequestParam String type, @RequestParam String keyword){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		System.out.println("reqPage: "+reqPage);
+		System.out.println("type: "+type);
+		System.out.println("keyword: "+keyword);
+		
+		try {
+			HashMap<String, Object> allMemberMap = service.selectAllMember(reqPage, type, keyword);
+			res = new ResponseDto(HttpStatus.OK, "", allMemberMap, "");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
 	
 	
 }

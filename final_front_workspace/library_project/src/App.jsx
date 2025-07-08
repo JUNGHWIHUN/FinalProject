@@ -18,6 +18,7 @@ import SelectLentBook from './component/admin/SelectLentBook';
 import LenterBookDetil from './component/admin/LenterBookDetil';
 import FixBookDetail from './component/admin/FixBookDetail';
 import NewBook from './component/admin/NewBook';
+import AdminMemberPage from './component/admin/AdminMemberPage';
 
 
 
@@ -39,6 +40,7 @@ function App() {
           <Route path='/LenterBookDetil' element={<LenterBookDetil />} />
           <Route path='/admin/FixBookDetail' element={<FixBookDetail />} />
           <Route path='/admin/newBook' element={<NewBook />} />
+          <Route path='/admin/Member' element={<AdminMemberPage />} />
 
           <Route path='/admin/selectBook' element={<SelectBook />} />
           <Route path = "/myPage/*" element={<MyPageMain/>}/>

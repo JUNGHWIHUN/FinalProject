@@ -288,4 +288,89 @@
         #{remark}
     )
   	</insert>
+  	
+  	<!-- 전체 유저수  조회 -->
+	<select id="selectAllmemberCount" resultType="_int">
+	select count(*)
+	  from tbl_member
+	  <where>
+    				<if test="keyword != null and keyword != ''">
+        			<choose>
+            		<when test="type == 'name'">
+               			 AND member_name LIKE '%' || #{keyword} || '%'
+            		</when>
+           			<when test="type == 'id'">
+                		AND member_id LIKE '%' || #{keyword} || '%'
+            		</when>
+            		<when test="type == 'email'">
+               			AND member_email LIKE '%' || #{keyword} || '%'
+            		</when>
+            		<when test="type == 'phone'">
+               			AND member_phone LIKE '%' || #{keyword} || '%'
+            		</when>
+        			</choose>
+    				</if>
+	 </where>
+	</select>
+	
+	<!-- 유저 검색 -->
+	<select id="selectAllmemberList" resultType="MemberDto">
+		select member_no as memberNo,
+			   member_id as memberId,
+			   member_pw as memberPw,
+			   member_name as memberName,
+			   member_email as memberEmail,
+			   member_phone as memberPhone,
+			   is_admin as isAdmin,
+			   enroll_date as enrolldate,
+			   overdue_day_count as overudeCount,
+			   borrowed_book_count as borrowedCount,
+			   max_borrow_count as maxBorrowedCount,
+			   can_borrow as canBorrw,
+			   cant_borrow_day as cantBorrowDay,
+			   no_lent_count as nolentcount,
+			   can_request as canRequest,
+			   member_addr as memberAddr
+	  from (
+	  		select rownum rnum, a.*
+	  		  from (
+	  		  		  select member_no,
+                           member_id,
+                           member_pw,
+                           member_name,
+                           member_email,
+                           member_phone,
+                           is_admin,
+                           enroll_date,
+                           overdue_day_count,
+                           borrowed_book_count,
+                           max_borrow_count,
+                           can_borrow,
+                           cant_borrow_day,
+                           can_request,
+                           member_addr
+                      from tbl_member
+                  <where>
+    				<if test="keyword != null and keyword != ''">
+        			<choose>
+            		<when test="type == 'name'">
+               			 AND member_name LIKE '%' || #{keyword} || '%'
+            		</when>
+           			<when test="type == 'id'">
+                		AND member_id LIKE '%' || #{keyword} || '%'
+            		</when>
+            		<when test="type == 'email'">
+               			AND member_email LIKE '%' || #{keyword} || '%'
+            		</when>
+            		<when test="type == 'phone'">
+               			AND member_phone LIKE '%' || #{keyword} || '%'
+            		</when>
+        			</choose>
+    				</if>
+	 				</where>
+                     order by member_no desc
+	  		  	   ) a
+	  	   ) a
+	 where rnum between #{pageInfo.start} and #{pageInfo.end}
+	</select>
 </mapper>
