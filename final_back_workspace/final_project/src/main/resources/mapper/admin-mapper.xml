@@ -138,7 +138,7 @@
 	</select>
 	
 	<!-- 전체 책 조회 -->
-	<select id="selectAllBookList"  parameterType="PageInfoDto" resultType="BookList">
+	<select id="selectAllBookList"  resultType="BookList">
 	select call_no as bookNo,
 			   author_info as author,
 			   title_info as title,
@@ -165,11 +165,25 @@
                            can_lend,
                            remark
                       from tbl_book
-                      <!-- 여기에 검색 조건 달아보기 -->
+                  <where>
+    				<if test="keyword != null and keyword != ''">
+        			<choose>
+            		<when test="type == 'title'">
+               			 AND title_info LIKE '%' || #{keyword} || '%'
+            		</when>
+           			<when test="type == 'author'">
+                		AND author_info LIKE '%' || #{keyword} || '%'
+            		</when>
+            		<when test="type == 'publisher'">
+               			AND pub_info LIKE '%' || #{keyword} || '%'
+            		</when>
+        			</choose>
+    				</if>
+				   </where>
                      order by call_no desc
 	  		  	   ) a
 	  	   ) a
-	 where rnum between #{start} and #{end}
+	 where rnum between #{pageInfo.start} and #{pageInfo.end}
 	</select>
 	
 	<!-- 현재 대출중인 책 갯수 -->

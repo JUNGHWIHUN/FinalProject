@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import kr.or.iei.admin.model.dto.BookLenterDto;
 import kr.or.iei.admin.model.dto.BookList;
@@ -43,7 +44,9 @@ public interface AdminDao {
 
 	int selectAllBookCount();
 
-	ArrayList<BookList> selectAllBookList(PageInfoDto pageInfo);
+	ArrayList<BookList> selectAllBookList(@Param("pageInfo") PageInfoDto pageInfo,
+            @Param("type") String type,
+            @Param("keyword") String keyword);
 
 	int selectAllLendBookCount();
 

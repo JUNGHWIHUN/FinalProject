@@ -122,14 +122,16 @@ public class AdminController {
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
 	
-	//모든 책 리스트
+	//모든 책 리스트 + 검색
 	@GetMapping("/allBookList/{reqPage}")
 	@NoTokenCheck
-	public ResponseEntity<ResponseDto> allBookList(@PathVariable int reqPage){
+	public ResponseEntity<ResponseDto> allBookList(@PathVariable int reqPage, @RequestParam String type, @RequestParam String keyword){
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
 		System.out.println("reqPage: "+reqPage);
+		System.out.println("type: "+type);
+		System.out.println("keyword: "+keyword);
 		try {
-			HashMap<String, Object> allBookMap = service.selectAllBook(reqPage);
+			HashMap<String, Object> allBookMap = service.selectAllBook(reqPage, type, keyword);
 			res = new ResponseDto(HttpStatus.OK, "", allBookMap, "");
 		}catch(Exception e){
 			e.printStackTrace();
@@ -153,5 +155,7 @@ public class AdminController {
 		
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
+	
+	
 	
 }

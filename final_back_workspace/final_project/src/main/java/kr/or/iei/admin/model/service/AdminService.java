@@ -119,7 +119,7 @@ public class AdminService {
 	}
 
 
-	public HashMap<String, Object> selectAllBook(int reqPage) {
+	public HashMap<String, Object> selectAllBook(int reqPage, String type, String keyword) {
 		int viewCnt = 10;						//한 페이지당 게시글 수
 		int pageNaviSize = 5;					//페이지 네비게이션 길이
 		int totalCount = dao.selectAllBookCount();//전체 게시글 수
@@ -128,7 +128,7 @@ public class AdminService {
 		PageInfoDto pageInfo = pageUtil.getPageInfo(reqPage, viewCnt, pageNaviSize, totalCount);
 				
 		//게시글 목록
-		ArrayList<BookList> BookList = dao.selectAllBookList(pageInfo);
+		ArrayList<BookList> BookList = dao.selectAllBookList(pageInfo, type, keyword);
 			
 		HashMap<String, Object> bookMap = new HashMap<String, Object>();
 		bookMap.put("bookList", BookList);
