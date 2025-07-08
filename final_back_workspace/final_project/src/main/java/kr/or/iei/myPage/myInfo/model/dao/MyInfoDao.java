@@ -9,5 +9,9 @@ public interface MyInfoDao {
 
 	MyInfo selectOneMember(String memberNo);
 
+	int updateMember(MyInfo member);
+
+	int deleteMember(String memberNo);
+
 
 }
