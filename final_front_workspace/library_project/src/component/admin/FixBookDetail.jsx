@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function FixBookDetail(){
 
     const location = useLocation();
     const bookDetails = location.state?.bookDetails;
+    const navigate = useNavigate();
 
     // 입력값용 state
   const [form, setForm] = useState({ ...bookDetails });
@@ -50,6 +52,28 @@ export default function FixBookDetail(){
             });
   }
 
+  function deleteBook(){
+     const confirmUpdate = window.confirm("정말 삭제하시겠습니까?");
+        if (!confirmUpdate) {
+                return; // 취소하면 함수 종료
+            }
+
+         let options = {};
+            options.url='http://localhost:9999/admin/deleteBook';
+            options.method = 'post';
+            options.data = updateBook;
+            
+
+            axios(options)
+            .then(function(res){
+             alert("삭제 완료!");
+                navigate("/adminPage");
+            })
+            .catch(function(err){
+            console.log(err); 
+            });
+  }
+
   
 
 
@@ -74,6 +98,8 @@ export default function FixBookDetail(){
 
         <button onClick={handleCancel}>취소</button>
         <button onClick={fixbook}>수정하기</button>
+
+        <button onClick={deleteBook}>삭제하기</button>
         </>
     )
 }

@@ -17,6 +17,7 @@ import LentBookDetail from './component/admin/LentBookDetail';
 import SelectLentBook from './component/admin/SelectLentBook';
 import LenterBookDetil from './component/admin/LenterBookDetil';
 import FixBookDetail from './component/admin/FixBookDetail';
+import NewBook from './component/admin/NewBook';
 
 
 
@@ -37,6 +38,7 @@ function App() {
           <Route path='/admin/selectReTrunBook' element={<SelectLentBook />}/>
           <Route path='/LenterBookDetil' element={<LenterBookDetil />} />
           <Route path='/admin/FixBookDetail' element={<FixBookDetail />} />
+          <Route path='/admin/newBook' element={<NewBook />} />
 
           <Route path='/admin/selectBook' element={<SelectBook />} />
           <Route path = "/myPage/*" element={<MyPageMain/>}/>

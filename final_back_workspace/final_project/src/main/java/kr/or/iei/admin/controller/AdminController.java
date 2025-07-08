@@ -157,6 +157,7 @@ public class AdminController {
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
 	
+	//책 수정하기
 	@PostMapping("/fixBook")
 	@NoTokenCheck
 	public ResponseEntity<ResponseDto> fixBook(@RequestBody Book book){
@@ -173,6 +174,47 @@ public class AdminController {
 		}
 		
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//책 삭제
+	@PostMapping("/deleteBook")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> deleteBook(@RequestBody Book book){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		try {
+			int result = service.deleteBook(book);
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "수정 완료", null, "");
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//책 등록
+	@PostMapping("/inputNewBook")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> inputNewBook(@RequestBody Book book){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		
+		try {
+			int result = service.insertBook(book);
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "수정 완료", null, "");
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+		
+		
 	}
 	
 	

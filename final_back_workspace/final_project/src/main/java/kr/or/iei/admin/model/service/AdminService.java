@@ -169,6 +169,20 @@ public class AdminService {
 		int result = dao.fixBook(book);
 		return result;
 	}
+
+
+	public int deleteBook(Book book) {
+		
+		int result = dao.deleteBook(book);
+		
+		return result;
+	}
+
+
+	public int insertBook(Book book) {
+		int result = dao.insertBook(book);
+		return result;
+	}
 	
 	
 	

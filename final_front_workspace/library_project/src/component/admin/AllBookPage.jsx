@@ -8,6 +8,7 @@ export default function AllbookPage(){
     
      // 도서 목록, 대출 목록 전환
     const [subMode, setSubMode] = useState("bookList");
+    const navigate = useNavigate();
 
     // 도서 목록
     const [allBookList, setAllBookList] = useState([]);
@@ -70,6 +71,10 @@ export default function AllbookPage(){
     function keywordSetting(e){
       setKeyword(e.target.value);
     }
+
+    function newbooks(){
+      navigate("/admin/newBook");
+    }
     
 
     return(
@@ -87,6 +92,7 @@ export default function AllbookPage(){
                      <option value="author">저작자</option>
                 </select>
                 <input type="text" id="title" onChange={keywordSetting}></input> <button onClick={function() { fetchAllBooks(1); }}>검색하기</button>
+                <button onClick={newbooks}>도서등록</button>
                     <table border="1">
                         <thead>
                           <tr>
@@ -121,6 +127,8 @@ export default function AllbookPage(){
                       <option value="memberName">대출자</option>
                     </select>
                 <input type="text" id="title" onChange={keywordSetting}></input> <button onClick={function() { fetchLendBooks(1); }}>검색하기</button>
+
+                
                     <table border="1">
                         <thead>
                           <tr>

@@ -242,6 +242,7 @@
     WHERE rnum BETWEEN #{pageInfo.start} AND #{pageInfo.end}
 	  </select>
   	
+  	<!-- 책 한권에 대하여 수정 -->
   	<update id="fixBook" parameterType="Book">
   		update tbl_book set author_info = #{authorInfo},
   							title_info = #{titleInfo},
@@ -253,4 +254,38 @@
   							remark = #{remark}
   					where call_no = #{callNo}
   	</update>
+  	
+  	<!-- 책 한권에 대하여 삭제 -->
+  	<delete id="deleteBook" parameterType="Book">
+  	  delete from tbl_book where call_no = #{callNo}
+  	</delete>
+  	
+  	<!-- 책 한권에 대하여 등록 -->
+  	<insert id="insertBook" parameterType="Book">
+  	 insert into tbl_book (
+        call_no,
+        author_info,
+        title_info,
+        pub_info,
+        pub_year_info,
+        reg_date,
+        isbn,
+        place_info,
+        image_url,
+        can_lend,
+        remark
+    ) values (
+    	#{callNo},
+    	#{authorInfo},
+        #{titleInfo},
+        #{pubInfo},
+        #{pubYear},
+        sysdate,
+        #{ISBN},
+        #{placeInfo},
+        #{imageUrl},
+        #{canLend},
+        #{remark}
+    )
+  	</insert>
 </mapper>

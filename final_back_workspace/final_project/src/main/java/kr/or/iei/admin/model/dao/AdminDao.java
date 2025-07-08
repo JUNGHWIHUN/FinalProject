@@ -61,6 +61,10 @@ public interface AdminDao {
 
 	int fixBook(Book book);
 
+	int deleteBook(Book book);
+
+	int insertBook(Book book);
+
 	
 
 	
