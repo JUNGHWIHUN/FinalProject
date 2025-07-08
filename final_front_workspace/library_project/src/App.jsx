@@ -16,8 +16,7 @@ import SelectBook from './component/admin/SelectBook';
 import LentBookDetail from './component/admin/LentBookDetail';
 import SelectLentBook from './component/admin/SelectLentBook';
 import LenterBookDetil from './component/admin/LenterBookDetil';
-
-
+import RequestBookMain from './component/requestBook/requestBookMain';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -35,7 +34,7 @@ function App() {
           <Route path='/LentBookDetail' element={<LentBookDetail />} />
           <Route path='/admin/selectReTrunBook' element={<SelectLentBook />}/>
           <Route path='/LenterBookDetil' element={<LenterBookDetil />} />
-          
+          <Route path='/requestBook/*' element={<RequestBookMain />} />
 
           <Route path='/admin/selectBook' element={<SelectBook />} />
           <Route path = "/myPage/*" element={<MyPageMain/>}/>
