@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.or.iei.myPage.myInfo.model.dao.MyInfoDao;
-import kr.or.iei.myPage.myInfo.model.dto.Myinfo;
+import kr.or.iei.myPage.myInfo.model.dto.MyInfo;
 
 @Service
 public class MyInfoService {
@@ -12,8 +12,8 @@ public class MyInfoService {
 	@Autowired
 	private MyInfoDao dao;
 
-	public Myinfo selectOneMember(String memberNo) {
-
+	public MyInfo selectOneMember(String memberNo) {
+		System.out.println(memberNo);
 		
 		return dao.selectOneMember(memberNo);
 	}

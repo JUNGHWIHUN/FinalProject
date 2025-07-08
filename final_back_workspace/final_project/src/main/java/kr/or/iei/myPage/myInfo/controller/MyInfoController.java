@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.iei.common.model.dto.ResponseDto;
-import kr.or.iei.myPage.myInfo.model.dto.Myinfo;
+import kr.or.iei.myPage.myInfo.model.dto.MyInfo;
 import kr.or.iei.myPage.myInfo.model.service.MyInfoService;
 
 @RestController
@@ -26,7 +26,8 @@ public class MyInfoController {
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "회원 정보 조회 중, 오류가 발생하였습니다.", null , "error");
 		
 		try {
-			Myinfo myInfo = service.selectOneMember(memberNo);
+			MyInfo myInfo = service.selectOneMember(memberNo);
+						
 			
 			res = new ResponseDto(HttpStatus.OK, "", myInfo, "");
 		} catch (Exception e) {

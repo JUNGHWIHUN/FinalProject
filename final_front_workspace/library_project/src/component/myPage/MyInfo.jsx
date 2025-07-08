@@ -18,15 +18,16 @@ export default function MyInfo(){
     useEffect(function(){
         //랜더링 후, 회원 정보 조회
         let options = {};
-        options.url = serverUrl + "/myInfo/";
+        options.url = serverUrl + "/myInfo";
         options.method = "get";
         options.params = {
             memberNo : loginMember.memberNo
         }
 
+       
         axiosInstacne(options)
         .then(function(res){
-            setMember(res.data.resData);
+            console.log(res.data.resData);
         })
         .catch(function(err){
             console.log(err);
@@ -34,13 +35,7 @@ export default function MyInfo(){
     },[])
     return(
         <>
-        <div>개인정보 수정</div>
-        <table>
-            <tr>
-                <th>아이디</th>
-                <td>{member.id}</td>
-            </tr>
-        </table>
+      
         </>
     )
 }
