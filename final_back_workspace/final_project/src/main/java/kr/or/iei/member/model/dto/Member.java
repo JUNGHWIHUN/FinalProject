@@ -24,4 +24,9 @@ public class Member {
 	private int cantBorrowDay;		//대출불가일수 (연체시)
 	private int noLentCount;		//예약 후 미대출 건수
 	private String canRequest;		//신규도서 신청권한 (T/F)
+	private String memberAddr;		//회원 주소
+	
+    // --- 이메일 인증을 위해 추가할 필드 ---
+	private String authCode;    // 이메일 인증 링크에 사용될 고유 코드
+    private String memberStatus; // 회원의 인증 상태 (예: 'N' = 미인증, 'Y' = 인증 완료)
 }

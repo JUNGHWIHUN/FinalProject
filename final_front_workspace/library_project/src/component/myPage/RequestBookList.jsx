@@ -19,7 +19,7 @@ export default function RequestBook(){
 
     useEffect(function(){
         let options = {};
-        options.url = serverUrl + "/requestBook/" + reqPage;
+        options.url = serverUrl + "/requestBookList/" + reqPage;
         options.method = "get"
         options.params = {
             memberNo : loginMember.memberNo

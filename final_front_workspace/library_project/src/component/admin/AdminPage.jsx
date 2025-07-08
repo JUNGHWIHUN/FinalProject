@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import AllbookPage from "./AllBookPage";
+import AdminMemberPage from "./AdminMemberPage";
 
 export default function AdminPage(){
 
@@ -97,6 +98,8 @@ export default function AdminPage(){
          <a href="#" onClick={() => setMode("return")}>반납</a> 
 
         {mode == "allBook" && <AllbookPage />} 
+
+        {mode == "allMember" && <AdminMemberPage />}
 
 
         {mode == "lend" && (

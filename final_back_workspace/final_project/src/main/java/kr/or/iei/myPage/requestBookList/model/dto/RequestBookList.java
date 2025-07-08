@@ -1,4 +1,4 @@
-package kr.or.iei.myPage.requestBook.model.dto;
+package kr.or.iei.myPage.requestBookList.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RequestBook {
-
+public class RequestBookList {
 	private String requestBookNo;			//희망도서 신청번호 
 	private String requestMemberNo;			//회원 번호
 	private String requestedReason;			//신청 사유

@@ -65,8 +65,33 @@ public class MyLibraryService {
 	}
 
 	//내 서재 이름 변경
+	@Transactional
 	public int updateMyLibraryName(MyLibrary myLibrary) {
 		return dao.updateMyLibraryName(myLibrary);
+	}
+
+	//내 서재 삭제
+	@Transactional
+	public int deleteMyLibrary(String myLibraryNo) {
+		return dao.deleteMyLibrary(myLibraryNo);
+	}
+
+	//내 서재에서 도서 삭제	
+	@Transactional
+	public int deleteFromMyLibrary(String myLibraryBookNo) {
+		return dao.deleteFromMyLibrary(myLibraryBookNo);
+	}
+
+	//다른 서재로 도서 이동
+	public int moveBooktoAnotherLibrary(MyLibraryBook myLibraryBook) {
+		//해당 서재에 이미 해당 도서가 등록되어 있는지 확인
+		int result = dao.myLibraryBookDuplChk(myLibraryBook);
+		
+		if(result > 0) {
+			return -1;
+		} else {
+			return dao.moveBooktoAnotherLibrary(myLibraryBook);			
+		}
 	}
 
 
