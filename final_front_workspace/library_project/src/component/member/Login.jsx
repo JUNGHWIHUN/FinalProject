@@ -7,12 +7,6 @@ import createInstance from "../../axios/Interceptor";
 //로그인
 export default function Login() {
 
-    /*
-    //부모 컴포넌트에세 전달받은 데이터 추출
-    const setIsLogin = props.setIsLogin;
-    const setLoginMember = props.setLoginMember;
-    */
-
     //스토리지에 저장한 데이터 추출
     const {isLogined, setIsLogined, setLoginMember, setAccessToken, setRefreshToken} = useUserStore();
     
@@ -46,14 +40,6 @@ export default function Login() {
         setMember({...member});
     }
 
-    /*
-    //정상 로그인 시 저장할 State 변수 : 메뉴 등을 다르게 그려주는 데에 필요
-    const [isLogin, setIsLogin] = useState(false);
-    const [loginMember, setLoginMember] = useState({});
-
-    위 2개 변수는 상위 App 컴포넌트에서 설정해야 다른 컴포넌트로 정보를 전달할 수 있음 (상태 끌어올리기 (State Lifting) : 자식 컴포넌트에서 부모 컴포넌트로 전달 불가능하기 때문)
-    */
-
     //정상 로그인 시 컴포넌트 전환을 위한 navigate
     const navigate = useNavigate();
 
@@ -82,20 +68,12 @@ export default function Login() {
                         confirmButtonText : '확인'
                     })
                 }else { //정상적으로 로그인된 경우
-                    /*
-                    //부모 컴포넌트에서 전달받은 setState 함수를 사용해 state 값 변경 : App component 에서 렌더링이 다시 일어남
-                    setIsLogin(true);
-                    setLoginMember(res.data.resData);
-                    */
 
                     //스토리지 데이터 변경 : 로그인 여부, 로그인 정보, 토큰
                     setIsLogined(true);
                     setLoginMember(res.data.resData.member);   //Member객체
                     setAccessToken(res.data.resData.accessToken);
                     setRefreshToken(res.data.resData.refreshToken);
-
-              
-
 
                     //메인 컴포넌트로 전환
                     navigate(fromPath, { replace: true }); //메인페이지 또는 기존 페이지로 돌아감, replace: true로 히스토리를 교체하여 뒤로가기 시 로그인 페이지 스킵
