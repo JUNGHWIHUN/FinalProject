@@ -4,7 +4,6 @@ import createInstance from "../../axios/Interceptor";
 import PageNavi from "../common/PageNavi";
 import useUserStore from "../../store/useUserStore";
 import MyLibraryModal from "./MyLibraryModal";
-import useMyLibraryAddition from '../../hooks/useMyLibraryAddition'; //Modal 용 커스텀 훅 임포트
 
 
 export default function SearchResultList (){
