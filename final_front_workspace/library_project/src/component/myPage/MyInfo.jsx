@@ -7,7 +7,7 @@ export default function MyInfo(){
 
     //기존 회원 정보 표출 및 수정 정보 입력받아 저장할 변수
     const [member, setMember]= useState({
-        memberId : "", memberName : "", memberPhone : ""
+        
     });
 
     //환경변수 파일에 저장된 서버 URL 읽어오기
@@ -18,12 +18,16 @@ export default function MyInfo(){
     useEffect(function(){
         //랜더링 후, 회원 정보 조회
         let options = {};
-        options.url = serverUrl + "/member/" + loginMember.memberNo;
+        options.url = serverUrl + "/myInfo";
         options.method = "get";
+        options.params = {
+            memberNo : loginMember.memberNo
+        }
 
+       
         axiosInstacne(options)
         .then(function(res){
-            setMember(res.data.resData);
+            console.log(res.data.resData);
         })
         .catch(function(err){
             console.log(err);
@@ -31,13 +35,7 @@ export default function MyInfo(){
     },[])
     return(
         <>
-        <div>개인정보 수정</div>
-        <table>
-            <tr>
-                <th>아이디</th>
-                <td>{member.id}</td>
-            </tr>
-        </table>
+      
         </>
     )
 }

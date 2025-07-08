@@ -1,12 +1,14 @@
 import axios from "axios";
 import PageNavi from '../common/PageNavi';
 import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function AllbookPage(){
 
     
      // 도서 목록, 대출 목록 전환
     const [subMode, setSubMode] = useState("bookList");
+    const navigate = useNavigate();
 
     // 도서 목록
     const [allBookList, setAllBookList] = useState([]);
@@ -20,11 +22,15 @@ export default function AllbookPage(){
     const [reqPage, setReqPage] = useState(1); 
     const [pageInfo, setPageInfo] = useState({});
 
+    //검색설정.
+    const [filterType, setFilterType] = useState("title");
+    const [keyword, setKeyword] = useState("");
+
     function fetchAllBooks(){
          let options = {};
             options.url='http://localhost:9999/admin/allBookList/'+ reqPage;
             options.method = 'get';
-            
+            options.params = {type : filterType, keyword : keyword};
 
             axios(options)
             .then(function(res){
@@ -40,7 +46,7 @@ export default function AllbookPage(){
         let options = {};
             options.url='http://localhost:9999/admin/allLendBookList/'+ reqPage;
             options.method = 'get';
-            
+            options.params = {type : filterType, keyword : keyword};
 
             axios(options)
             .then(function(res){
@@ -57,6 +63,18 @@ export default function AllbookPage(){
    useEffect(function(){
       fetchAllBooks();
     }, []);
+
+    function keywordType(e){
+      setFilterType(e.target.value);
+    }
+
+    function keywordSetting(e){
+      setKeyword(e.target.value);
+    }
+
+    function newbooks(){
+      navigate("/admin/newBook");
+    }
     
 
     return(
@@ -68,16 +86,17 @@ export default function AllbookPage(){
             {subMode === "bookList" && (
                 <>
                 <h4>전체 도서 목록</h4>
-                <select>
+                <select value={filterType} onChange={keywordType}>
                      <option value="title">제목</option>
                      <option value="publisher">출판사</option>
                      <option value="author">저작자</option>
                 </select>
-                <input type="text" id="title"></input> <button>검색하기</button>
+                <input type="text" id="title" onChange={keywordSetting}></input> <button onClick={function() { fetchAllBooks(1); }}>검색하기</button>
+                <button onClick={newbooks}>도서등록</button>
                     <table border="1">
                         <thead>
                           <tr>
-                             <th>책 제목</th>
+                              <th>책 제목</th>
                               <th>출판사</th>
                               <th>저자</th>
                               <th>청구기호</th>
@@ -102,10 +121,18 @@ export default function AllbookPage(){
             {subMode === "lendList" && (
                 <>
                     <h4>대출중 도서 목록</h4>
+                    <select value={filterType} onChange={keywordType}>
+                      <option value="title">제목</option>
+                      <option value="publisher">출판사</option>
+                      <option value="memberName">대출자</option>
+                    </select>
+                <input type="text" id="title" onChange={keywordSetting}></input> <button onClick={function() { fetchLendBooks(1); }}>검색하기</button>
+
+                
                     <table border="1">
                         <thead>
                           <tr>
-                             <th>책 제목</th>
+                              <th>책 제목</th>
                               <th>예약여부</th>
                               <th>대출자</th>
                               <th>청구기호</th>
@@ -132,12 +159,31 @@ export default function AllbookPage(){
 
 function BookItem(props){
     const book = props.book;
+    const callNo = book.bookNo;
+
+    const [bookDetails, setBookDetails] = useState();
+    const navigate = useNavigate();
+
+    function LentBookDetail(e){
+            let options = {};
+            options.url='http://localhost:9999/book/bookDetail/'+ callNo;
+            options.method = 'get';
+
+            axios(options)
+            .then(function(res){
+
+              navigate("/admin/FixBookDetail", { state: { bookDetails: res.data.resData } });
+            })
+            .catch(function(err){
+            console.log(err); 
+            });
+    }
 
 
     return(
         <>
         <tr>
-            <td>{book.title}</td>
+            <td><span onClick={LentBookDetail}>{book.title}</span></td>
             <td>{book.pub}</td>
             <td>{book.author}</td>
             <td>{book.bookNo}</td>
