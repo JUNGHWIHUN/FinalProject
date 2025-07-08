@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="kr.or.iei.myPage.requestBook.model.dao.RequestBookDao">
+<mapper namespace="kr.or.iei.myPage.requestBookList.model.dao.RequestBookListDao">
   <!-- 어느 회원에 대한 희망 도서 신청 갯수-->
-<select id="selectRequestBook" parameterType="string" resultType="_int">
+<select id="selectRequestBookCount" parameterType="string" resultType="_int">
 	select count(*) from tbl_book_request where request_book_no = #{_parameter}
 </select>
 
 <!-- 희망도서 신청 목록 조회 -->
-<select id="selectRequestBookList" parameterType="HashMap" resultType="kr.or.iei.myPage.requestBook.model.dto.RequestBook">
+<select id="selectRequestBookList" parameterType="HashMap" resultType="kr.or.iei.myPage.requestBookList.model.dto.RequestBookList">
 	select requestedBookName, requestedBookAuthor, requestedBookPub, requestStatus
 		from (
 			select rowNum as rNum, a.*

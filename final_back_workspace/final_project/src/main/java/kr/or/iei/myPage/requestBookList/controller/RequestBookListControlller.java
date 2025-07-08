@@ -1,4 +1,4 @@
-package kr.or.iei.myPage.requestBook.controller;
+package kr.or.iei.myPage.requestBookList.controller;
 
 import java.util.HashMap;
 
@@ -13,23 +13,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.iei.common.model.dto.ResponseDto;
-import kr.or.iei.myPage.requestBook.model.service.RequestBookService;
+import kr.or.iei.myPage.requestBookList.model.service.RequestBookListService;
+
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/requestBook")
-public class RequestBookController {
-	
+@RequestMapping("/requestBookList")
+public class RequestBookListControlller {
 	@Autowired
-	private RequestBookService service;
+	private RequestBookListService service;
 	
 	@GetMapping("/{reqPage}")
-	public ResponseEntity<ResponseDto> selectRequestBook(@PathVariable int reqPage, @RequestParam String memberNo){
+	public ResponseEntity<ResponseDto> selectRequestBookList(@PathVariable int reqPage, @RequestParam String memberNo){
 		
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "희망도서 신청 내역 조회 중, 오류가 발생하였습니다.", null, "error");
 		
 		try {
-			HashMap<String, Object> requestBookMap = service.selectRequestBook(reqPage, memberNo);
+			HashMap<String, Object> requestBookMap = service.selectRequestBookList(reqPage, memberNo);
 			res = new ResponseDto(HttpStatus.OK, "", requestBookMap, "");
 		} catch (Exception e) {
 			e.printStackTrace();
