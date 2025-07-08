@@ -13,6 +13,7 @@ import kr.or.iei.admin.model.dto.BookSelectDto;
 import kr.or.iei.admin.model.dto.LentBookDto;
 import kr.or.iei.admin.model.dto.LentBookList;
 import kr.or.iei.admin.model.dto.UserOne;
+import kr.or.iei.book.model.dto.Book;
 import kr.or.iei.common.model.dto.PageInfoDto;
 
 @Mapper
@@ -50,11 +51,15 @@ public interface AdminDao {
 
 	int selectAllLendBookCount();
 
-	ArrayList<LentBookList> selectAllLendBookList(PageInfoDto pageInfo);
+	ArrayList<LentBookList> selectAllLendBookList(@Param("pageInfo") PageInfoDto pageInfo,
+            @Param("type") String type,
+            @Param("keyword") String keyword);
 
 	String selectMemberName(String memberNo);
 
 	String selectBookTitle(String bookNo);
+
+	int fixBook(Book book);
 
 	
 

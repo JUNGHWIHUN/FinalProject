@@ -15,6 +15,7 @@ import kr.or.iei.admin.model.dto.BookSelectDto;
 import kr.or.iei.admin.model.dto.LentBookDto;
 import kr.or.iei.admin.model.dto.LentBookList;
 import kr.or.iei.admin.model.dto.UserOne;
+import kr.or.iei.book.model.dto.Book;
 import kr.or.iei.common.model.dto.PageInfoDto;
 import kr.or.iei.common.util.PageUtil;
 
@@ -140,7 +141,7 @@ public class AdminService {
 	}
 
 
-	public HashMap<String, Object> selectAllLendBook(int reqPage) {
+	public HashMap<String, Object> selectAllLendBook(int reqPage, String type, String keyword) {
 		int viewCnt = 10;						//한 페이지당 게시글 수
 		int pageNaviSize = 5;					//페이지 네비게이션 길이
 		int totalCount = dao.selectAllLendBookCount();//전체 게시글 수
@@ -153,13 +154,20 @@ public class AdminService {
 		
 		
 		//게시글 목록
-		ArrayList<LentBookList> BookList = dao.selectAllLendBookList(pageInfo);
+		ArrayList<LentBookList> BookList = dao.selectAllLendBookList(pageInfo, type, keyword);
 		System.out.println("리스트 정보 조회");
 		HashMap<String, Object> bookMap = new HashMap<String, Object>();
 		bookMap.put("bookList", BookList);
 		bookMap.put("pageInfo", pageInfo);
 				
 		return bookMap;
+	}
+
+	@Transactional
+	public int fixBook(Book book) {
+		
+		int result = dao.fixBook(book);
+		return result;
 	}
 	
 	

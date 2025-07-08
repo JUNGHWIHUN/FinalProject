@@ -137,7 +137,7 @@
 	  from tbl_book
 	</select>
 	
-	<!-- 전체 책 조회 -->
+	<!-- 전체 책 조회 + 검색 -->
 	<select id="selectAllBookList"  resultType="BookList">
 	select call_no as bookNo,
 			   author_info as author,
@@ -193,8 +193,8 @@
 	  where actual_return_date is null
 	  </select>
 	  
-	  <!-- 현재 대출중인 책 리스트 -->
-	 <select id="selectAllLendBookList" parameterType="PageInfoDto" resultType="LentBookList">
+	  <!-- 현재 대출중인 책 리스트  +  검색 -->
+	 <select id="selectAllLendBookList" resultType="LentBookList">
 	   SELECT lent_book_no as lentbookNo,
            return_date as returnDate,
            reservation,
@@ -220,11 +220,37 @@
                 title_info,
                 member_name
             FROM tbl_lent_book
-            WHERE actual_return_date IS NULL
+            <where>
+             actual_return_date IS NULL
+    				<if test="keyword != null and keyword != ''">
+        			<choose>
+            		<when test="type == 'title'">
+               			 AND title_info LIKE '%' || #{keyword} || '%'
+            		</when>
+           			<when test="type == 'memberName'">
+                		AND member_name LIKE '%' || #{keyword} || '%'
+            		</when>
+            		<when test="type == 'publisher'">
+               			AND pub_info LIKE '%' || #{keyword} || '%'
+            		</when>
+        			</choose>
+    				</if>
+				   </where>
             ORDER BY lent_date DESC
         ) A
     )
-    WHERE rnum BETWEEN #{start} AND #{end}
+    WHERE rnum BETWEEN #{pageInfo.start} AND #{pageInfo.end}
 	  </select>
   	
+  	<update id="fixBook" parameterType="Book">
+  		update tbl_book set author_info = #{authorInfo},
+  							title_info = #{titleInfo},
+  							pub_info = #{pubInfo},
+  							pub_year_info = #{pubYear},
+  							isbn = #{ISBN},
+  							place_info = #{placeInfo},
+  							can_lend = #{canLend},
+  							remark = #{remark}
+  					where call_no = #{callNo}
+  	</update>
 </mapper>
