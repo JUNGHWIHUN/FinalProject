@@ -6,9 +6,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.iei.common.util.JwtUtils;
-import kr.or.iei.member.model.dao.MemberDao;
+import kr.or.iei.common.util.MailSenderUtil; // MailSenderUtil 주입
+import kr.or.iei.member.model.dao.MemberDao; // MemberDao 사용
 import kr.or.iei.member.model.dto.LoginMember;
 import kr.or.iei.member.model.dto.Member;
+
+import java.security.SecureRandom; // 임시 비밀번호 생성용
+import java.util.UUID; // 인증 코드 생성용
 
 @Service
 public class MemberService {
@@ -16,73 +20,125 @@ public class MemberService {
 	@Autowired
 	private MemberDao dao;
 
-	//WebConfig에서 생성하여 컨테이너에 Bean 으로 등록한 객체 주입받아 사용
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 	
 	@Autowired
 	private JwtUtils jwtUtils;
+
+    @Autowired // MailSenderUtil 주입
+    private MailSenderUtil mailSenderUtil;
 	
-		//아이디 중복체크
-		public int chkMemberId(String memberId) {
-			return dao.chkMemberId(memberId);
-		}
-		
-		//이메일 중복체크
-		public int chkMemberEmail(String memberEmail) {
-			return dao.chkMemberEmail(memberEmail);
-		}
+    // 아이디 중복체크
+    public int chkMemberId(String memberId) {
+        return dao.chkMemberId(memberId);
+    }
+    
+    // 이메일 중복체크
+    public int chkMemberEmail(String memberEmail) {
+        return dao.chkMemberEmail(memberEmail);
+    }
 
-		//회원가입
-		@Transactional
-		public int insertMember(Member member) {
-			String encodePw = encoder.encode(member.getMemberPw());	//웹에서 입력한 평문 전달 => 암호화된 60글자
-			member.setMemberPw(encodePw);	//암호화된 비밀번호로 재할당
-			
-			return dao.insertMember(member);
-		}
+    // 회원가입 (이메일 인증 기능 추가)
+    @Transactional
+    public int insertMember(Member member) {
+        String encodePw = encoder.encode(member.getMemberPw());
+        member.setMemberPw(encodePw);
+        
+        // 이메일 인증을 위한 authCode와 memberStatus 초기값 설정
+        member.setAuthCode(UUID.randomUUID().toString()); // 고유한 인증 코드 생성
+        member.setMemberStatus("N"); // 초기 상태는 'N'(미인증)
+        
+        return dao.insertMember(member); // authCode와 memberStatus가 포함된 member 객체 전달
+    }
 
-		//로그인
-		public LoginMember memberLogin(Member member) {
-			Member chkMember = dao.memberLogin(member.getMemberId());
-			
-			if(chkMember == null) {
+    // 이메일 인증 후 회원 상태 업데이트
+    @Transactional
+    public int updateMemberStatus(String memberEmail, String authCode) {
+        return dao.updateMemberStatus(memberEmail, authCode);
+    }
 
-				//아이디를 잘못 입력해 결과값이 null인 경우 즉시 메소드 종료
-				return null;
-			}
-			
-			if(encoder.matches(member.getMemberPw(), chkMember.getMemberPw())) {	
-				//사용자가 입력한 평문(전자)을 암호화해 DB에 저장된 암호(후자)와 비교, 일치할 경우 로그인 성공
-				//jwt 토큰 발급, 최소한의 정보만 저장
-				String accessToken = jwtUtils.createAccessToken(chkMember.getMemberId());
-				String refreshToken = jwtUtils.createRefreshToken(chkMember.getMemberId());
-				
-				//비밀번호는 해당 메소드에서 검증하는 역할 외에 필요가 없으므로, 스토리지에 비밀번호가 저장되지 않도록 처리
-				chkMember.setMemberPw(null);
-				
-				//별도로 생성한 LoginMemberDto 객체에 정보를 담아 반환
-				LoginMember loginMember = new LoginMember(chkMember, accessToken, refreshToken);
-				
-				return loginMember;
-			}else {
-				//비밀번호가 일치하지 않은 경우
-				return null;
-			}
-				
-			
-		}
+    // 비밀번호 찾기: 이메일로 임시 비밀번호 발송 및 DB 업데이트
+    @Transactional
+    public boolean processPasswordReset(String memberEmail) {
+        //1. 이메일로 활성화된 회원 존재하는지 확인
+        int memberCount = dao.countActiveMemberByEmail(memberEmail);
+        if (memberCount == 0) {
+            return false; // 회원이 존재하지 않거나, 아직 이메일 인증이 완료되지 않음
+        }
 
+        //2. 임시 비밀번호 생성
+        String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lower = "abcdefghijklmnopqrstuvwxyz";
+        String digit = "0123456789";
+        String special = "!@#$";
+        String allChar = upper + lower + digit + special;
+        SecureRandom random = new SecureRandom();
+        StringBuilder randomPw = new StringBuilder();
+        randomPw.append(upper.charAt(random.nextInt(upper.length())));
+        randomPw.append(lower.charAt(random.nextInt(lower.length())));
+        randomPw.append(digit.charAt(random.nextInt(digit.length())));
+        randomPw.append(special.charAt(random.nextInt(special.length())));
+        for (int i = 0; i < 6; i++) {
+            randomPw.append(allChar.charAt(random.nextInt(allChar.length())));
+        }
+        char[] charArr = randomPw.toString().toCharArray();
+        for (int i = 0; i < charArr.length; i++) {
+            int randomIdx = random.nextInt(charArr.length);
+            char temp = charArr[i];
+            charArr[i] = charArr[randomIdx];
+            charArr[randomIdx] = temp;
+        }
+        String newRandomPw = new String(charArr);
 
-		//회원 1명 조회
-		public Member selectOneMember(String memberNo) {
+        //3. DB에 임시 비밀번호 업데이트 (암호화하여 저장)
+        int updateResult = dao.updatePasswordByEmail(memberEmail, encoder.encode(newRandomPw));
+        if (updateResult == 0) {
+            return false; // DB 업데이트 실패
+        }
 
-			//DB에서 회원 정보 조회하여 리턴
-			Member member = dao.selectOneMember(memberNo);
-			member.setMemberPw(null);
-			
-			return member;
-		}
+        //4. 임시 비밀번호 이메일 발송
+        String emailSubject = "임시 비밀번호 안내";
+        String emailContent = "회원님의 임시 비밀번호는 <span style='color:red;'>" + newRandomPw + " </span> 입니다. <br><br> 마이페이지에서 비밀번호를 꼭 변경해주시기 바랍니다.";
+        
+        return mailSenderUtil.sendEmail(memberEmail, emailSubject, emailContent);
+    }
 
+    //로그인
+    public LoginMember memberLogin(Member member) {
+        Member chkMember = dao.memberLogin(member.getMemberId());
+        
+        if(chkMember == null) {
+            return null;
+        }
+        
+        //이메일 인증이 완료된(memberStatus가 'Y'인) 회원만 로그인 허용
+        if ("N".equals(chkMember.getMemberStatus())) {
+            // 아직 이메일 인증이 완료되지 않았음을 나타내는 특정 응답
+            // 로그인 실패 로직에 포함시키거나 별도로 처리할 수 있습니다.
+            return null; // 또는 LoginMember 객체에 특정 상태 코드/메시지 추가
+        }
 
+        if(encoder.matches(member.getMemberPw(), chkMember.getMemberPw())) {
+            String accessToken = jwtUtils.createAccessToken(chkMember.getMemberId());
+            String refreshToken = jwtUtils.createRefreshToken(chkMember.getMemberId());
+            
+            chkMember.setMemberPw(null);
+            
+            LoginMember loginMember = new LoginMember(chkMember, accessToken, refreshToken);
+            
+            return loginMember;
+        }else {
+            return null;
+        }
+    }
+
+    // 회원 1명 조회
+    public Member selectOneMember(String memberNo) {
+        Member member = dao.selectOneMember(memberNo);
+        if (member != null) {
+            member.setMemberPw(null);
+        }
+        return member;
+    }
 }

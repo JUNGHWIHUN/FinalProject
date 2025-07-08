@@ -31,20 +31,21 @@ export default function Main () {
         <section className="section" style={{width:"100%"}}>
             <div className="page-title">메인페이지</div>
 
-
             <Link to='/book'>도서검색 페이지</Link>
            
+            {!isLogined ?
+                <div>
+                    <h3><a href='/join'>회원가입 링크</a></h3>
+                    <h3><a href='/login'>로그인 링크</a></h3>
 
-            <h3><a href='/join'>회원가입 링크</a></h3>
-            <h3><a href='/login'>로그인 링크</a></h3>
-
-            <Link to='/mypage'>마이페이지</Link>
-        
-
-            <h3>
-                <button onClick={logout}>로그아웃</button>
-            </h3>
-            
+                    <h4><Link to='/find-password'>비밀번호 찾기</Link></h4>
+                </div>
+                :
+                <h3>
+                    <Link to='/mypage'>마이페이지</Link>
+                    <button onClick={logout}>로그아웃</button>
+                </h3>
+            }
         </section>
     );
 }

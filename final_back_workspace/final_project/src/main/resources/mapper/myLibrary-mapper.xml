@@ -59,4 +59,21 @@
 	 where my_library_no = #{myLibraryNo}
 	</update>
 	
+	<!-- 내 서재 삭제 -->
+	<delete id="deleteMyLibrary" parameterType="string">
+	delete tbl_my_library where my_library_no = #{_parameter}
+	</delete>
+	
+	<!-- 내 서재에서 도서 삭제 -->
+	<delete id="deleteFromMyLibrary" parameterType="string">
+	delete tbl_my_library_books where my_library_book_no = #{_parameter}
+	</delete>
+	
+	<!-- 내 서재에서 도서 이동 -->
+	<update id="moveBooktoAnotherLibrary" parameterType='kr.or.iei.myPage.myLibrary.model.dto.MyLibraryBook'>
+	update tbl_my_library_books
+	   set my_library_no = #{myLibraryNo}
+	 where my_library_book_no = #{myLibraryBookNo}  
+	</update>
+	
 </mapper>

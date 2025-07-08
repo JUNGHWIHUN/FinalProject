@@ -13,11 +13,21 @@
 	</select>
 	
 	<!-- 회원가입 -->
-	<insert id='insertMember' parameterType='Member'>
-	insert into tbl_member values (
-		to_char(sysdate,'yymmdd') || lpad(seq_member.nextval, 4,'0'), #{memberId}, #{memberPw}, #{memberName}, #{memberEmail},
-		#{memberPhone}, default, default, default, default, default, default, default, default, default, default
-	)	
+	<insert id='insertMember' parameterType='Member' useGeneratedKeys="true" keyProperty="memberNo">
+		<selectKey keyProperty="memberNo" resultType="String" order="BEFORE">
+	        SELECT TO_CHAR(SYSDATE,'YYMMDD') || LPAD(SEQ_MEMBER.NEXTVAL, 4,'0') FROM DUAL
+	    </selectKey> <!-- 회원가입 본인인증을 위해 새로 추가된 컬럼들 추가 -->
+		insert into tbl_member (
+	        member_no, member_id, member_pw, member_name, member_email,
+	        member_phone, is_admin, enroll_date, can_comment, overdue_day_count,
+	        borrowed_book_count, max_borrow_count, can_borrow, cant_borrow_day,
+	        no_lent_count, can_request, auth_code, member_status, member_addr
+	    ) values (
+	        #{memberNo}, #{memberId}, #{memberPw}, #{memberName}, #{memberEmail},
+	        #{memberPhone}, default, default, default, default,
+	        default, default, default, default,
+	        default, default, #{authCode}, #{memberStatus}, #{memberAddr}
+	    )	
 	</insert>
 	
 	<!-- 로그인 -->
@@ -37,7 +47,8 @@
 		   can_borrow as canBorrow,
 		   cant_borrow_day as cantBorrowDay,
 		   no_lent_count as noLentCount,
-		   can_request as canRequest
+		   can_request as canRequest,
+		   member_status as memberStatus
 	  from tbl_member
 	 where member_id = #{_parameter}
 	</select>
@@ -59,8 +70,32 @@
 			   can_borrow as canBorrow,
 			   cant_borrow_day as cantBorrowDay,
 			   no_lent_count as noLentCount,
-			   can_request as canRequest
+			   can_request as canRequest,
+			   member_status as memberStatus
 			   from tbl_member 
 			   where member_no = #{_parameter}
 	</select>
+	
+	<!-- 회원가입 후 본인인증 절차를 거쳐 로그인 권한을 얻도록 하는 로직들 -->
+    <update id='updateMemberStatus'>
+        UPDATE TBL_MEMBER
+        SET MEMBER_STATUS = 'Y', AUTH_CODE = NULL 
+        WHERE MEMBER_EMAIL = #{memberEmail} 
+          AND AUTH_CODE = #{authCode} 
+          AND MEMBER_STATUS = 'N' 
+    </update>
+
+    <select id='countActiveMemberByEmail' parameterType='string' resultType='int'>
+        SELECT COUNT(*) FROM TBL_MEMBER 
+        WHERE MEMBER_EMAIL = #{memberEmail} 
+          AND MEMBER_STATUS = 'Y' 
+    </select>
+
+	<!-- 이메일 인증을 통해 비밀번호 변경 -->
+    <update id='updatePasswordByEmail'>
+        UPDATE TBL_MEMBER
+        SET MEMBER_PW = #{newPassword} 
+        WHERE MEMBER_EMAIL = #{memberEmail} 
+          AND MEMBER_STATUS = 'Y' 
+    </update>
 </mapper>

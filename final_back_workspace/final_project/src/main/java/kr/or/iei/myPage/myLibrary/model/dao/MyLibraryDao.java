@@ -22,5 +22,11 @@ public interface MyLibraryDao {
 
 	int updateMyLibraryName(MyLibrary myLibrary);
 
+	int deleteMyLibrary(String myLibraryNo);
+
+	int deleteFromMyLibrary(String myLibraryBookNo);
+
+	int moveBooktoAnotherLibrary(MyLibraryBook myLibraryBook);
+
 
 }
