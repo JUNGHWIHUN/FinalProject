@@ -29,6 +29,7 @@ public class MyLibraryService {
 	//내 서재의 새로운 책장(카테고리) 만들기
 	@Transactional
 	public int addNewMyLibrary(MyLibrary myLibrary) {
+		System.out.println(myLibrary.toString());
 		return dao.addNewMyLibrary(myLibrary);
 	}
 

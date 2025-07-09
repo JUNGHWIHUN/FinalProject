@@ -33,7 +33,9 @@ public class LentBookListController {
 		
 		try {
 			ArrayList<LentBookList> lentBookList = service.selectBorrowBook(memberNo);
+			System.out.println(memberNo);
 			res = new ResponseDto(HttpStatus.OK, "", lentBookList, "success");
+			System.out.println(lentBookList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

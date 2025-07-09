@@ -30,6 +30,12 @@ export default function MyLibrary(){
     //선택된 서재에 담긴 책 목록
     const [booksInMyLibrary, setBooksInMyLibrary] = useState({});
 
+    //선택된 서재에 담긴 책 목록
+    const [bookToMove, setBookToMove] = useState({});
+
+    //선택된 서재에 담긴 책 목록
+    const [targetLibraryNo, setTargetLibraryNo] = useState("");
+
     //서재 목록 불러오기
     useEffect(() => {
         if (isLogined && loginMember?.memberNo) {

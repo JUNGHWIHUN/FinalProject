@@ -1,6 +1,8 @@
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom";
 import createInstance from "../../axios/Interceptor";
+import { useEffect, useState } from "react";
+import useUserStore from "../../store/useUserStore";
 
 export default function DetailBook(){
     
@@ -9,7 +11,7 @@ export default function DetailBook(){
 
     //기존 회원 정보 표출 및 수정 정보 입력받아 저장할 변수
     const [member, setMember]= useState({
-            memberId : "", memberPhone : ""
+            memberNo : "", memberId : "", memberPhone : ""
     });
     
     //환경변수 파일에 저장된 서버 URL 읽어오기
@@ -17,29 +19,37 @@ export default function DetailBook(){
     const axiosInstacne = createInstance();
     const {loginMember, setLoginMember, setAccessToken, setRefreshToken} = useUserStore();
     
-    useEffect(function(){
-            //랜더링 후, 회원 정보 조회
-            let options = {};
-            options.url = serverUrl + "/member/" + loginMember.memberNo;
-            options.method = "get";
-    
-            axiosInstacne(options)
-            .then(function(res){
-                setMember(res.data.resData);
-            })
-            .catch(function(err){
-                console.log(err);
-            })
-        },[])
-    
-    function requestBook(){
-        let options = {};
-        options.url = serverUrl + 'requestBook/detailBook';
-        options.method = 'post';
-        
-    }
-        
+    //도서 신청사유
+    const [reason, setReason] = useState("");
 
+    const navigate = useNavigate();
+        
+        function requestBook(){
+            let options = {};
+            options.url = serverUrl + "/requestBook/detailBook";
+            options.method = "post";
+            options.data = {
+                title: book.book.title_info,
+                author: book.book.author_info,
+                publisher: book.book.pub_info,
+                memberNo: loginMember.memberNo,
+                memberId: loginMember.memberId,
+                memberPhone: loginMember.memberPhone,
+                reason: reason
+            };
+
+            axiosInstacne(options)
+                .then(function(res){
+                    alert("신청이 완료되었습니다!");
+                    console.log(res.data);
+                    navigate("/Main");
+                })
+                .catch(function(err){
+                    console.error("신청 오류:", err);
+                    alert("신청에 실패했습니다.");
+                });
+}
+        
     return(
         <div>
             <h2>도서 상세 정보</h2>
@@ -65,10 +75,9 @@ export default function DetailBook(){
                 <hr />
 
                 <div className="memberInfo">
-                    회원 아이디 : <input type="text" readOnly /> <br />
-                    회원 전화번호 : <input type="text" readOnly /> <br />
-                    신청 사유 : <input type="text" readOnly /> <br />
-                    
+                    회원 아이디 : <input type="text" value={loginMember.memberId} readOnly /> <br />
+                    회원 전화번호 : <input type="text" value={loginMember.memberPhone} readOnly /> <br />
+                    신청 사유 : <input type="text" value={reason} onChange={(e) => setReason(e.target.value)} required /> <br />
                     <button type="submit">신청</button>
                     <Link to={"/requestBook/wishBookDirect"}><button>직접 입력하기</button></Link>
                     

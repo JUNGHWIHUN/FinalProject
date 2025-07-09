@@ -189,3 +189,383 @@ header {
 .main-menu-item:hover {
     color: #007bff;
 }
+
+
+
+/* Footer Css */
+footer {
+    width: 100%;
+    background-color: #e6e6e6; /* 스크린샷의 연회색 배경색 */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05); /* 상단에 약한 그림자 */
+    padding: 30px 0; /* 전체 푸터의 상하 패딩 */
+    box-sizing: border-box;
+    font-family: Arial, sans-serif; /* 폰트 스타일 설정 */
+    color: #555; /* 기본 글자색 */
+}
+
+.footer-content-wrap {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto; /* 중앙 정렬 */
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 요소들을 배치 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+}
+
+.footer-links {
+    margin-bottom: 25px; /* 링크 영역과 아래 정보 영역 사이 간격 */
+    font-size: 14px;
+    color: #555;
+}
+
+.footer-links span {
+    margin: 0 5px; /* 링크 텍스트와 구분선 사이 간격 */
+    white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+.footer-links span.divider {
+    color: #ccc; /* 구분선 색상 */
+}
+
+/* 첫 번째 링크나 텍스트 앞의 마진 제거 (필요하다면) */
+.footer-links span:first-child {
+    margin-left: 0;
+}
+
+.footer-info {
+    display: flex;
+    flex-direction: column; /* 정보들을 세로로 정렬 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+    line-height: 1.6; /* 줄 간격 */
+    font-size: 14px;
+    color: #555;
+}
+
+/* 로고와 작은 텍스트 그룹 */
+.footer-logo-text-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px; /* 로고 그룹과 아래 도서관 이름 사이 간격 */
+}
+
+.footer-book-icon {
+    height: 30px; /* 푸터 아이콘 크기 조정 */
+    margin-right: 8px; /* 아이콘과 텍스트 사이 간격 */
+}
+
+.footer-small-logo-text {
+    font-size: 13px; /* 로고 옆 작은 텍스트 크기 */
+    color: #777; /* 색상 조정 */
+}
+
+.library-name-main { /* 메인 도서관 이름 스타일 */
+    font-size: 20px; /* 도서관 이름 폰트 크기 */
+    font-weight: bold;
+    color: #333; /* 도서관 이름 색상 */
+    margin: 0 0 10px 0; /* 상하 마진 조정 */
+}
+
+.address-contact-info { /* 주소 및 연락처 정보 스타일 */
+    font-size: 14px; /* 폰트 크기 */
+    color: #555; /* 글자색 */
+    margin: 0; /* 기본 마진 제거 */
+}
+
+.address-contact-info br {
+    display: block; /* 줄바꿈 유지 */
+    margin-bottom: 4px; /* 각 라인 사이 간격 */
+}
+
+.address-contact-info strong {
+    font-weight: normal; /* 스크린샷처럼 굵지 않도록 */
+}
+
+
+/* Main */
+/* Common.css */
+
+/* --- 기존 Header CSS --- */
+/* ... */
+
+/* --- 기존 Footer CSS --- */
+/* ... */
+
+
+/* --- Main Content CSS 시작 --- */
+
+.main-content {
+    background-color: #f7f7f7; /* 메인 배경색 (스크린샷 참고) */
+    padding: 30px 0; /* 메인 콘텐츠 상하 패딩 */
+    flex-grow: 1; /* App.css에서 설정된 flex-grow: 1과 함께 작동하여 남은 공간 채움 */
+}
+
+.main-container {
+    width: 90%;
+    max-width: 1200px; /* 헤더/푸터와 동일한 최대 너비 */
+    margin: 0 auto; /* 중앙 정렬 */
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* 섹션들 사이의 기본 간격 */
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    padding-left: 10px; /* 스크린샷처럼 제목 앞에 여백 */
+    position: relative; /* 점 표시를 위해 */
+}
+
+.section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px; /* 점 크기 */
+    height: 8px; /* 점 크기 */
+    background-color: #8cc46d; /* 스크린샷의 녹색 점 */
+    border-radius: 50%;
+}
+
+
+/* 1. 추천 도서 섹션 */
+.recommended-books-section {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.recommended-books-list {
+    display: flex;
+    justify-content: space-around; /* 이미지 간격 조정 */
+    align-items: flex-start;
+    flex-wrap: wrap; /* 작은 화면에서 줄바꿈 허용 */
+    gap: 20px; /* 책 카드 사이 간격 */
+}
+
+.book-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px; /* 책 카드 너비 조정 */
+    text-align: center;
+}
+
+.book-card img {
+    max-width: 100%;
+    height: 200px; /* 책 이미지 높이 고정 */
+    object-fit: contain; /* 비율 유지하며 이미지 맞춤 */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 10px;
+}
+
+.book-card p.book-title {
+    font-size: 14px;
+    color: #333;
+    font-weight: bold;
+    margin: 0;
+}
+
+
+/* 2. 메인 메뉴 아이콘 섹션 및 도서관 운영 시간 섹션 */
+.main-features-section {
+    display: flex;
+    gap: 30px; /* 아이콘 메뉴와 운영시간 카드 사이 간격 */
+}
+
+.main-menu-icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* 아이콘들 균등 배치 */
+    flex-grow: 1; /* 남은 공간을 차지 */
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.menu-icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #555;
+    font-size: 13px;
+    width: 18%; /* 5개 아이콘이 한 줄에 오도록 (약 20%이지만 간격 고려) */
+    text-align: center;
+    margin-bottom: 10px; /* 줄바꿈 시 하단 간격 */
+}
+
+.menu-icon-item img {
+    width: 60px; /* 아이콘 크기 */
+    height: 60px;
+    margin-bottom: 8px;
+    border-radius: 50%; /* 원형 배경 */
+    background-color: #e0f0d0; /* 연한 녹색 배경 */
+    padding: 10px; /* 아이콘과 배경 사이 패딩 */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.menu-icon-item:hover img {
+    background-color: #c0e0a0; /* 호버 시 색상 변경 */
+}
+
+.library-hours-card {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    width: 300px; /* 스크린샷에 맞춰 고정 너비 */
+    flex-shrink: 0; /* 줄어들지 않도록 */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hours-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #eee; /* 점선 아래줄 */
+}
+
+.hours-day {
+    font-size: 28px; /* 날짜 글자 크기 */
+    font-weight: bold;
+    color: #4CAF50; /* 녹색 강조 */
+    margin-bottom: 5px;
+}
+
+.hours-day span {
+    font-size: 18px; /* 요일 글자 크기 */
+    font-weight: normal;
+    color: #555;
+}
+
+.hours-time {
+    font-size: 15px;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+.hours-holiday {
+    font-size: 15px;
+    color: #777;
+    margin-top: 10px;
+    padding-top: 5px;
+    border-top: 1px dashed #eee; /* 점선 위쪽 줄 */
+}
+
+.hours-holiday span {
+    font-weight: bold;
+    color: #dc3545; /* 빨간색 강조 */
+}
+
+
+/* 3. 베스트 셀러 섹션 */
+.bestseller-section {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.bestseller-books-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.bestseller-books-list .book-card { /* 추천도서와 동일한 카드 스타일 재활용 */
+    width: 200px; /* 베스트셀러는 좀 더 넓게 */
+}
+
+.bestseller-books-list .book-card img {
+    height: 250px; /* 베스트셀러 이미지 높이 조정 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* 좀 더 강한 그림자 */
+}
+
+
+/* 4. 공지사항 및 진행 중인 캠페인 섹션 */
+.notice-campaign-section {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.notice-board {
+    flex-grow: 1; /* 남은 공간을 차지 */
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.notice-board ul {
+    list-style: none; /* 기본 리스트 스타일 제거 */
+    padding: 0;
+    margin: 0;
+}
+
+.notice-board li {
+    margin-bottom: 12px; /* 공지사항 항목 간 간격 */
+    font-size: 14px;
+}
+
+.notice-board li a {
+    text-decoration: none;
+    color: #555;
+    white-space: nowrap; /* 줄바꿈 방지 */
+    overflow: hidden; /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* ...으로 표시 */
+    display: block; /* 링크 전체 클릭 영역 확보 */
+    padding-left: 10px; /* 텍스트 시작 여백 */
+    position: relative;
+}
+
+.notice-board li a::before {
+    content: '▪'; /* 불릿 포인트 (검은색 네모) */
+    color: #888;
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 12px;
+}
+
+.notice-board li a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.campaign-ad {
+    width: 400px; /* 캠페인 광고 고정 너비 */
+    flex-shrink: 0;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 25px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.campaign-ad img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin-top: 10px;
+}

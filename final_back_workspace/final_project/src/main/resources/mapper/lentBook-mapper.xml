@@ -8,6 +8,7 @@
  			from tbl_lent_book lb
  			join tbl_book b on lb.lent_call_no = b.call_no
  			where lent_member_no = #{parameter} and (b.can_lend = 'L' or b.can_lend = 'R')
+
  	</select>
  	
  	<!-- 대출 연장 업데이트 -->
