@@ -74,6 +74,12 @@ public interface AdminDao {
 
 	ArrayList<LentBookList> selectOverMemberList(PageInfoDto pageInfo, String type, String keyword);
 
+	ArrayList<MemberDto> getOneMember(String memberNo);
+
+	ArrayList<BookList> getOneBook(String bookNo);
+
+	int fixMember(MemberDto memberDto);
+
 	
 
 	

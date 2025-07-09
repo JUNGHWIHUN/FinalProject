@@ -326,7 +326,7 @@
 			   overdue_day_count as overudeCount,
 			   borrowed_book_count as borrowedCount,
 			   max_borrow_count as maxBorrowedCount,
-			   can_borrow as canBorrw,
+			   can_borrow as canBorrow,
 			   cant_borrow_day as cantBorrowDay,
 			   no_lent_count as noLentCount,
 			   can_request as canRequest,
@@ -439,4 +439,47 @@
 	  	   ) a
 	 where rnum between #{pageInfo.start} and #{pageInfo.end}
 	</select>
+	
+	<select id="getOneMember" parameterType="String" resultType="MemberDto">
+	    select member_no as memberNo,
+			   member_id as memberId,
+			   member_pw as memberPw,
+			   member_name as memberName,
+			   member_email as memberEmail,
+			   member_phone as memberPhone,
+			   is_admin as isAdmin,
+			   enroll_date as enrollDate,
+			   overdue_day_count as overudeCount,
+			   borrowed_book_count as borrowedCount,
+			   max_borrow_count as maxBorrowedCount,
+			   can_comment as canComment,
+			   can_borrow as canBorrow,
+			   cant_borrow_day as cantBorrowDay,
+			   no_lent_count as noLentCount,
+			   can_request as canRequest,
+			   member_addr as memberAddr
+		from tbl_member where member_no = #{memberNo}
+	</select>
+	
+	<select id="getOneBook" parameterType="String" resultType="BookList">
+	select call_no as bookNo,
+			   author_info as author,
+			   title_info as title,
+			   pub_info as pub,
+			   pub_year_info as pubYear,
+			   reg_date as regDate,
+			   isbn as isbn,
+			   place_info as place,
+			   image_url as imageUrl,
+			   can_lend as canLent,
+			   remark as remark
+		from tbl_book where call_no = #{bookNo}
+	</select>
+	
+	<update id="fixMember" parameterType="MemberDto">
+	update tbl_member set can_borrow = #{canBorrow},
+						  can_comment = #{canComment},
+						  max_borrow_count = #{maxBorrowedCount}
+				where member_no = #{memberNo}
+	</update>
 </mapper>

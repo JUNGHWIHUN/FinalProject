@@ -2,6 +2,7 @@ import axios from "axios";
 import PageNavi from '../common/PageNavi';
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 export default function AdminMemberPage(){
@@ -108,7 +109,7 @@ export default function AdminMemberPage(){
 
         {subMode === "overdueList" && (
             <>
-            <select value={filterType} onChange={keywordType}>
+                <select value={filterType} onChange={keywordType}>
                      <option value="memberName">회원이름</option>
                      <option value="bookName">대출된 책 목록</option>
                 </select>
@@ -143,11 +144,13 @@ function MemberItem(props){
     const member = props.member;
     const memberNo = member.memberNo;
 
+     console.log("MemberItem - memberNo:", memberNo);
 
     return(
         <>
+       
         <tr>
-            <td>{member.memberName}</td>
+            <td><Link to={`/admin/memberDetail/${memberNo}?from=member`}>{member.memberName}</Link></td>
             <td>{member.memberId}</td>
             <td>{member.memberEmail}</td>
             <td>{member.overudeCount}</td>
@@ -162,12 +165,15 @@ function MemberItem(props){
 function OverMemberItem(props){
     const member = props.member;
     const memberNo = member.memberNo;
+    const bookNo = member.callNo;
+    console.log("OverMemberItem - member:", member);
+    console.log("OverMemberItem - bookNo:", member.callNo);
 
 
     return(
         <>
         <tr>
-            <td>{member.memberName}</td>
+            <td><Link to={`/admin/memberDetail/${memberNo}?from=overdue&bookNo=${bookNo}`}>{member.memberName}</Link> </td>
             <td>{member.title}</td>
             <td>{member.lentDate}</td>
             <td>{member.overDue}</td>

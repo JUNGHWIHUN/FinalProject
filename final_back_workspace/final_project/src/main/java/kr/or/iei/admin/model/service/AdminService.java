@@ -222,6 +222,23 @@ public class AdminService {
 						
 		return memberMap;
 	}
+
+
+	public ArrayList<MemberDto> getOneMember(String memberNo) {
+		return dao.getOneMember(memberNo);
+	}
+
+
+	public ArrayList<BookList> getOneBook(String bookNo) {
+		// TODO Auto-generated method stub
+		return dao.getOneBook(bookNo);
+	}
+
+	@Transactional
+	public int fixMember(MemberDto memberDto) {
+		// TODO Auto-generated method stub
+		return dao.fixMember(memberDto);
+	}
 	
 	
 	

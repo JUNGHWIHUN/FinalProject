@@ -20,6 +20,7 @@ import kr.or.iei.admin.model.dto.BookList;
 import kr.or.iei.admin.model.dto.BookSelectDto;
 import kr.or.iei.admin.model.dto.LentBookDto;
 import kr.or.iei.admin.model.dto.LentBookList;
+import kr.or.iei.admin.model.dto.MemberDto;
 import kr.or.iei.admin.model.dto.UserOne;
 import kr.or.iei.admin.model.service.AdminService;
 import kr.or.iei.book.model.dto.Book;
@@ -253,6 +254,63 @@ public class AdminController {
 		
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 		
+	}
+	
+	//회원 한명에 대한 정보 가져오기
+	@GetMapping("/memberDetails/{memberNo}")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> getOneMember(@PathVariable String memberNo){
+		System.out.println("회원 한명 정보 불러오기 시도");
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		System.out.println("잘 되는가?1");
+		try {
+			ArrayList<MemberDto> memberDetail = service.getOneMember(memberNo);
+			System.out.println("잘 되는가?2");
+			System.out.println("memberDetail: " + memberDetail);
+			res = new ResponseDto(HttpStatus.OK, "", memberDetail, "");
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//책 하나에 대한 정보 가져오기
+	@GetMapping("/bookDetails/{bookNo}")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> getOneBook(@PathVariable String bookNo){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		try {
+			ArrayList<BookList> bookDetail = service.getOneBook(bookNo);
+			res = new ResponseDto(HttpStatus.OK, "", bookDetail, "");
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//어드민이 회원정보 수정.
+	@PostMapping("/memberFix")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> fixMember(@RequestBody MemberDto memberDto){
+			ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		try {
+			int result = service.fixMember(memberDto);
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "수정 완료", null, "");
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
 	
 	

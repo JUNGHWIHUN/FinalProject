@@ -21,7 +21,7 @@ public class MemberDto {
 	private String overudeCount;
 	private String borrowedCount;
 	private String maxBorrowedCount;
-	private String canBorrw;
+	private String canBorrow;
 	private String cantBorrowDay;
 	private String noLentCount;
 	private String canRequest;
