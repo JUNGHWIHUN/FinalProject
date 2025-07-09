@@ -47,12 +47,20 @@ export default function LentBookList() {
 
         axiosInstance(options)
             .then(function (res) {
-                console.log(res.data.resData);
+                console.log(res);
                 if (res.data.resData === 1) {
-                    Swal.fire("연장 완료", "대출 기간이 7일 연장되었습니다.", "success");
+                    Swal.fire({
+                        title : '알림',
+                        text : res.data.clientMsg,
+                        icon : res.data.alertIcon
+                    })
                     getLentBookList(); // 목록 다시 불러오기
                 } else {
-                    Swal.fire("연장 실패", "도서 연장에 실패했습니다.", "error");
+                    Swal.fire({
+                        title : '알림',
+                        text : res.data.clientMsg,
+                        icon : res.data.alertIcon
+                    });
                 }
             })
             .catch(function (err) {

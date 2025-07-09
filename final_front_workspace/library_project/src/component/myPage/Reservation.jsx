@@ -65,16 +65,26 @@ export default function Reservation(){
 
         axiosInstacne(options)
         .then(function(res){
-            Swal.fire({
-                title : "알림",
-                text : '예약이 정상적으로 취소되었습니다.',
-                icon : "success",
-                confirmButtonText : '확인'
+            if(res.data.resData ===1){
+                
+                Swal.fire({
+                    title : "알림",
+                    text :  res.data.clientMsg,
+                    icon :  res.data.alertIcon,
+                    confirmButtonText : '확인'
+    
+                })
+                const deleteRefreshTrigger = refreshTrigger +1 
+                setRefreshTrigger(deleteRefreshTrigger);
+            }else{
+                 Swal.fire({
+                    title : '알림',
+                    text : res.data.clientMsg,
+                    icon : res.data.alertIcon
+                    
+                });
+            }
 
-            })
-
-            const deleteRefreshTrigger = refreshTrigger +1 
-            setRefreshTrigger(deleteRefreshTrigger);
         })
         .catch(function(err){
             console.log(err);
@@ -98,6 +108,10 @@ export default function Reservation(){
                 </thead>
                 <tbody>
                   {reservations.map(function(reservation,index){
+
+              
+
+
                     return <tr key={index}>
                         <td>{reservation.title}</td>
                         <td>{reservation.reservationNo}</td>

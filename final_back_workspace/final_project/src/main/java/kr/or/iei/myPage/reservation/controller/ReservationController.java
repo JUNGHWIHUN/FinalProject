@@ -72,7 +72,14 @@ public class ReservationController {
 
 		try {
 			int result = service.deleteReservation(reservation);
-			res = new ResponseDto(HttpStatus.OK, "", result, "");
+			
+			if(result > 0) {
+				
+				res = new ResponseDto(HttpStatus.OK, "예약이 정상적으로 취소되었습니다.", result, "success");
+			}else {
+				res = new ResponseDto(HttpStatus.OK, "예약 취소 중, 오류가 발생하였습니다..", result, "warning");
+
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
