@@ -89,17 +89,23 @@ public class BookService {
 	public int insertComment(BookComment comment) {
 		int result = 0;		//처리 결과값을 저장할 변수 설정
 		
-		//서평 중복작성 여부 확인
-		String memberId = comment.getMemberId();
-		String callNo = comment.getCallNo();
-				
-		result = dao.commentCheck(memberId, callNo);
+		//해당 도서 대출이력이 있는지 확인 : 
+		result = dao.hasBeenLentCheck(comment);
 		
+		//대출이력이 확인된 이후에 이하 로직 수행
 		if(result > 0) {
-			result = -1;	//이미 작성한 경우 -1 을 반환
-		} else {
-			result = dao.insertComment(comment);
-		}
+			//서평 중복작성 여부 확인
+			String memberId = comment.getMemberId();
+			String callNo = comment.getCallNo();
+					
+			result = dao.commentCheck(memberId, callNo);
+			
+			if(result > 0) {
+				result = -1;	//이미 작성한 경우 -1 을 반환
+			} else {
+				result = dao.insertComment(comment);
+			}
+		} else return -2;	//해당 도서를 대출한 이력이 없으면 -2 반환
 		
 		return result;
 		

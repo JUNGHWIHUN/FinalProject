@@ -25,14 +25,22 @@ public class ReservationService {
 	//도서 예약
 	@Transactional
 	public int reservateBook(Reservation reservateBook) {
-		int result = dao.reservateBook(reservateBook);
-		String callNo = reservateBook.getReservationCallNo();
+		//본인이 대출한 도서인지 확인
+		int result = dao.selfReservateCheck(reservateBook);
 		
+		//현재 본인이 대출중인 도서라면 -1 반환
 		if(result > 0) {
-			//정상적으로 예약되었을 때 해당 책의 대출상태를 '예약중' 으로 변경
-			dao.updateBookIsReservated(callNo);
-		}
+			return -1;
+		}else {
 		
+			result = dao.reservateBook(reservateBook);
+			String callNo = reservateBook.getReservationCallNo();
+			
+			if(result > 0) {
+				//정상적으로 예약되었을 때 해당 책의 대출상태를 '예약중' 으로 변경
+				dao.updateBookIsReservated(callNo);
+			}
+		}
 		return result;
 	}
 	

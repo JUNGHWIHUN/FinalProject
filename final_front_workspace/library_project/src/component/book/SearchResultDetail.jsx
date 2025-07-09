@@ -141,7 +141,7 @@ export default function SearchResultDetail (){
     //도서 예약 함수
     function reservation(){
         Swal.fire({
-            tite : '알림',
+            title : '알림',
             text : '도서를 예약하시겠습니까?',
             icon : 'warning',
             showCancelButton: true,

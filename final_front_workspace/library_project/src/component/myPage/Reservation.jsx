@@ -35,9 +35,10 @@ export default function Reservation(){
         .then(function(res){
             
             
-
+            
             setReservations(res.data.resData.reservationList);
             
+            console.log(res.data.resData);
 
             setPageInfo(res.data.resData.pageInfo);
             
@@ -47,6 +48,7 @@ export default function Reservation(){
         })
 
     },[reqPage, loginMember, refreshTrigger]);
+
 
    
     //예약취소하기 버튼 누를 시 호출할 함수

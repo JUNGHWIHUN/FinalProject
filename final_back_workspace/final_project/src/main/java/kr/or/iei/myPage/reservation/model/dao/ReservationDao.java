@@ -16,6 +16,7 @@ public interface ReservationDao {
 
 	ArrayList<Reservation> selectReservationList(HashMap<String, Object> paramMap);
 	
+	int selfReservateCheck(Reservation reservateBook);
 
 	int updateBookCanLend(String reservationCallNo);
 	
@@ -24,6 +25,7 @@ public interface ReservationDao {
 	int reservateBook(Reservation reservateBook);
 
 	void updateBookIsReservated(String callNo);
+
 
 
 }

@@ -84,18 +84,27 @@
           AND AUTH_CODE = #{authCode} 
           AND MEMBER_STATUS = 'N' 
     </update>
-
-    <select id='countActiveMemberByEmail' parameterType='string' resultType='int'>
-        SELECT COUNT(*) FROM TBL_MEMBER 
+ 
+ 	<!-- 이메일을 입력하 아이디 찾기 -->   
+    <select id='findMemberIdByEmail' parameterType='string' resultType='string'>
+        SELECT MEMBER_ID FROM TBL_MEMBER 
         WHERE MEMBER_EMAIL = #{memberEmail} 
-          AND MEMBER_STATUS = 'Y' 
+          AND MEMBER_STATUS = 'Y'
     </select>
 
-	<!-- 이메일 인증을 통해 비밀번호 변경 -->
-    <update id='updatePasswordByEmail'>
+    <select id='countActiveMemberByIdAndEmail' parameterType='map' resultType='int'>
+        SELECT COUNT(*) FROM TBL_MEMBER 
+        WHERE MEMBER_ID = #{memberId} 
+          AND MEMBER_EMAIL = #{memberEmail} 
+          AND MEMBER_STATUS = 'Y'
+    </select>
+
+	<!-- 이메일 인증을 통해 임시 비밀번호 발급 -->
+    <update id='updatePasswordByIdAndEmail' parameterType='map'>
         UPDATE TBL_MEMBER
         SET MEMBER_PW = #{newPassword} 
-        WHERE MEMBER_EMAIL = #{memberEmail} 
+        WHERE MEMBER_ID = #{memberId} 
+          AND MEMBER_EMAIL = #{memberEmail} 
           AND MEMBER_STATUS = 'Y' 
     </update>
 </mapper>

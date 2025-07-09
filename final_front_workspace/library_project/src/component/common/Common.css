@@ -1,0 +1,191 @@
+/* Header.css */
+
+header {
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 0; /* 전체 헤더의 상하 패딩은 header-top-area에서 조정 */
+    box-sizing: border-box;
+}
+
+.header-top-area {
+    display: flex;
+    justify-content: space-between; /* 로고와 검색/로그인 그룹을 양 끝으로 정렬 */
+    align-items: center;
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 25px 0; /* 상하 패딩을 크게 늘려 전체적인 상하 폭 확대 */
+}
+
+/* 로고와 검색창을 묶는 컨테이너 */
+.header-logo-search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* 로고와 검색창 사이 간격 다시 넓힘 (스크린샷 간격에 맞춰) */
+    flex-grow: 1; /* 이 부분이 남은 공간을 차지하여 검색창을 중앙에 가깝게 밀어냅니다 */
+}
+
+.header-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    white-space: nowrap;
+    /* margin-right: 15px; // flex-grow와 gap으로 간격 조절 */
+}
+
+.header-logo img.book-icon-img {
+    height: 55px; /* 책 아이콘 크기를 더 크게 조정 */
+    margin-bottom: 5px; /* 아이콘과 텍스트 사이 간격 조정 */
+}
+
+.header-logo span {
+    font-size: 14px; /* 폰트 크기 14px로 유지 */
+    font-weight: normal;
+    color: #555;
+}
+
+/* 단순 검색 폼 스타일 */
+#simple-search-form-wrap {
+    flex-grow: 1; /* 검색 폼이 최대한 공간을 차지하도록 */
+    display: flex;
+    justify-content: center; /* 내부 폼을 중앙에 가깝게 정렬 */
+}
+
+#simple-search-form-wrap form {
+    display: flex;
+    align-items: center;
+    border: 2px solid #a8d58c;
+    border-radius: 5px;
+    background-color: #fff;
+    height: 45px; /* 검색창 높이 45px로 더 키움 */
+    width: 100%;
+    max-width: 650px; /* 검색 폼의 최대 너비 대폭 확장 */
+    overflow: hidden;
+}
+
+#simple-search-form-wrap form button.search-text-btn {
+    background-color: #a8d58c;
+    color: white;
+    border: none;
+    padding: 0 18px; /* 패딩 18px로 다시 늘림 */
+    height: 100%;
+    font-size: 16px; /* 폰트 크기 16px로 키움 */
+    font-weight: bold;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+#simple-search-form-wrap form button.search-text-btn:hover {
+    background-color: #8cc46d;
+}
+
+#simple-search-form-wrap form input {
+    border: none;
+    outline: none;
+    padding: 0 12px; /* 좌우 패딩 조정 */
+    flex-grow: 1;
+    font-size: 16px; /* 폰트 크기 16px로 키움 */
+    background-color: transparent;
+    height: 100%;
+}
+
+#simple-search-form-wrap form input::placeholder {
+    color: #bbb;
+}
+
+#simple-search-form-wrap form button.search-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 22px; /* 돋보기 아이콘 크기 더 키움 */
+    color: #555;
+    padding: 0 12px; /* 좌우 패딩 조정 */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+
+/* 로그인/회원가입/관리자 메뉴 */
+#login-menu {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 링크/버튼 사이 간격 8px로 다시 넓힘 */
+    font-size: 14px; /* 폰트 크기 14px로 다시 넓힘 */
+    white-space: nowrap;
+    color: #555;
+    margin-left: 30px; /* 검색창과 로그인 메뉴 사이 간격 다시 넓힘 */
+}
+
+#login-menu .login-link,
+#login-menu .admin-link {
+    color: #555;
+    text-decoration: none;
+}
+
+#login-menu .login-link:hover,
+#login-menu .admin-link:hover {
+    text-decoration: underline;
+}
+
+#login-menu .divider {
+    color: #ccc;
+    margin: 0 2px; /* 구분선 좌우 간격 2px로 다시 넓힘 */
+}
+
+#login-menu .welcome-msg {
+    margin: 0;
+    color: #555;
+}
+
+#login-menu .logout-btn {
+    background: none;
+    color: #555;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 14px; /* 폰트 크기 14px로 다시 넓힘 */
+    text-decoration: underline;
+}
+
+#login-menu .logout-btn:hover {
+    color: #007bff;
+}
+
+/* 주 메뉴 바 */
+#main-menu-bar {
+    display: flex;
+    justify-content: center;
+    background-color: #f7e7cc;
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+}
+
+.main-menu-item {
+    text-decoration: none;
+    color: #555;
+    font-weight: bold;
+    padding: 0 65px; /* 간격 35px에서 45px로 대폭 넓힘 */
+    font-size: 16px;
+    white-space: nowrap;
+}
+
+.main-menu-item:hover {
+    color: #007bff;
+}
