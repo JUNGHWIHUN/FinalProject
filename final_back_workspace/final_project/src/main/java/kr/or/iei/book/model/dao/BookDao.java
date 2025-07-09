@@ -35,4 +35,6 @@ public interface BookDao {
 
     List<Book> selectNewArrivalBooksByGenre(String genreCode);
 
+	int hasBeenLentCheck(BookComment comment);
+
 }
