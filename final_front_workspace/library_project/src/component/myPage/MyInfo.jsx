@@ -143,6 +143,14 @@ export default function MyInfo() {
                             </td>
                         </tr>
                         <tr>
+                            <th colSpan="2" style={{ textAlign: "right" }}>
+                                비밀번호
+                                <button type="button" onClick={() => navigate("/myPage/pwChg")}>
+                                비밀번호 변경
+                                </button>
+                            </th>
+                        </tr>
+                        <tr>
                             <th><label htmlFor="memberPhone">전화번호</label></th>
                             <td>
                                 <input
