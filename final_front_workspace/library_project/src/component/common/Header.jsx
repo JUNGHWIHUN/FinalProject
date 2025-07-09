@@ -2,7 +2,7 @@ import { use, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import useUserStore from "../../store/useUserStore";
 
-import './header.css'
+import './Common.css'
 
 export default function Header(){
 
@@ -39,53 +39,61 @@ export default function Header(){
     }
 
     return (
-        <>
-            <header>
-                
+        <header>
+            <div className="header-top-area">
+                <div className="header-logo-search-wrap"> {/* 로고와 검색창을 묶는 새로운 div */}
+                    <div className="header-logo">
+                        <Link to="/">
+                            {/* 실제 로고 이미지 경로로 변경해주세요. 스크린샷에 맞춰 책 아이콘으로 변경할 수도 있습니다. */}
+                            <img src="/path/to/your/book-icon.png" alt="책 아이콘" className="book-icon-img" /> {/* 새로운 이미지 클래스 */}
+                            <span>KH공감도서관</span>
+                        </Link>
+                    </div>
+
                     <div id="simple-search-form-wrap">
                         <form onSubmit={function(e){
-                            e.preventDefault(); //기본 submit 이벤트 제어 : 별도의 함수로 분리
-                            search();          //검색 함수 호출
+                            e.preventDefault();
+                            search();
                         }}>
-                            <label htmlFor='simple-search-criteria'>도서 검색</label>
+                            {/* '도서 검색' 버튼 추가 */}
+                            <button type="button" className="search-text-btn">도서 검색</button> {/* 버튼으로 변경 */}
+                            <label htmlFor='simple-search-criteria-input' className="sr-only">검색할 도서정보 입력</label>
                             <input type='text' id='simple-search-criteria-input' value={book.titleInfo} onChange={chgValue} placeholder="검색할 도서정보를 입력하세요" />
-                            <button type='submit'>🔍</button>
+                            <button type='submit' className="search-icon-btn">🔍</button>
                         </form>
                     </div>
-                    
-                    <div id='login-menu'>
-                        {!isLogined ?
+                </div>
+
+                <div id='login-menu'>
+                    {!isLogined ?
+                        <>
+                            <Link to='/join' className="login-link">회원가입</Link>
+                            <span className="divider"> / </span>
+                            <Link to='/login' className="login-link">로그인</Link>
+                        </>
+                        : loginMember && loginMember.isAdmin === 'T' ?
                             <>
-                                <Link to='/join'>회원가입</Link> / 
-                                <Link to='/login'> 로그인</Link>
+                                <p className="welcome-msg">관리자님, 환영합니다</p>
+                                <Link to="/adminPage" className="admin-link">관리자페이지</Link>
+                                <button onClick={logout} className="logout-btn">로그아웃</button>
                             </>
-
-                            : loginMember.isAdmin === 'T' ?
-
+                            : loginMember ?
                                 <>
-                                    <p>관리자님, 환영합니다</p>
-                                    <Link to="/adminPage">관리자페이지</Link>
-                                    <button onClick={logout}>로그아웃</button>
-
+                                    <p className="welcome-msg">{loginMember.memberName}님, 환영합니다</p>
+                                    <button onClick={logout} className="logout-btn">로그아웃</button>
                                 </>
-                                :
-                                <>
-                                    <p>{loginMember.memberName}님, 환영합니다</p>
-                                    <button onClick={logout}>로그아웃</button>
-                                </>
-                        }
-                    </div>
+                                : null
+                    }
+                </div>
+            </div>
 
-                    <div id='menu-bar'>
-                        <Link to='/#'>도서관 소식</Link> // 
-                        <Link to='/book/searchDetail'>도서 검색</Link> // 
-                        <Link to='/requestBook/requestBookInfo'>희망도서 신청</Link> // 
-                        <Link to='/mypage'>마이페이지</Link> // 
-                        <Link to='/#'>도서관 소개</Link> // 
-                    </div>
-
-                
-            </header>
-        </>
-    )
+            <div id='main-menu-bar'>
+                <Link to='/news' className="main-menu-item">도서관 소식</Link>
+                <Link to='/book/searchDetail' className="main-menu-item">도서 검색</Link>
+                <Link to='/requestBook/requestBookInfo' className="main-menu-item">희망도서 신청</Link>
+                <Link to='/mypage' className="main-menu-item">마이페이지</Link>
+                <Link to='/intro' className="main-menu-item">도서관 소개</Link>
+            </div>
+        </header>
+    );
 }
