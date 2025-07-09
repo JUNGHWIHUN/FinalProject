@@ -47,6 +47,7 @@ export default function LentBookList() {
 
         axiosInstance(options)
             .then(function (res) {
+                console.log(res.data.resData);
                 if (res.data.resData === 1) {
                     Swal.fire("연장 완료", "대출 기간이 7일 연장되었습니다.", "success");
                     getLentBookList(); // 목록 다시 불러오기
@@ -63,24 +64,23 @@ export default function LentBookList() {
         <div className="lent-book-list">
             <h2>현 대출 목록</h2>
             {lentBookList.map(function (lentBook, index) {
-                const returnDateStr = lentBook.returnDate;
-                const formattedDate = returnDateStr.slice(0, 4) + '-' + returnDateStr.slice(4, 6) + '-' + returnDateStr.slice(6, 8);
-
-                // 날짜 비교를 위해 시간 정보 제거
-                const returnDate = new Date(formattedDate + 'T00:00:00');
+                
                 const today = new Date();
-                today.setHours(0, 0, 0, 0); // 오늘 날짜의 시간도 00시로 맞춤
+                today.setHours(0,0,0,0);        //시간을 00시로 초기화
+                   
 
-                const isOverdue = returnDate < today;
-
-                return (
+                    const returnDateParts = lentBook.returnDate.split("/"); // "25/07/09" → ["25", "07", "09"]
+                    const returnDate = new Date("20" + returnDateParts[0], returnDateParts[1] - 1, returnDateParts[2]); // 년, 월, 일
+                    const isOverdue = returnDate < today;
+                
+                    return (
                     <div key={"lentBook" + index} className="book-item">
                         <img src={lentBook.imageUrl} className="book-img" />
                         <div className="book-info">
                             <div>책 제목 : {lentBook.title}</div>
                             <div>대출번호 : {lentBook.lentBookNo}</div>
                             <div style={{ color: isOverdue ? "red" : "black" }}>
-                                반납 예정일 : {formattedDate}
+                                반납 예정일 : {lentBook.returnDate} 
                             </div>
                              <button
                                 type="button"
