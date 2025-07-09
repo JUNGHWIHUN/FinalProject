@@ -21,7 +21,7 @@ import RequestBookMain from './component/requestBook/requestBookMain';
 import FixBookDetail from './component/admin/FixBookDetail';
 import NewBook from './component/admin/NewBook';
 import AdminMemberPage from './component/admin/AdminMemberPage';
-import FindPassword from './component/myPage/FindPassword'; // MyPage 폴더 하위로 경로 변경
+import FindPassword from './component/member/FindPassword'; // MyPage 폴더 하위로 경로 변경
 import AdminMemberDetailPage from './component/admin/AdminMemberDetailPage';
 import FindId from './component/member/FindId'; 
 
