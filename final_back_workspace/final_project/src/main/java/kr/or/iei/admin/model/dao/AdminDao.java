@@ -70,6 +70,16 @@ public interface AdminDao {
 
 	ArrayList<MemberDto> selectAllmemberList(PageInfoDto pageInfo, String type, String keyword);
 
+	int selectIOverMemberCount(String type, String keyword);
+
+	ArrayList<LentBookList> selectOverMemberList(PageInfoDto pageInfo, String type, String keyword);
+
+	ArrayList<MemberDto> getOneMember(String memberNo);
+
+	ArrayList<BookList> getOneBook(String bookNo);
+
+	int fixMember(MemberDto memberDto);
+
 	
 
 	

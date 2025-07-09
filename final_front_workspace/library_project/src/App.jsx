@@ -21,10 +21,9 @@ import RequestBookMain from './component/requestBook/requestBookMain';
 import FixBookDetail from './component/admin/FixBookDetail';
 import NewBook from './component/admin/NewBook';
 import AdminMemberPage from './component/admin/AdminMemberPage';
+import FindPassword from './component/myPage/FindPassword'; // MyPage 폴더 하위로 경로 변경
+import AdminMemberDetailPage from './component/admin/AdminMemberDetailPage';
 import FindId from './component/member/FindId'; 
-import FindPassword from './component/member/FindPassword';
-
-
 
 
 function App() {
@@ -49,7 +48,7 @@ function App() {
             <Route path='/admin/FixBookDetail' element={<FixBookDetail />} />
             <Route path='/admin/newBook' element={<NewBook />} />
             <Route path='/admin/Member' element={<AdminMemberPage />} />
-
+            <Route path='/admin/memberDetail/:memberNo' element={<AdminMemberDetailPage />} />
 
             <Route path='/admin/selectBook' element={<SelectBook />} />
             <Route path = "/myPage/*" element={<MyPageMain/>}/>

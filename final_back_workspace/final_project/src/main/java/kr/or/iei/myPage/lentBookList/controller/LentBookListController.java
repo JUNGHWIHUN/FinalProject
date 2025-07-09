@@ -51,7 +51,14 @@ public class LentBookListController {
 		try {
 			int result = service.renewBook(lentBookNo);
 			
-			res = new ResponseDto(HttpStatus.OK, "", result, "success");
+			
+			if(result > 0) {
+				
+				res = new ResponseDto(HttpStatus.OK, "대출 기간이 7일 연장되었습니다.", result, "success");
+			}else {
+				res = new ResponseDto(HttpStatus.OK, "예약된 도서입니다.", result, "warning");
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

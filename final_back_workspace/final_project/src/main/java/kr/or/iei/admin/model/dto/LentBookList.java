@@ -18,4 +18,6 @@ public class LentBookList {
 	private String lentDate;		//대출한 날짜.
 	private String title;          // 책 제목 
 	private String memberName;     // 회원 이름 
+	
+	private String overDue;		//연체된 날짜, db에 없이 수동으로 추가
 }
