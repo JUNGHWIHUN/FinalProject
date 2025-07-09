@@ -38,14 +38,17 @@ export default function Main () {
                     <h3><a href='/join'>회원가입 링크</a></h3>
                     <h3><a href='/login'>로그인 링크</a></h3>
 
+
                     <h4><Link to='/find-password'>비밀번호 찾기</Link></h4>
                 </div>
                 :
                 <h3>
                     <Link to='/mypage'>마이페이지</Link>
+                    <Link to='/requestBook/requestBookInfo'>희망도서 신청 페이지</Link>
                     <button onClick={logout}>로그아웃</button>
                 </h3>
             }
+
         </section>
     );
 }
