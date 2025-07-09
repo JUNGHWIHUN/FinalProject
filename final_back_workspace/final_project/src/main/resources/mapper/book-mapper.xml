@@ -144,6 +144,16 @@
     WHERE rnum BETWEEN #{pageInfo.start} AND #{pageInfo.end}
 	</select>
 	
+	<!-- 해당 도서 대출 여부 -->
+	<select id="hasBeenLentCheck" parameterType='BookComment' resultType='_int'>
+	select count(*)
+	  from tbl_lent_book lb
+	  join tbl_book b on lb.lent_call_no = b.call_no
+	  join tbl_member m on lb.lent_member_no = m.member_no
+	 where b.call_no = #{callNo}
+	   and m.member_id = #{memberId}
+	</select>
+	
 	<!-- 서평 작성 여부 확인 -->
 	<select id='commentCheck' parameterType='string' resultType='_int'>
 	select count(*) from tbl_comment where member_id = #{memberId} and call_no = #{callNo}

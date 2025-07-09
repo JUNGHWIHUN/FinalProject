@@ -135,9 +135,10 @@ export default function Login() {
                         로그인
                     </button>
                 </div>
-                {/* 비밀번호 찾기 링크 추가 */}
+                {/* 아이디 / 비밀번호 찾기 링크 추가 */}
                 <div className="link-box">
                     <p>
+                        <span onClick={() => navigate('/find-id')} className="find-link">아이디 찾기</span> <br/>
                         <span onClick={() => navigate('/find-password')} className="find-link">비밀번호 찾기</span>
                     </p>
                 </div>

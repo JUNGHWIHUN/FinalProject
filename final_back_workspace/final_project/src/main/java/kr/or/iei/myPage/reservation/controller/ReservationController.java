@@ -37,7 +37,9 @@ public class ReservationController {
 			int result = service.reservateBook(reservateBook);
 			
 			if(result > 0) {
-				res = new ResponseDto(HttpStatus.OK, "예약되었습니다", result, "success");						
+				res = new ResponseDto(HttpStatus.OK, "예약되었습니다", result, "success");
+			} else if (result == -1) {
+				res = new ResponseDto(HttpStatus.OK, "본인이 대출중인 도서는 예약할 수 없습니다", result, "warning");
 			} else {
 				res = new ResponseDto(HttpStatus.OK, "서평 작성 도중 오류가 발생했습니다", result, "warning");			
 			}
@@ -72,7 +74,14 @@ public class ReservationController {
 
 		try {
 			int result = service.deleteReservation(reservation);
-			res = new ResponseDto(HttpStatus.OK, "", result, "");
+			
+			if(result > 0) {
+				
+				res = new ResponseDto(HttpStatus.OK, "예약이 정상적으로 취소되었습니다.", result, "success");
+			}else {
+				res = new ResponseDto(HttpStatus.OK, "예약 취소 중, 오류가 발생하였습니다..", result, "warning");
+
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
