@@ -11,14 +11,21 @@
  	</select>
  	
  	<!-- 대출 연장 업데이트 -->
-<update id="renewBook" parameterType="string">
-	update tbl_lent_book set return_date = to_char(to_date(return_date, 'YYYYMMDD') + 7 , 'YYYYMMDD'),
-		can_renew = 'F'
-	where lent_book_no = #{parameter} and can_renew = 'T' and exists (select 1 from tbl_book b 
-		where b.call_no = (select lb.lent_call_no from tbl_lent_book lb 
-			where lb.lent_book_no = #{parameter}
+		<update id="renewBook" parameterType="string">
+			UPDATE tbl_lent_book 
+		SET return_date = TO_CHAR(TO_DATE(return_date, 'YY/MM/DD') + 7, 'YY/MM/DD'),
+		    can_renew = 'F'
+		WHERE lent_book_no = #{lentBookNo}
+		  AND can_renew = 'T'
+		  AND EXISTS (
+		    SELECT 1 
+		    FROM tbl_book b
+		    WHERE b.call_no = (
+		        SELECT lb.lent_call_no
+		        FROM tbl_lent_book lb
+		        WHERE lb.lent_book_no = #{lentBookNo}
+		    )
+		    AND b.can_lend != 'R'
 		)
-		and b.can_lend != 'R'
-	)
-</update>
+		</update>
 </mapper>
