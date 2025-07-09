@@ -9,6 +9,7 @@ import { useState } from "react";
 import LeftMenu from "../common/LeftMenu";
 import MyLibrary from "./MyLibrary";
 import MyInfo from "./MyInfo";
+import MemberPwChg from "./MemberPwChg";
 
 
 
@@ -38,6 +39,7 @@ export default function MyPageMain(){
             <Route path="requestBookList" element={<RequestBookList/>}/>
             <Route path="myinfo" element={<MyInfo/>}/>
             <Route path="myLibrary" element={<MyLibrary />}/>
+            <Route path="pwChg" element={<MemberPwChg/>}/>
 
 
         </Routes>
