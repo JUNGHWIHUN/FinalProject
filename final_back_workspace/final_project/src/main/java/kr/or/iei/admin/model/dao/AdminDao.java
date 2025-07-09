@@ -70,6 +70,10 @@ public interface AdminDao {
 
 	ArrayList<MemberDto> selectAllmemberList(PageInfoDto pageInfo, String type, String keyword);
 
+	int selectIOverMemberCount(String type, String keyword);
+
+	ArrayList<LentBookList> selectOverMemberList(PageInfoDto pageInfo, String type, String keyword);
+
 	
 
 	

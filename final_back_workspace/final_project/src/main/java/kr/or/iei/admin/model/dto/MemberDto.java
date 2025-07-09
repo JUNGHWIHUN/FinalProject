@@ -16,14 +16,15 @@ public class MemberDto {
 	private String memberEmail;
 	private String memberPhone;
 	private String isAdmin;
-	private String enrolldate;
+	private String enrollDate;
 	private String canComment;
 	private String overudeCount;
 	private String borrowedCount;
 	private String maxBorrowedCount;
 	private String canBorrw;
 	private String cantBorrowDay;
-	private String no_lent_count;
+	private String noLentCount;
 	private String canRequest;
 	private String memberAddr;
+	
 }

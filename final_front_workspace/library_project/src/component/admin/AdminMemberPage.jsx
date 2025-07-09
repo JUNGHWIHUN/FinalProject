@@ -14,6 +14,10 @@ export default function AdminMemberPage(){
     const [allMemberList, setAllMemberList] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
 
+     //회원 목록
+    const [overMemberList, setOverMemberList] = useState([]);
+    const [overTotalCount, setOverTotalCount] = useState(0);
+
     // 페이지 정보
     const [reqPage, setReqPage] = useState(1); 
     const [pageInfo, setPageInfo] = useState({});
@@ -46,6 +50,24 @@ export default function AdminMemberPage(){
             }); 
     }
 
+    function fetOverdueList(){
+        let options = {};
+            options.url='http://localhost:9999/admin/overMemberList/'+ reqPage;
+            options.method = 'get';
+            options.params = {type : filterType, keyword : keyword};
+
+            axios(options)
+            .then(function(res){
+              setOverMemberList(res.data.resData.memberList)
+              setPageInfo(res.data.resData.pageInfo)
+            })
+            .catch(function(err){
+            console.log(err); 
+            }); 
+    }
+
+
+
     return(
         <>
 
@@ -61,7 +83,7 @@ export default function AdminMemberPage(){
                      <option value="email">이메일</option>
                      <option value="phone">전화번호</option>
                 </select>
-                <input type="text" id="title" onChange={keywordSetting}></input> <button onClick={function() { fetchAllBooks(1); }}>검색하기</button>
+                <input type="text" id="title" onChange={keywordSetting}></input> <button onClick={function() { fetAllMemberList(1); }}>검색하기</button>
             <table border="1">
                         <thead>
                           <tr>
@@ -86,7 +108,27 @@ export default function AdminMemberPage(){
 
         {subMode === "overdueList" && (
             <>
-            
+            <select value={filterType} onChange={keywordType}>
+                     <option value="memberName">회원이름</option>
+                     <option value="bookName">대출된 책 목록</option>
+                </select>
+                <input type="text" id="title" onChange={keywordSetting}></input> <button onClick={function() { fetOverdueList(1); }}>검색하기</button>
+            <table border="1">
+                        <thead>
+                          <tr>
+                              <th>회원이름</th>
+                              <th>대출된 책 제목</th>
+                              <th>대출일</th>
+                              <th>연체 일수</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {overMemberList.map(function(member, index){
+                             
+                             return <OverMemberItem key={"member"+index} member={member}/>
+                          })}
+                         </tbody>
+                  </table>
             
             </>
 
@@ -105,11 +147,30 @@ function MemberItem(props){
     return(
         <>
         <tr>
-            <td>{member.memberNo}</td>
-            <td>{book.memberId}</td>
-            <td>{book.memberEmail}</td>
-            <td>{book.memberName}</td>
-            <td>{book.memberPhone}</td>
+            <td>{member.memberName}</td>
+            <td>{member.memberId}</td>
+            <td>{member.memberEmail}</td>
+            <td>{member.overudeCount}</td>
+            <td>{member.memberPhone}</td>
+        </tr>
+        </>
+    )
+
+
+}
+
+function OverMemberItem(props){
+    const member = props.member;
+    const memberNo = member.memberNo;
+
+
+    return(
+        <>
+        <tr>
+            <td>{member.memberName}</td>
+            <td>{member.title}</td>
+            <td>{member.lentDate}</td>
+            <td>{member.overDue}</td>
         </tr>
         </>
     )

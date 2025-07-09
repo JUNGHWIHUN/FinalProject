@@ -203,6 +203,25 @@ public class AdminService {
 		return memberMap;
 		
 	}
+
+
+	public HashMap<String, Object> selectOverMember(int reqPage, String type, String keyword) {
+		int viewCnt = 10;						//한 페이지당 게시글 수
+		int pageNaviSize = 5;					//페이지 네비게이션 길이
+		int totalCount = dao.selectIOverMemberCount(type, keyword);//연체된 책 수
+		
+		PageInfoDto pageInfo = pageUtil.getPageInfo(reqPage, viewCnt, pageNaviSize, totalCount);
+		System.out.println("여기까진 잘 되나");
+		
+		//게시글 목록
+		ArrayList<LentBookList> memberList = dao.selectOverMemberList(pageInfo, type, keyword);
+		System.out.println("리스트 정보 조회");
+		HashMap<String, Object> memberMap = new HashMap<String, Object>();
+		memberMap.put("memberList", memberList);
+		memberMap.put("pageInfo", pageInfo);
+						
+		return memberMap;
+	}
 	
 	
 	
