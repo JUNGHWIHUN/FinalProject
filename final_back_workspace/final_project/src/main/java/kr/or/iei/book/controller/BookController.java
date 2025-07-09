@@ -109,8 +109,10 @@ public class BookController {
 			
 			if(result > 0) {
 				res = new ResponseDto(HttpStatus.OK, "서평이 작성되었습니다", result, "success");			
-			} else if (result < 0) {
-				res = new ResponseDto(HttpStatus.OK, "이미 서평을 작성했습니다", result, "warning");			
+			} else if (result == -1) {
+				res = new ResponseDto(HttpStatus.OK, "이미 서평을 작성했습니다", result, "warning");
+			} else if (result == -2 ) {
+				res = new ResponseDto(HttpStatus.OK, "해당 도서를 대출했던 회원만 작성이 가능합니다", result, "warning");
 			} else {
 				res = new ResponseDto(HttpStatus.OK, "서평 작성 도중 오류가 발생했습니다", result, "warning");			
 			}

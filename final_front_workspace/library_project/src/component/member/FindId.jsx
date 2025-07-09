@@ -10,29 +10,25 @@ export default function FindId() {
     const navigate = useNavigate();
 
     const [memberEmail, setMemberEmail] = useState("");
-    // 이메일 입력 필드의 유효성/상태를 나타내는 상태
-    // 0: 초기/입력 중, 1: 유효한 이메일 형식, 2: 유효하지 않은 이메일 형식
     const [emailInputStatus, setEmailInputStatus] = useState(0); 
-    const [foundId, setFoundId] = useState(null); // 찾은 아이디를 저장할 상태
+    const [foundId, setFoundId] = useState(null); // 찾은 아이디를 저장할 상태. 초기값은 null.
 
     function chgMemberEmail(e) {
         setMemberEmail(e.target.value);
-        setEmailInputStatus(0); // 입력 변경 시 상태 초기화
-        setFoundId(null); // 새로운 검색 시작 시 기존 결과 초기화
+        setEmailInputStatus(0); 
+        setFoundId(null); // 새로운 검색 시작 시 기존 아이디 결과는 초기화
     }
 
-    // 이메일 형식 유효성만 검사하는 함수
     function validateEmailFormat() {
         const emailRegExp = /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
-        if (!emailRegExp.test(memberEmail)) {
-            setEmailInputStatus(2); // 유효하지 않은 이메일 형식
+        if (!emailRegExp.test(memberEmail)) { // 변경: 정규식 변수명 통일 (기존에 regExp로 되어있다면 그대로, 아니면 emailRegExp로 사용)
+            setEmailInputStatus(2); 
             return false;
         }
-        setEmailInputStatus(1); // 형식 유효
+        setEmailInputStatus(1); 
         return true;
     }
 
-    // 아이디 찾기 요청 함수
     async function requestFindId() {
         if (!validateEmailFormat()) {
             Swal.fire({
@@ -46,35 +42,41 @@ export default function FindId() {
 
         try {
             let options = {};
-            options.url = serverUrl + '/member/find-id'; // 백엔드 아이디 찾기 엔드포인트
+            options.url = serverUrl + '/member/find-id'; 
             options.method = 'post';
             options.data = { memberEmail: memberEmail };
 
             const res = await axiosInstance(options);
-            console.log(res);
+            console.log("아이디 찾기 백엔드 응답:", res.data); // 응답 전체를 로그로 찍어 확인
 
-            if (res.data.success) {
-                setFoundId(res.data.resData); // 마스킹된 아이디 저장
+            // === 핵심 변경 부분 ===
+            // res.data.resData가 null이 아니면 성공으로 판단
+            if (res.data.resData !== null) { 
+                setFoundId(res.data.resData); // 백엔드에서 마스킹된 아이디를 resData로 보냄
                 Swal.fire({
-                    title: '아이디 찾기 성공',
+                    title: '아이디 찾기 성공', // 성공 제목
                     text: res.data.clientMsg, // "아이디를 찾았습니다."
                     icon: res.data.alertIcon, // 'success'
                     confirmButtonText: '확인'
                 });
             } else {
-                setFoundId(null); // 찾지 못한 경우 null
+                // res.data.resData가 null인 경우 (회원을 찾지 못함)
+                setFoundId(null); // 확실히 null로 설정
                 Swal.fire({
-                    title: '아이디 찾기 실패',
+                    title: '아이디 찾기 실패', // 실패 제목
                     text: res.data.clientMsg, // "입력하신 이메일로 등록된 아이디가 없습니다."
                     icon: res.data.alertIcon, // 'warning'
                     confirmButtonText: '확인'
                 });
             }
         } catch (err) {
-            console.error(err);
+            console.error("아이디 찾기 요청 오류:", err);
+            // 에러 응답이 있을 경우 백엔드에서 보낸 clientMsg 사용
+            let errorMessage = (err.response && err.response.data && err.response.data.clientMsg) 
+                               ? err.response.data.clientMsg : '아이디 찾기 요청 중 서버 오류가 발생했습니다.';
             Swal.fire({
                 title: '오류',
-                text: '아이디 찾기 요청 중 서버 오류가 발생했습니다.',
+                text: errorMessage,
                 icon: 'error',
                 confirmButtonText: '확인'
             });
@@ -106,14 +108,14 @@ export default function FindId() {
                             emailInputStatus === 0 
                             ? '아이디를 찾을 이메일 주소를 입력해주세요.'
                                 : emailInputStatus === 1
-                                ? '이메일 형식이 유효합니다.'
+                                ? '이메일 형식이 유효합니다. "아이디 찾기" 버튼을 눌러주세요.' 
                                     : '올바른 이메일 형식을 입력하세요.'
                         }
                     </p>
                 </div>
-                {foundId && ( // 아이디를 찾았을 경우에만 결과 표시
+                {foundId && ( // foundId가 null이 아닐 때만 이 블록이 렌더링됨
                     <div className="input-wrap">
-                        <div className="input-title">조회 결과:</div>
+                        <div className="input-title">찾은 아이디:</div> 
                         <div className="input-item">
                             <input type="text" value={foundId} readOnly className="found-id-display"/>
                         </div>

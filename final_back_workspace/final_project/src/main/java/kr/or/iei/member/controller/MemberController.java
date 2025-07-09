@@ -68,7 +68,7 @@ public class MemberController {
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
 	
-    // 회원가입 (이메일 인증 링크 발송 포함)
+    //회원가입 (이메일 인증 링크 발송 포함)
     @PostMapping("/signup") // 회원가입 엔드포인트명 변경 (React와의 통신 명확화)
     @NoTokenCheck
     public ResponseEntity<ResponseDto> insertMember (@RequestBody Member member, HttpServletRequest request){
@@ -136,7 +136,7 @@ public class MemberController {
 
         String htmlResponse;
         if (result > 0) {
-            htmlResponse = "<html><head><meta charset=\"UTF-8\"></head><body><script>alert('이메일 인증이 완료되었습니다! 이제 로그인할 수 있습니다.'); window.close();</script></body></html>";
+            htmlResponse = "<html><head><meta charset=\"UTF-8\"></head><body><script>alert('이메일 인증이 완료되었습니다. 이제 로그인할 수 있습니다.'); window.close();</script></body></html>";
             return ResponseEntity.ok(htmlResponse);
         } else {
             htmlResponse = "<html><head><meta charset=\"UTF-8\"></head><body><script>alert('유효하지 않거나 만료된 인증 링크입니다.'); window.close();</script></body></html>";
@@ -149,19 +149,25 @@ public class MemberController {
     @NoTokenCheck
     public ResponseEntity<ResponseDto> findId(@RequestBody Map<String, String> requestBody) {
         String memberEmail = requestBody.get("memberEmail");
-        ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "아이디 찾기 중, 오류가 발생했습니다.", null, "error");
+        // 초기 응답 DTO를 오류 상태로 설정합니다.
+        // HttpStatus는 일단 OK로 두고, resData 유무와 clientMsg/alertIcon으로 프론트에서 판단합니다.
+        ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "아이디 찾기 중, 오류가 발생했습니다.", null, "error"); // success 필드 제거
 
         try {
             String maskedMemberId = service.findMaskedMemberId(memberEmail); // 서비스 호출
             if (maskedMemberId != null) {
-                res = new ResponseDto(HttpStatus.OK, "아이디를 찾았습니다.", maskedMemberId, "success");
+                // 아이디 찾기 성공 시: HttpStatus.OK, 메시지, 마스킹된 아이디, 성공 아이콘
+                res = new ResponseDto(HttpStatus.OK, "아이디를 찾았습니다.", maskedMemberId, "success"); // success 필드 제거
             } else {
-                res = new ResponseDto(HttpStatus.OK, "입력하신 이메일로 등록된 아이디가 없습니다.", null, "warning");
+                // 아이디 찾기 실패 시: HttpStatus.OK, 실패 메시지, resData는 null, 경고 아이콘
+                res = new ResponseDto(HttpStatus.OK, "입력하신 이메일로 등록된 아이디가 없습니다.", null, "warning"); // success 필드 제거
             }
         } catch (Exception e) {
             e.printStackTrace();
-            res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류로 인해 아이디 찾기에 실패했습니다.", null, "error");
+            // 예외 발생 시: HttpStatus.INTERNAL_SERVER_ERROR, 오류 메시지, null, 에러 아이콘
+            res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류로 인해 아이디 찾기에 실패했습니다.", null, "error"); // success 필드 제거
         }
+        // 최종 응답 DTO와 HTTP 상태 코드를 포함하여 ResponseEntity를 반환합니다.
         return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
     }
 

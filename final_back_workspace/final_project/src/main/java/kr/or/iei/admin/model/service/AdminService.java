@@ -53,7 +53,8 @@ public class AdminService {
 		bookLenter.setBookName(bookTitle);
 		bookLenter.setMemberName(memberName);
 		
-		
+	    System.out.println(bookLenter.toString());
+
 		
 		//등록
 		dao.insertLentBook(bookLenter);
@@ -73,6 +74,7 @@ public class AdminService {
 	    dao.updateMemberCanBorrow(bookLenter.getMemberNo());
 	    System.out.println("4단계 성공");
 	    result++;
+	    
 	    
 	    System.out.println("result :" + result);
 	    return result;
