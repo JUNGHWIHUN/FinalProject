@@ -24,6 +24,7 @@ export default function LentBookList() {
         axiosInstance(options)
             .then(function (res) {
                 setLentBookList(res.data.resData);
+                console.log(res.data.resData);
             })
             .catch(function (err) {
                 console.log(err);

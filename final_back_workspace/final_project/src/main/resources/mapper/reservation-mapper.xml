@@ -11,7 +11,7 @@
   <!-- 도서 예약 -->
   <insert id='reservateBook' parameterType="kr.or.iei.myPage.reservation.model.dto.Reservation">
   insert into tbl_reservation values(
-	to_char(sysdate,'yymmdd') || lpad(seq_reservation.nextval, 4,'0'),	#{reservationMemberNo},	#{reservationCallNo}, sysdate, null
+	to_char(sysdate,'yymmdd') || lpad(seq_reservation.nextval, 4,'0'),	#{reservationMemberNo},	#{reservationCallNo}, to_char(sysdate, 'yyyymmdd'), null
   )
   </insert>
   

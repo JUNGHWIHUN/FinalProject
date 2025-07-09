@@ -3,7 +3,7 @@ import SearchDetail from "./SearchDetail";
 import SearchResultList from "./SearchResultList";
 import SearchResultDetail from "./SearchResultDetail";
 import BookComment from "./BookComment";
-
+import './Book.css'
 
 export default function BookSearchMain (){
 
