@@ -4,7 +4,7 @@
  
  <!-- 대출 현황 목록 조회 -->
  	<select id="selectBorrowBook" parameterType="string" resultType="kr.or.iei.myPage.lentBookList.model.dto.LentBook">
- 		select lb.lent_book_no as lentBookNo, b.title_info as title, lb.return_date as returnDate, lb.actual_return_date asactualReturnDate, b.image_url as imageUrl
+ 		select lb.lent_book_no as lentBookNo, b.title_info as title, lb.return_date as returnDate, lb.actual_return_date as actualReturnDate, b.image_url as imageUrl
  			from tbl_lent_book lb
  			join tbl_book b on lb.lent_call_no = b.call_no
  			where lent_member_no = #{parameter} and (b.can_lend = 'L' or b.can_lend = 'R')
