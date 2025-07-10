@@ -91,7 +91,7 @@ export default function Header(){
             </div>
 
             <div id='main-menu-bar'>
-                <Link to='/news' className="main-menu-item">도서관 소식</Link>
+                <Link to='/notice/list' className="main-menu-item">도서관 소식</Link>
                 <Link to='/book/searchDetail' className="main-menu-item">도서 검색</Link>
                 <Link to='/requestBook/requestBookInfo' className="main-menu-item">희망도서 신청</Link>
                 <Link 
