@@ -29,9 +29,7 @@ import createInstance from '../../axios/Interceptor';
      const serverUrl = import.meta.env.VITE_BACK_SERVER;
 
 
-     useEffect(function(){
-        
-      
+     useEffect(function(){   
         let options = {};
         options.url = serverUrl + "/statistics/months";
         options.method = "get";
@@ -43,7 +41,6 @@ import createInstance from '../../axios/Interceptor';
         .then(function(res){
           
           const months = res.data.resData;
-
 
             // 객체면 month 필드만 추출
             const monthArray = months.map((item) =>
