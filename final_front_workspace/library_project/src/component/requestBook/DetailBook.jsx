@@ -29,15 +29,16 @@ export default function DetailBook(){
             options.url = serverUrl + "/requestBook/detailBook";
             options.method = "post";
             options.data = {
-                title: book.book.title_info,
-                author: book.book.author_info,
-                publisher: book.book.pub_info,
+                requestedBookName: book.book.title_info,
+                requestedBookAuthor: book.book.author_info,
+                requestedBookPub: book.book.pub_info,
                 memberNo: loginMember.memberNo,
                 memberId: loginMember.memberId,
                 memberPhone: loginMember.memberPhone,
-                reason: reason
+                requestedReason: reason
             };
 
+            
             axiosInstacne(options)
                 .then(function(res){
                     alert("신청이 완료되었습니다!");

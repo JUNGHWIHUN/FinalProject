@@ -28,9 +28,26 @@ public class RequestBookController {
 		try {
 		int result = service.insertRequestBook(book);
 		if(result > 0) {
-			res = new ResponseDto(HttpStatus.OK, "회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.", true, "success");
+			res = new ResponseDto(HttpStatus.OK, "도서신청이 완료되었습니다. 로그인 화면으로 이동합니다.", true, "success");
 		}else {
-			res = new ResponseDto(HttpStatus.OK, "회원가입 중, 오류가 발생하였습니다", false, "warning"); //통신은 잘 됐기때문에 HttpStatus.OK
+			res = new ResponseDto(HttpStatus.OK, "도서신청 중, 오류가 발생하였습니다", false, "warning"); 
+		}
+		}catch(Exception e) {
+		e.printStackTrace();
+	}
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	@PostMapping("/wishBookDirect")
+	public ResponseEntity<ResponseDto> wishBookDirect(@RequestBody RequestBook book) {
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "도서신청 중, 오류가 발생하였습니다.", false, "error");
+		
+		try {
+		int result = service.insertRequestBook(book);
+		if(result > 0) {
+			res = new ResponseDto(HttpStatus.OK, "도서신청이 완료되었습니다. 로그인 화면으로 이동합니다.", true, "success");
+		}else {
+			res = new ResponseDto(HttpStatus.OK, "도서신청 중, 오류가 발생하였습니다", false, "warning"); 
 		}
 		}catch(Exception e) {
 		e.printStackTrace();

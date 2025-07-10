@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import useUserStore from "../../store/useUserStore";
 
 import './Common.css'
+import Swal from "sweetalert2";
 
 export default function Header(){
 
@@ -91,7 +92,24 @@ export default function Header(){
                 <Link to='/news' className="main-menu-item">도서관 소식</Link>
                 <Link to='/book/searchDetail' className="main-menu-item">도서 검색</Link>
                 <Link to='/requestBook/requestBookInfo' className="main-menu-item">희망도서 신청</Link>
-                <Link to='/mypage' className="main-menu-item">마이페이지</Link>
+                <Link 
+                    to={isLogined ? '/mypage/lentBookList' : '#'} 
+                    onClick={(e) => {
+                        if (!isLogined) {
+                            e.preventDefault(); // 기본 이동 막기
+                            Swal.fire({
+                                tite : '알림',
+                                text : '로그인이 필요합니다',
+                                icon : 'warning',
+                                confirmButtonText : '확인'
+                            })
+                            navigate("/login");
+                        }
+                    }} 
+                    className="main-menu-item"
+                    >
+                    마이페이지
+                    </Link>
                 <Link to='/intro' className="main-menu-item">도서관 소개</Link>
             </div>
         </header>
