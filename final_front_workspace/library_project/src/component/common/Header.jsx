@@ -41,7 +41,7 @@ export default function Header(){
     return (
         <header>
             <div className="header-top-area">
-                <div className="header-logo-search-wrap"> {/* 로고와 검색창을 묶는 새로운 div */}
+                <div className="header-logo-search-wrap">
                     <div className="header-logo">
                         <Link to="/">
                             {/* 실제 로고 이미지 경로로 변경해주세요. 스크린샷에 맞춰 책 아이콘으로 변경할 수도 있습니다. */}

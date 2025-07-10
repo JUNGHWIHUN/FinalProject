@@ -1,0 +1,185 @@
+/* Common.css */
+
+/* --- 기존 Header CSS --- */
+/* ... */
+
+/* --- 기존 Footer CSS --- */
+/* ... */
+
+/* --- Main Content CSS --- */
+/* ... */
+
+
+/* --- 상세 검색 (BookSearchDetail) CSS 시작 --- */
+
+.search-wrap {
+    width: 90%;
+    max-width: 800px; /* 전체 폼 컨테이너의 최대 너비 */
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 30px; /* 좌우 패딩을 30px로 유지 */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-title-area {
+    margin-bottom: 30px;
+    text-align: left;
+    position: relative;
+    padding-bottom: 10px; /* 제목과 줄 사이 간격 */
+    padding-left: 30px; /* '상세검색' 텍스트 시작점 정렬 유지 */
+}
+
+.search-page-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.search-title-underline {
+    position: absolute;
+    bottom: 0;
+    left: 30px; /* search-wrap의 padding-left (30px)와 동일하게 설정하여 제목 텍스트와 폼 시작점을 맞춥니다. */
+    width: 700px; /* 폼 라인 전체 너비와 동일하게 유지 */
+    height: 3px;
+    background-color: #a8d58c;
+}
+
+.search-wrap form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    width: 700px; /* 라벨+간격+인풋의 최종 너비. 이 값에 맞춰 모든 줄의 끝을 정렬 */
+    margin-left: 30px;
+    margin-right: auto;
+}
+
+.form-label {
+    flex-basis: 70px; /* 레이블의 고정 너비 */
+    flex-shrink: 0;
+    font-size: 15px;
+    font-weight: bold;
+    color: #555;
+    margin-right: 15px; /* 레이블과 입력 필드 사이 간격 */
+    text-align: left; /* 라벨 텍스트를 왼쪽 정렬로 변경 */
+}
+
+.search-wrap input[type="text"],
+.search-wrap input[type="number"] {
+    flex-grow: 1; /* 기본 입력 필드는 남은 공간을 채움 */
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s ease;
+    max-width: 615px; /* (700px 전체 - 70px 새 레이블 너비 - 15px 새 마진) = 615px */
+}
+
+.search-wrap input[type="text"]:focus,
+.search-wrap input[type="number"]:focus {
+    border-color: #a8d58c;
+}
+
+.search-wrap input::placeholder {
+    color: #aaa;
+}
+
+/* type="number" 필드의 스핀 버튼(화살표) 숨기기 */
+/* Chrome, Safari, Edge, Opera */
+.search-wrap input[type="number"]::-webkit-outer-spin-button,
+.search-wrap input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* ISBN과 출판연도 행의 특별한 배치 */
+.pub-year-row {
+    justify-content: flex-start; /* 내부 요소들을 왼쪽부터 정렬 */
+    flex-wrap: nowrap; /* 줄바꿈 방지 */
+}
+
+.pub-year-row #ISBN {
+    width: 200px; /* ISBN 입력 필드의 너비를 200px에서 300px로 조정하여 남은 공간을 채웁니다. */
+    margin-right: 20px; /* ISBN 필드와 발행년도 레이블 사이 간격 */
+    flex-shrink: 0;
+}
+
+.pub-year-label { /* 발행년도 레이블 */
+    flex-shrink: 0;
+    font-size: 15px;
+    font-weight: bold;
+    color: #555;
+    margin-right: 10px; /* 레이블과 시작일 input 사이 간격 */
+    text-align: right; /* 발행년도 라벨은 오른쪽 정렬 유지 */
+    white-space: nowrap;
+    flex-basis: 55px; /* '발행년도' 텍스트의 실제 렌더링 너비에 따라 조절 (예: 55px) */
+}
+
+/* 두 연도 입력칸에 공통 스타일을 적용하고, 각각의 ID로 마진을 조정합니다. */
+.pub-year-row .pub-year-input { /* 클래스 셀렉터를 사용하여 공통 스타일 적용 */
+    width: 100px; /* 시작, 종료 발행년도 입력 필드 너비를 모두 100px로 고정 */
+    text-align: center;
+    padding: 10px 5px;
+    flex-shrink: 0;
+}
+
+/* 시작 발행년도 input에만 마진 적용 */
+.pub-year-row #pubYearFrom {
+    margin-right: 5px; /* 시작년도 input과 ~ 사이 간격 */
+}
+
+.year-range-separator {
+    font-size: 18px;
+    color: #555;
+    text-align: center;
+    flex-shrink: 0;
+    width: 20px; /* '~' 기호의 너비를 실제 렌더링 너비 + 좌우 마진으로 설정 (예: 20px) */
+    margin-right: 5px; /* ~ 기호와 종료년도 input 사이 간격 */
+    margin-left: 0; /* width에 포함되므로 왼쪽 마진은 0 */
+}
+
+/* 검색 버튼 그룹 */
+.search-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.search-btn, .reset-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.search-btn {
+    background-color: #ffb74d;
+    color: white;
+}
+
+.search-btn:hover {
+    background-color: #ffa726;
+}
+
+.reset-btn {
+    background-color: #f0f0f0;
+    color: #666;
+    border: 1px solid #ccc;
+}
+
+.reset-btn:hover {
+    background-color: #e0e0e0;
+}
