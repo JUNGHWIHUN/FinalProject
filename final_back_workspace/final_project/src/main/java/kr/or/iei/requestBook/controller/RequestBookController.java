@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.iei.common.model.dto.ResponseDto;
-import kr.or.iei.requestBook.model.dto.SubRequestBook;
+import kr.or.iei.requestBook.model.dto.SubmitRequestBook;
 import kr.or.iei.requestBook.model.service.RequestBookService;
 
 @RestController
@@ -22,7 +22,7 @@ public class RequestBookController {
 	private RequestBookService service;
 	
 	@PostMapping("/detailBook")
-	public ResponseEntity<ResponseDto> requestBook(@RequestBody SubRequestBook book) {
+	public ResponseEntity<ResponseDto> requestBook(@RequestBody SubmitRequestBook book) {
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "도서신청 중, 오류가 발생하였습니다.", false, "error");
 		
 		try {
@@ -39,7 +39,7 @@ public class RequestBookController {
 	}
 	
 	@PostMapping("/wishBookDirect")
-	public ResponseEntity<ResponseDto> wishBookDirect(@RequestBody SubRequestBook book) {
+	public ResponseEntity<ResponseDto> wishBookDirect(@RequestBody SubmitRequestBook book) {
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "도서신청 중, 오류가 발생하였습니다.", false, "error");
 		
 		try {

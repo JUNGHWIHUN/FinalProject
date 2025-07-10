@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import kr.or.iei.requestBook.model.dao.RequestBookDao;
-import kr.or.iei.requestBook.model.dto.SubRequestBook;
-
+import kr.or.iei.requestBook.model.dto.SubmitRequestBook;
 
 @Service
 public class RequestBookService {
@@ -13,7 +12,7 @@ public class RequestBookService {
 	@Autowired
 	private RequestBookDao dao;
 
-	public int insertRequestBook(SubRequestBook book) {
+	public int insertRequestBook(SubmitRequestBook book) {
 		// TODO Auto-generated method stub
 		return dao.insertRequestBook(book);
 	}
