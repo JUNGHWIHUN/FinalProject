@@ -31,12 +31,13 @@ export default function WishBookDirect(){
             options.url = serverUrl + "/requestBook/wishBookDirect";
             options.method = "post";
             options.data = {
-                title: book.title_info,
-                author: book.author_info,
-                publisher: book.pub_info,
+                requestedBookName: book.title,
+                requestedBookAuthor: book.author,
+                requestedBookPub: book.publisher,
+                memberNo : loginMember.memberNo,
                 memberId: member.memberId,
                 memberPhone: member.memberPhone,
-                reason: reason
+                requestedReason: reason
             };
 
             axiosInstacne(options)
@@ -69,8 +70,8 @@ export default function WishBookDirect(){
                 <hr />
 
                 <div className="memberInfo">
-                    회원 아이디 : <input type="text" value={loginMember.memberId}  /> <br />
-                    회원 전화번호 : <input type="text" value={loginMember.memberPhone}  /> <br />
+                    회원 아이디 : <input type="text" value={loginMember.memberId}  readOnly/> <br />
+                    회원 전화번호 : <input type="text" value={loginMember.memberPhone}  readOnly/> <br />
                     신청 사유 : <input type="text" value={reason} onChange={(e) => setReason(e.target.value)} /> <br />
                     
                     <button type="submit">신청</button>

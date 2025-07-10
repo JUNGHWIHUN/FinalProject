@@ -2,5 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.or.iei.requestBook.model.dao.RequestBookDao">
 	
-	
-</mapper>
+	<insert id="insertRequestBook"
+	parameterType="RequestBook"
+	>
+	insert into tbl_book_request values (TO_CHAR(SYSDATE,'YYMMDD') || LPAD(SEQ_request_book.NEXTVAL, 4,'0'),
+										#{memberNo},
+										#{requestedReason},
+										#{requestedBookName},
+										#{requestedBookAuthor},
+										#{requestedBookPub},
+										default)
+	</insert>
+	</mapper>
