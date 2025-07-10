@@ -11,7 +11,7 @@
   <!-- 도서 예약 -->
   <insert id='reservateBook' parameterType="kr.or.iei.myPage.reservation.model.dto.Reservation">
   insert into tbl_reservation values(
-	to_char(sysdate,'yymmdd') || lpad(seq_reservation.nextval, 4,'0'),	#{reservationMemberNo},	#{reservationCallNo}, sysdate, null
+	to_char(sysdate,'yymmdd') || lpad(seq_reservation.nextval, 4,'0'),	#{reservationMemberNo},	#{reservationCallNo}, to_char(sysdate, 'yyyymmdd'), null
   )
   </insert>
   
@@ -38,7 +38,7 @@
         b.title_info AS title,
         b.author_info AS author,
         b.pub_info AS publisher,
-        TO_CHAR(r.reservation_date, 'YYYY-MM-DD') AS reservationDate,
+        r.reservation_date as reservationDate,
         CASE 
           WHEN r.actual_return_date IS NULL THEN '예약중'
           ELSE '대출 가능'
@@ -46,7 +46,7 @@
         b.can_lend as canLend
       FROM tbl_reservation r
       JOIN tbl_book b ON r.reservation_call_no = b.call_no
-      where r.reservation_member_no = #{memberNo} and b.can_lend = 'L'
+      where r.reservation_member_no = #{memberNo}
       ORDER BY r.reservation_date DESC
     ) a
   )

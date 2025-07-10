@@ -15,6 +15,10 @@ export default function MyLibraryModal ({isVisible, closeMyLibraryModal, addToMy
 
     useEffect(() => {
 
+        if(!isLogined){
+            return;
+        }
+
         axiosInstance.get(serverUrl + `/myLibrary/selectMyLibrary/${loginMember.memberNo}`)
             .then(function(res){
                 setMyLibraryList(res.data.resData);

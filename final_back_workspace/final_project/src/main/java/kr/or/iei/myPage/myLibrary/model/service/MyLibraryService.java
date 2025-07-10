@@ -29,6 +29,7 @@ public class MyLibraryService {
 	//내 서재의 새로운 책장(카테고리) 만들기
 	@Transactional
 	public int addNewMyLibrary(MyLibrary myLibrary) {
+		System.out.println(myLibrary.toString());
 		return dao.addNewMyLibrary(myLibrary);
 	}
 
@@ -86,6 +87,8 @@ public class MyLibraryService {
 	public int moveBooktoAnotherLibrary(MyLibraryBook myLibraryBook) {
 		//해당 서재에 이미 해당 도서가 등록되어 있는지 확인
 		int result = dao.myLibraryBookDuplChk(myLibraryBook);
+		
+		System.out.println("myLIbraryService result" + myLibraryBook.toString());
 		
 		if(result > 0) {
 			return -1;
