@@ -6,7 +6,7 @@
 <!-- 월 목록 조회 -->
 
 <select id="selectAvailableMonths" parameterType="string" resultType = "kr.or.iei.myPage.statistics.model.dto.StatisTics">
-	select distinct to_char(to_date(to_char(lent_date), 'YYYYMMDD'), 'YYYY-MM') AS month
+	select distinct to_char(to_date(lent_date, 'YY/MM/DD'), 'YYYY-MM') AS month
 	from tbl_lent_book
 	where lent_member_no = #{parameter}
 	order by month desc
@@ -32,7 +32,7 @@
 			from tbl_lent_book 
 			where lent_member_no = #{memberNo}
 			and actual_return_date is not null
-			and to_char(To_Date(lent_date, 'YYYYMMDD'), 'YYYY-MM') = #{month}
+			and to_char(To_Date(lent_date, 'YY/MM/DD'), 'YYYY-MM') = #{month}
 			group by
 				case substr(lent_call_no , 1, 1)
 				when '0' then '총류'

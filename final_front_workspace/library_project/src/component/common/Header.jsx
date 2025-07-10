@@ -19,6 +19,8 @@ export default function Header(){
         setIsLogined(false);
         setAccessToken(null);
         setRefreshToken(null);
+
+        navigate("/");      //로그아웃 후 메인페이지로 이동
     }
 
     //검색도서 객체 초기값 : 이름만 전달
@@ -98,7 +100,7 @@ export default function Header(){
                         if (!isLogined) {
                             e.preventDefault(); // 기본 이동 막기
                             Swal.fire({
-                                tite : '알림',
+                                title : '알림',
                                 text : '로그인이 필요합니다',
                                 icon : 'warning',
                                 confirmButtonText : '확인'
