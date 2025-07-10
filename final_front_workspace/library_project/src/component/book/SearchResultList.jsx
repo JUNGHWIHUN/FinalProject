@@ -18,7 +18,7 @@ export default function SearchResultList (){
     const [currentSearchCriteria, setCurrentSearchCriteria] = useState({}); 
 
     //페이지네이션을 위한 요청 페이지/페이지네이션 정보
-    const [reqPage, setReqPage] = useState(1);      //요청 페이지 초기값을 1로 설정해 검색시 1페이지부터 출력하도록       
+    const [reqPage, setReqPage] = useState(1);       //요청 페이지 초기값을 1로 설정해 검색시 1페이지부터 출력하도록       
     const [pageInfo, setPageInfo] = useState({});
 
     //검색결과 리스트 초기값
@@ -29,21 +29,21 @@ export default function SearchResultList (){
 
     //첫 렌더링 or location.state가 변경될 때마다 useEffect 실행
     useEffect(() => {
-        if (!location.state || !location.state.searchCriteria) {    //받아온 정보가 없다면 페이지 출력하지 않음
+        if (!location.state || !location.state.searchCriteria) {     //받아온 정보가 없다면 페이지 출력하지 않음
             console.log("입력된 검색정보 없음");
             setSearchResultList([]);
             setPageInfo({}); // 페이지 정보도 초기화
             return;
         }
 
-        const searchCriteria = location.state.searchCriteria;   //SearchDetail 에서 받아온 검색정보를 객체로 저장
-        const finalCriteria = { ...searchCriteria , reqPage : reqPage };    //해당 객체에 요청 페이지 속성 추가  
+        const searchCriteria = location.state.searchCriteria;    //SearchDetail 에서 받아온 검색정보를 객체로 저장
+        const finalCriteria = { ...searchCriteria , reqPage : reqPage };    //해당 객체에 요청 페이지 속성 추가   
         setCurrentSearchCriteria(finalCriteria); // 현재 검색 조건 저장
         
         axiosInstance.post(serverUrl + '/book/searchBookList', finalCriteria)
         .then(function(res){
             setSearchResultList(res.data.resData.searchResultList); // 도서 검색 정보 리스트
-            setPageInfo(res.data.resData.pageInfo);                 // 페이지네이션 정보
+            setPageInfo(res.data.resData.pageInfo);          // 페이지네이션 정보
             console.log(res.data.resData);
             
         })
@@ -54,6 +54,11 @@ export default function SearchResultList (){
 
     return (
         <section className="section board-list">
+            {/* 최상단 '통합 검색' 헤더 추가 */}
+            <div className="search-title-area">
+                <h2 className="search-page-title">검색 결과</h2>
+                <div className="search-title-underline"></div>
+            </div>
             <div className="board-list-wrap">
                 <ul className="posting-wrap">
                     {searchResultList.map(function(book, index){
@@ -129,7 +134,7 @@ function BookItem (props){
     function isLoginedCheck(){
         if(!isLogined){
             Swal.fire({
-                tite : '알림',
+                title : '알림',
                 text : '로그인이 필요합니다',
                 icon : 'warning',
                 confirmButtonText : '확인'
@@ -141,13 +146,13 @@ function BookItem (props){
 
     return (
         // 전체 li에 클릭 이벤트 유지 (상세보기)
-        <li className="posting-item" onClick={isVisible? null : function(){     //Modal 창이 열려있을 때는 함수를 제거해 페이지 이동 막기
+        <li className="posting-item" onClick={isVisible? null : function(){    //Modal 창이 열려있을 때는 함수를 제거해 페이지 이동 막기
             //상세보기 (BoardView) 컴포넌트 전환
             navigate('/book/searchResultDetail/' + book.callNo);
         }}>
-            <div className="posting-content-wrapper" style={{display : 'flex'}}> {/* 이미지와 정보를 감싸는 래퍼 */}
+            <div className="posting-content-wrapper"> {/* 이미지와 정보를 감싸는 래퍼 */}
                 <div className="posting-img">
-                    <img src={book.imageUrl} />
+                    <img src={book.imageUrl} alt={book.titleInfo} />
                 </div>
                 <div className="posting-info">
                     {/* 제목 */}
@@ -162,23 +167,27 @@ function BookItem (props){
                     </div>
                 </div>
             </div> {/* .posting-content-wrapper 끝 */}
-                    {book.canLend == 'T' ? '대출가능'
-                        : 'R' ? '예약중'
-                           : 'L' ? '대출중'
+            <div className="book-item-buttons-bottom"> {/* 버튼들을 아래쪽에 배치하기 위한 새로운 div */}
+                {/* 대출 상태에 따라 텍스트 및 클래스 변경, 클릭 속성 제거 */}
+                <div className={`lent-status-display ${book.canLend === 'T' ? 'status-available' : book.canLend === 'R' ? 'status-reserved' : book.canLend === 'L' ? 'status-lented' : 'status-unavailable'}`}>
+                    {book.canLend === 'T' ? '대출가능'
+                        : book.canLend === 'R' ? '예약중'
+                            : book.canLend === 'L' ? '대출중'
                                 : '대출불가'
                     }
-                    <button className="btn-add-mylibrary" onClick={(e) => openMyLibraryModal(e)}>내 서재에 등록</button>
+                </div>
+                <button className="btn-add-mylibrary" onClick={(e) => openMyLibraryModal(e)}>내 서재에 등록</button>
+            </div>
 
-                    {/* isVisible 상태가 true일 때만 모달을 렌더링 */}
-                    {isVisible && (
-                        <MyLibraryModal
-                            isVisible={isVisible}               // 모달 표시 여부
-                            closeMyLibraryModal={closeMyLibraryModal} // 모달 닫기 함수
-                            callNo={book.callNo}                //누른 책의 청구기호
-
-                            addToMyLibrary={addToMyLibrary}     // 모달에서 '등록' 완료 시 호출될 콜백
-                        />
-                    )}
+            {/* isVisible 상태가 true일 때만 모달을 렌더링 */}
+            {isVisible && (
+                <MyLibraryModal
+                    isVisible={isVisible}      // 모달 표시 여부
+                    closeMyLibraryModal={closeMyLibraryModal} // 모달 닫기 함수
+                    callNo={book.callNo}         //누른 책의 청구기호
+                    addToMyLibrary={addToMyLibrary}    // 모달에서 '등록' 완료 시 호출될 콜백
+                />
+            )}
         </li>
     );
 }
