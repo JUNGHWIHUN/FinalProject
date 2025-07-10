@@ -43,7 +43,7 @@ export default function DetailBook(){
                 .then(function(res){
                     alert("신청이 완료되었습니다!");
                     console.log(res.data);
-                    navigate("/Main");
+                    navigate("/requestBook/wishBook");
                 })
                 .catch(function(err){
                     console.error("신청 오류:", err);
