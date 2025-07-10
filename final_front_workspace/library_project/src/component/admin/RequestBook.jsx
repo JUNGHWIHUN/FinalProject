@@ -98,7 +98,7 @@ function ListItem(props){
     return(
         <>
         <tr>
-            <td>{list.memberNo}</td>
+            <td><RequestDetail list={list}>{list.memberNo}</RequestDetail></td>
             <td>{list.requestBookName}</td>
             <td>{list.requestDate}</td>
             <td>
@@ -112,3 +112,4 @@ function ListItem(props){
         </>
     )
 }
+
