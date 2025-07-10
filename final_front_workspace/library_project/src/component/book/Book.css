@@ -12,6 +12,10 @@
 
 /* --- 상세 검색 (BookSearchDetail) CSS 시작 --- */
 
+li {
+    list-style: none;
+}
+
 .search-wrap {
     width: 90%;
     max-width: 800px; /* 전체 폼 컨테이너의 최대 너비 */
@@ -41,7 +45,7 @@
     position: absolute;
     bottom: 0;
     left: 30px; /* search-wrap의 padding-left (30px)와 동일하게 설정하여 제목 텍스트와 폼 시작점을 맞춥니다. */
-    width: 700px; /* 폼 라인 전체 너비와 동일하게 유지 */
+    width: 80px; /* 폼 라인 전체 너비와 동일하게 유지 */
     height: 3px;
     background-color: #a8d58c;
 }
@@ -440,6 +444,10 @@
     height: 3px;
     background-color: #a8d58c;
 }
+/* --- 상세정보 페이지 (SearchResultDetail) CSS 시작 --- */
+
+/* ... (기존 상세정보 페이지 CSS 유지) ... */
+
 
 /* 각 섹션 공통 스타일 */
 .detail-section {
@@ -459,6 +467,13 @@
     padding-bottom: 5px;
     border-bottom: 2px solid #a8d58c; /* 제목 하단 녹색 줄 */
     display: inline-block; /* 내용만큼만 너비 차지 */
+    position: relative; /* ::before/::after 위치 지정을 위함 (필요한 경우) */
+    padding-left: 0; /* 기존에 왼쪽 패딩이나 점이 있었다면 이 부분을 0으로 초기화 */
+}
+
+/* 아래 규칙을 추가하여 녹색 점을 제거합니다. */
+.section-title::before {
+    content: none; 
 }
 
 /* 메인 도서 정보 섹션 */

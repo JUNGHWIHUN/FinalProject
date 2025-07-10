@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 
-public class RequestBook {
+public class SubmitRequestBook {
 	
 	private String requestBookNo;		//신청도서 번호
 	private String memberNo;			//회원 번호

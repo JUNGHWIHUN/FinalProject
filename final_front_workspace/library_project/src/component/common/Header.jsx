@@ -48,8 +48,7 @@ export default function Header(){
                     <div className="header-logo">
                         <Link to="/">
                             {/* 실제 로고 이미지 경로로 변경해주세요. 스크린샷에 맞춰 책 아이콘으로 변경할 수도 있습니다. */}
-                            <img src="/path/to/your/book-icon.png" alt="책 아이콘" className="book-icon-img" /> {/* 새로운 이미지 클래스 */}
-                            <span>KH공감도서관</span>
+                            <img src="src/image/final_logo.png" alt="책 아이콘" className="book-icon-img" />
                         </Link>
                     </div>
 

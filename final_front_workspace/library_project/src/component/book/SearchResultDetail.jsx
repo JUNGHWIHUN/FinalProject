@@ -81,6 +81,8 @@ export default function SearchResultDetail (){
     //화면 렌더링 : 처음, 서평이 업데이트되었을 때, 예약되었을 때
     useEffect(() =>{
 
+        window.scrollTo(0, 0);
+
         //별도로 분리한 장르 코드 추출 함수
         const genreCode = extractGenreCode(callNo);
 

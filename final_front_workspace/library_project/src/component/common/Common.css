@@ -13,7 +13,7 @@ header {
     justify-content: space-between; /* 로고와 검색/로그인 그룹을 양 끝으로 정렬 */
     align-items: center;
     width: 90%;
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 25px 0; /* 상하 패딩을 크게 늘려 전체적인 상하 폭 확대 */
 }
@@ -37,7 +37,7 @@ header {
 }
 
 .header-logo img.book-icon-img {
-    height: 55px; /* 책 아이콘 크기를 더 크게 조정 */
+    height: 90px; /* 책 아이콘 크기를 더 크게 조정 */
     margin-bottom: 5px; /* 아이콘과 텍스트 사이 간격 조정 */
 }
 
