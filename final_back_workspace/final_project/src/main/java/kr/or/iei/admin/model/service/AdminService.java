@@ -15,6 +15,7 @@ import kr.or.iei.admin.model.dto.BookSelectDto;
 import kr.or.iei.admin.model.dto.LentBookDto;
 import kr.or.iei.admin.model.dto.LentBookList;
 import kr.or.iei.admin.model.dto.MemberDto;
+import kr.or.iei.admin.model.dto.RequestBook;
 import kr.or.iei.admin.model.dto.UserOne;
 import kr.or.iei.book.model.dto.Book;
 import kr.or.iei.common.model.dto.PageInfoDto;
@@ -240,6 +241,39 @@ public class AdminService {
 	public int fixMember(MemberDto memberDto) {
 		// TODO Auto-generated method stub
 		return dao.fixMember(memberDto);
+	}
+
+
+	public HashMap<String, Object> selectRequestList(int reqPage) {
+		int viewCnt = 10;						//한 페이지당 게시글 수
+		int pageNaviSize = 5;					//페이지 네비게이션 길이
+		int totalCount = dao.selectRequestCount();//연체된 책 수
+		
+		PageInfoDto pageInfo = pageUtil.getPageInfo(reqPage, viewCnt, pageNaviSize, totalCount);
+		System.out.println("여기까진 잘 되나");
+		
+		//게시글 목록
+		ArrayList<RequestBook> RequestList = dao.selectRequestList(pageInfo);
+		System.out.println("리스트 정보 조회");
+		HashMap<String, Object> memberMap = new HashMap<String, Object>();
+		memberMap.put("RequestList", RequestList);
+		memberMap.put("pageInfo", pageInfo);
+						
+		return memberMap;
+	}
+
+	@Transactional
+	public int requestUpdate(String type, String target) {
+		
+		int result = 0;
+		
+		if(type.equals("yes")) {
+			result = dao.requestUpdateYes(target);
+		}else if(type.equals("no")) {
+			result = dao.requestUpdateNo(target);
+		}
+		
+		return result;
 	}
 	
 	

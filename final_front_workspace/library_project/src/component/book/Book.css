@@ -183,3 +183,660 @@
 .reset-btn:hover {
     background-color: #e0e0e0;
 }
+
+
+
+/* --- 검색 결과 목록 (SearchResultList) CSS 시작 --- */
+
+.section.board-list {
+    width: 100%;
+    max-width: 900px; /* 전체 리스트 컨테이너의 최대 너비 */
+    margin: 50px auto; /* 좌우 마진을 auto로 설정하여 중앙 정렬 */
+    padding: 0; /* 섹션 자체 패딩 제거 */
+}
+
+/* 새로운 클래스: 검색 결과 헤더 전체 컨테이너 스타일 */
+.search-result-header {
+    width: 100%; /* 부모 .section.board-list의 100% 너비 */
+    max-width: 900px; /* .section.board-list와 동일한 최대 너비 */
+    margin-left: auto; /* 중앙 정렬 */
+    margin-right: auto; /* 중앙 정렬 */
+    margin-bottom: 30px; /* 헤더와 리스트 사이 간격 */
+    padding-bottom: 10px; /* 제목과 줄 사이 간격 */
+    padding-left: 30px; /* li의 padding-left와 동일하게 맞춰 시작점 정렬 */
+    text-align: left; /* 텍스트 왼쪽 정렬 */
+    position: relative; /* 자식 요소 (underline) 위치 지정을 위함 */
+    box-sizing: border-box; /* 패딩이 width에 포함되도록 설정 */
+}
+
+/* search-page-title에 해당하는 스타일 정의 (search-result-header 내부의 h2) */
+.search-result-header .search-page-title { /* 명시적으로 .search-result-header 아래의 .search-page-title을 타겟팅 */
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+
+/* 새로운 클래스: 녹색 직선의 길이와 시작/끝 지점을 li 태그와 동일하게 맞춤 */
+.search-title-underline.search-result-underline {
+    position: absolute;
+    bottom: 0;
+    left: 30px; /* li의 padding-left와 동일하게 맞춰 시작점 정렬 */
+    width: calc(100% - 60px); /* li의 content 너비와 동일하게 맞춰 끝 지점 정렬 (양쪽 패딩 30px씩 제거) */
+    height: 3px;
+    background-color: #a8d58c;
+}
+
+
+.board-list-wrap {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 0; /* ul의 좌우 패딩을 0으로 맞추기 위해 */
+}
+
+.posting-wrap {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.posting-item {
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 정렬 (이미지+정보와 버튼 그룹) */
+    align-items: flex-start; /* 왼쪽 정렬 */
+    padding: 20px 30px; /* 좌우 패딩 30px, 상하 20px */
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-bottom: 20px; /* li 사이 간격 */
+}
+
+.posting-item:last-child {
+    border-bottom: none; /* 마지막 아이템 하단 선 제거 */
+    margin-bottom: 0; /* 마지막 아이템 하단 간격 제거 */
+}
+
+.posting-item:hover {
+    background-color: #f9f9f9;
+}
+
+.posting-content-wrapper {
+    display: flex;
+    width: 100%; /* 부모 li의 전체 너비 사용 */
+    align-items: flex-start;
+    gap: 25px; /* 이미지와 정보 사이 간격 */
+}
+
+.posting-img {
+    width: 130px; /* 이미지 너비 */
+    height: 180px; /* 이미지 높이 */
+    flex-shrink: 0; /* 줄어들지 않도록 */
+    border: 1px solid #ddd; /* 이미지 테두리 */
+    display: flex; /* 이미지 중앙 정렬 */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* 이미지가 영역을 벗어나지 않도록 */
+}
+
+.posting-img img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* 이미지 비율 유지하며 영역에 맞춤 */
+}
+
+.posting-info {
+    flex-grow: 1; /* 남은 공간을 채우도록 */
+    text-align: left;
+}
+
+.posting-title {
+    font-size: 20px; /* 제목 글자 크기 확대 */
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.posting-sub-info p {
+    font-size: 15px; /* 부가 정보 글자 크기 확대 */
+    color: #666;
+    margin: 5px 0; /* p 태그 간격 조정 */
+    line-height: 1.5;
+}
+
+/* 새로운 버튼/상태 표시 컨테이너 스타일 */
+.book-item-buttons-bottom {
+    display: flex;
+    align-self: flex-end; /* li 내에서 오른쪽으로 정렬 */
+    gap: 10px; /* 버튼/상태 표시 사이 간격 */
+    margin-top: 10px; /* 이미지/정보 블록과의 간격 조정 */
+    padding-right: 0px; /* 좌우 패딩을 li에 맞춤 */
+}
+
+/* 대출 상태 표시 div 스타일 (버튼 아님) */
+.lent-status-display {
+    padding: 8px 15px;
+    border: 1px solid #ddd; /* 테두리 */
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: center;
+    min-width: 80px; /* 폭을 100px에서 80px로 줄임 */
+    cursor: default; /* 클릭 불가능하게 커서 변경 */
+}
+
+.lent-status-display.status-available { /* 대출가능 */
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.lent-status-display.status-reserved { /* 예약중 */
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.lent-status-display.status-lented { /* 대출중 */
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.lent-status-display.status-unavailable { /* 대출불가 */
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+
+/* '내 서재에 등록' 버튼 스타일 */
+.btn-add-mylibrary {
+    padding: 8px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    min-width: 100px;
+    text-align: center;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.btn-add-mylibrary:hover {
+    background-color: #e0e0e0;
+}
+
+/* 페이지네이션 스타일 (기존과 동일) */
+.board-paging-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.page-navi {
+    display: flex;
+    gap: 5px;
+}
+
+.page-navi button {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.page-navi button:hover {
+    background-color: #f0f0f0;
+}
+
+.page-navi button.active {
+    background-color: #a8d58c;
+    color: white;
+    border-color: #a8d58c;
+}
+
+/* --- 상세정보 페이지 (SearchResultDetail) CSS 시작 --- */
+
+.section.detail-page {
+    width: 100%;
+    max-width: 900px; /* 전체 페이지 컨테이너의 최대 너비 */
+    margin: 50px auto; /* 좌우 마진을 auto로 설정하여 중앙 정렬 */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px; /* 내부 여백 */
+    box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+}
+
+.detail-page-container {
+    /* section.detail-page가 이미 최대 너비와 마진을 가지고 있으므로,
+       내부 컨테이너는 추가적인 레이아웃 설정이 필요 없을 수 있음.
+       만약 필요하다면 여기에 추가 */
+}
+
+/* 페이지 제목 영역 */
+.page-title-area {
+    margin-bottom: 30px;
+    text-align: left;
+    position: relative;
+    padding-bottom: 10px; /* 제목과 줄 사이 간격 */
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.page-title-underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%; /* 부모 .page-title-area 너비의 100% */
+    height: 3px;
+    background-color: #a8d58c;
+}
+
+/* 각 섹션 공통 스타일 */
+.detail-section {
+    margin-top: 40px; /* 섹션 상단 간격 */
+    border: 1px solid #eee; /* 섹션별 테두리 */
+    border-radius: 8px;
+    padding: 25px 30px; /* 섹션 내부 여백 */
+    background-color: #fcfcfc; /* 배경색 살짝 다르게 */
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #a8d58c; /* 제목 하단 녹색 줄 */
+    display: inline-block; /* 내용만큼만 너비 차지 */
+}
+
+/* 메인 도서 정보 섹션 */
+.main-book-info-section {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px; /* 이미지와 정보 사이 간격 */
+    padding-top: 30px; /* 상단 여백 조절 */
+    padding-bottom: 30px; /* 하단 여백 조절 */
+    background-color: #fff; /* 배경색 다시 흰색으로 */
+    border: none; /* 메인 섹션은 테두리 없음 */
+    box-shadow: none; /* 메인 섹션은 그림자 없음 */
+}
+
+.book-cover-area {
+    flex-shrink: 0; /* 줄어들지 않도록 */
+    width: 220px; /* 사진 너비 증가 */
+    height: 300px; /* 사진 높이 증가 */
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.book-cover-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.book-meta-info {
+    flex-grow: 1; /* 남은 공간 채우기 */
+    text-align: left;
+    position: relative; /* 버튼 위치 지정을 위함 */
+    padding-bottom: 60px; /* 버튼 공간 확보 */
+}
+
+.book-title {
+    font-size: 24px; /* 제목 글자 크기 감소 */
+    font-weight: bold;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.book-meta-info p {
+    font-size: 16px;
+    color: #555;
+    margin: 5px 0;
+    line-height: 1.6;
+}
+
+/* '내 서재에 등록' 버튼 (메인 정보 섹션 내) */
+.btn-add-mylibrary-detail {
+    position: absolute;
+    bottom: 0;
+    right: 0; /* 스크린샷처럼 오른쪽 아래에 배치 */
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: normal;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    min-width: 120px; /* 최소 너비 */
+}
+
+.btn-add-mylibrary-detail:hover {
+    background-color: #e0e0e0;
+}
+
+
+/* 소장 정보 섹션 */
+.holding-table {
+    width: 100%;
+    border-collapse: collapse; /* 테이블 선 병합 */
+    margin-top: 20px;
+}
+
+.holding-table th, .holding-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.holding-table thead th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    color: #333;
+}
+
+.holding-table tbody td {
+    background-color: #fff;
+    color: #555;
+}
+
+.holding-table tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* 짝수 행 배경색 */
+}
+
+/* 예약하기 버튼 */
+.btn-reserve {
+    padding: 8px 15px;
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-reserve:hover {
+    background-color: #e0e0e0;
+}
+
+/* 안내 섹션 */
+.guide-section {
+    background-color: #fcfcfc;
+    border: 1px solid #eee;
+    margin-top: 30px; /* 소장정보 섹션과의 간격 */
+}
+
+.guide-section p {
+    font-size: 15px;
+    color: #666;
+    line-height: 1.6;
+    margin: 8px 0;
+}
+
+
+/* 관련 도서 섹션 (인기/신착) */
+.related-books-section {
+    margin-top: 40px;
+    background-color: #fcfcfc;
+    border: 1px solid #eee;
+}
+
+.book-carousel {
+    display: flex;
+    gap: 20px; /* 도서 아이템 사이 간격 */
+    overflow-x: auto; /* 가로 스크롤 가능하게 */
+    padding: 10px 0; /* 내부 여백 */
+    scrollbar-width: thin; /* Firefox 스크롤바 */
+    scrollbar-color: #ccc #f0f0f0; /* Firefox 스크롤바 색상 */
+}
+
+/* 웹킷 (Chrome, Safari) 스크롤바 스타일 */
+.book-carousel::-webkit-scrollbar {
+    height: 8px;
+}
+
+.book-carousel::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+.book-carousel::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.book-carousel::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+}
+
+
+.book-small-item {
+    flex-shrink: 0; /* 줄어들지 않도록 */
+    width: 120px; /* 작은 책 아이템 너비 */
+    text-align: center;
+    cursor: pointer;
+}
+
+.book-small-cover {
+    width: 100px; /* 작은 책 표지 너비 */
+    height: 140px; /* 작은 책 표지 높이 */
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    object-fit: contain;
+}
+
+.book-small-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    line-height: 1.3;
+    margin-bottom: 5px;
+    white-space: normal; /* 여러 줄로 표시될 수 있도록 */
+    word-break: break-word; /* 긴 단어 줄바꿈 */
+    height: 36px; /* 두 줄까지 표시하도록 높이 고정 (14px * 1.3 * 2) */
+    overflow: hidden; /* 넘치는 텍스트 숨기기 */
+    text-overflow: ellipsis; /* 넘치는 텍스트 ... 처리 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 두 줄로 제한 */
+    -webkit-box-orient: vertical;
+}
+
+.book-small-author {
+    font-size: 13px;
+    color: #666;
+    white-space: nowrap; /* 한 줄로 표시 */
+    overflow: hidden;
+    text-overflow: ellipsis; /* 넘치는 텍스트 ... 처리 */
+}
+
+.no-related-books {
+    font-size: 16px;
+    color: #888;
+    text-align: center;
+    width: 100%;
+    padding: 20px;
+}
+
+/* --- 서평 섹션 (Comment) CSS 시작 --- */
+
+.comment-area-section {
+    margin-top: 40px; /* 상세 정보 페이지의 다른 섹션과의 간격 */
+    /* detail-section의 기본 스타일을 상속받으므로 여기에 추가적인 padding, border, background-color 등은 필요 없을 수 있습니다.
+       만약 다르게 보이길 원한다면 .detail-section을 오버라이드하는 스타일을 여기에 추가하세요. */
+}
+
+/* 서평 입력 컨테이너 */
+.comment-input-container {
+    margin-bottom: 30px; /* 입력 영역과 목록 사이 간격 */
+    padding: 20px 0; /* 내부 상하 패딩 */
+}
+
+.comment-input-area {
+    display: flex;
+    gap: 10px; /* 텍스트 에리어와 버튼 사이 간격 */
+    align-items: flex-end; /* 버튼이 텍스트 에리어 바닥에 정렬되도록 */
+    width: 100%; /* 부모 너비에 맞춤 */
+}
+
+.comment-content-textarea {
+    flex-grow: 1; /* 남은 공간을 모두 차지하도록 */
+    width: 100%; /* flex-grow 때문에 100%는 크게 의미 없지만 명시적으로 */
+    height: 40px; /* 고정된 높이로 변경 (원하는 높이에 따라 조절) */
+    min-height: 40px; /* 최소 높이도 동일하게 설정 */
+    padding: 10px; /* 내부 패딩 */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 15px;
+    resize: none; /* 크기 조절 불가 */
+    box-sizing: border-box; /* 패딩이 width에 포함되도록 */
+    line-height: 1.5; /* 텍스트가 중앙에 오도록 조절 */
+    overflow: hidden; /* 내용이 넘칠 경우 스크롤바 표시 */
+}
+
+.comment-content-textarea::placeholder {
+    color: #aaa;
+}
+
+.btn-comment-submit,
+.btn-comment-cancel {
+    height: 40px; /* textarea와 동일한 높이로 설정 */
+    padding: 0 20px; /* 위아래 패딩을 0으로, 좌우 패딩만 유지 */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    color: #333;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0; /* 줄어들지 않도록 */
+    display: flex; /* 내부 텍스트 가운데 정렬을 위해 flexbox 사용 */
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-comment-submit:hover,
+.btn-comment-cancel:hover {
+    background-color: #e0e0e0;
+}
+
+/* 서평 목록 컨테이너 */
+.comment-list-container {
+    margin-top: 20px; /* 입력 영역과 목록 간 간격 */
+}
+
+.comment-list {
+    margin-top: 20px;
+}
+
+.comment-item {
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 15px 20px;
+    margin-bottom: 15px; /* 각 서평 아이템 사이 간격 */
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.comment-item:last-child {
+    margin-bottom: 0; /* 마지막 아이템 하단 간격 제거 */
+}
+
+.comment-content-text { /* p 태그 스타일 */
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.comment-footer {
+    display: flex;
+    justify-content: space-between; /* 메타 정보와 버튼을 양 끝으로 정렬 */
+    align-items: center;
+    font-size: 13px;
+    color: #888;
+}
+
+.comment-meta {
+    font-size: 14px;
+    color: #666;
+}
+
+.comment-actions {
+    display: flex;
+    gap: 5px; /* 버튼 사이 간격 */
+}
+
+.btn-comment-action {
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    background-color: #f0f0f0;
+    color: #555;
+}
+
+.btn-comment-action:hover {
+    background-color: #e0e0e0;
+}
+
+.btn-comment-action.btn-update {
+    /* 수정 버튼 특별 스타일 (필요시) */
+}
+
+.btn-comment-action.btn-delete {
+    /* 삭제 버튼 특별 스타일 (필요시) */
+}
+
+.btn-comment-action.btn-report {
+    background-color: #f8d7da; /* 신고 버튼은 다른 색상 */
+    color: #721c24;
+    border-color: #f5c6cb;
+}
+
+.btn-comment-action.btn-report:hover {
+    background-color: #e2b9bb;
+}
+
+
+.no-comments-message {
+    text-align: center;
+    color: #888;
+    padding: 30px 0;
+    font-size: 16px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-top: 20px;
+}
+
+/* 서평 페이지네이션 */
+.comment-pagination {
+    margin-top: 30px; /* 페이지네이션 상단 간격 */
+    display: flex;
+    justify-content: center; /* 페이지네이션 컴포넌트 자체를 가운데 정렬 */
+}

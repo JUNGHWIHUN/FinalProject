@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
@@ -102,7 +102,7 @@ export default function SearchResultDetail (){
             //인기도서 저장
             setPopularBooks(popularRes.data.resData);
             //신착도서 저장
-            setNewArrivalBooks(newArrivalsRes.data.resData);
+            setNewArrivals(newArrivalsRes.data.resData);
         })
         
     },[refreshTrigger])
@@ -128,7 +128,7 @@ export default function SearchResultDetail (){
     function isLoginedCheck(){
         if(!isLogined){
             Swal.fire({
-                tite : '알림',
+                title : '알림',
                 text : '로그인이 필요합니다',
                 icon : 'warning',
                 confirmButtonText : '확인'
@@ -170,127 +170,134 @@ export default function SearchResultDetail (){
     }
 
     return (
-        <div className="detail-page-wrap">
-            <h1 className="page-title">상세정보</h1>
-
-            {/* 메인 도서 정보 섹션 */}
-            <div className="main-book-info" style={{display : 'flex'}}>
-                {/* 도서 표지 이미지 */}
-                <div className="book-cover">
-                    <img src={book.imageUrl} className="book-cover-image" />
+        <section className="section detail-page"> {/* section 태그로 변경 */}
+            <div className="detail-page-container"> {/* 전체 컨테이너 추가 */}
+                <div className="page-title-area"> {/* 제목 영역 */}
+                    <h1 className="page-title">상세정보</h1>
+                    <div className="page-title-underline"></div>
                 </div>
-                
-                {/* 기본 서지 정보 */}
-                <div className="book-meta-info">
-                    <h2 className="book-title">{book.titleInfo}</h2>
-                    <p className="book-author">저자: {book.authorInfo || '정보 없음'}</p>
-                    <p className="book-isbn">ISBN: {book.isbn || '정보 없음'}</p>
-                    <p className="book-publisher">발행처: {book.pubInfo || '정보 없음'}</p>
-                    <p className="book-pubyear">발행년도: {book.pubYear || '정보 없음'}</p>
-                    <p className="book-callno">청구기호: {book.callNo || '정보 없음'}</p>    
 
-                    {/* '내 서재에 등록' 버튼 : 팝업창 (모달) 띄우기 (SearchResultDetail 컴포넌트 내) */}
-                    <button onClick={() => openMyLibraryModal()} className="btn btn-add-mylibrary">내 서재에 등록</button>
+                {/* 메인 도서 정보 섹션 */}
+                <div className="detail-section main-book-info-section"> {/* 새로운 클래스 추가 */}
+                    {/* 도서 표지 이미지 */}
+                    <div className="book-cover-area"> {/* 이미지 영역 감싸는 div */}
+                        <img src={book.imageUrl} className="book-cover-image" alt={book.titleInfo} />
+                    </div>
+                    
+                    {/* 기본 서지 정보 */}
+                    <div className="book-meta-info">
+                        <h2 className="book-title">{book.titleInfo}</h2>
+                        <p className="book-author">저자: {book.authorInfo || '정보 없음'}</p>
+                        <p className="book-isbn">ISBN: {book.isbn || '정보 없음'}</p>
+                        <p className="book-publisher">발행처: {book.pubInfo || '정보 없음'}</p>
+                        <p className="book-pubyear">발행년도: {book.pubYear || '정보 없음'}</p>
+                        <p className="book-callno">청구기호: {book.callNo || '정보 없음'}</p> 
+                        <p className="book-placeinfo">자료실: {book.placeInfo || '정보 없음'}</p> {/* 자료실 추가 */}
 
-                    {/* isVisible 상태가 true일 때만 모달을 렌더링 */}
-                    {isVisible && (
-                        <MyLibraryModal
-                            isVisible={isVisible}               // 모달 표시 여부
-                            closeMyLibraryModal={closeMyLibraryModal} // 모달 닫기 함수
+                        {/* '내 서재에 등록' 버튼 : 팝업창 (모달) 띄우기 (SearchResultDetail 컴포넌트 내) */}
+                        <button onClick={() => openMyLibraryModal()} className="btn btn-add-mylibrary-detail">내 서재에 등록</button>
 
-                            callNo={book.callNo} // 모달에 전달할 책 정보
-                            addToMyLibrary={addToMyLibrary}     // 모달에서 '등록' 완료 시 호출될 콜백
-                        />
-                    )}
+                        {/* isVisible 상태가 true일 때만 모달을 렌더링 */}
+                        {isVisible && (
+                            <MyLibraryModal
+                                isVisible={isVisible}        // 모달 표시 여부
+                                closeMyLibraryModal={closeMyLibraryModal} // 모달 닫기 함수
+                                callNo={book.callNo}         // 모달에 전달할 책 정보
+                                addToMyLibrary={addToMyLibrary}    // 모달에서 '등록' 완료 시 호출될 콜백
+                            />
+                        )}
+                    </div>
+                </div>
+
+                {/* 소장 정보 섹션 */}
+                <div className="detail-section holding-info-section">
+                    <h3 className="section-title">소장정보</h3>
+                    <table className="holding-table">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>청구기호</th>
+                                <th>도서상태</th>
+                                <th>반납예정일</th>
+                                <th>예약/신청</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1.</td>
+                                <td>{book.callNo || '정보 없음'}</td>
+                                <td>
+                                    {book.canLend === 'T' ? '대출가능'
+                                    : book.canLend === 'R' ? '예약중'
+                                    : book.canLend === 'L' ? '대출중'
+                                    : '대출불가'}
+                                </td>
+                                <td className="return-date-cell">
+                                    {book.canLend === 'L' ? book.returnDate : '-'} {/* 대출중일 때만 반납예정일 표시 */}
+                                </td> 
+                                <td className="reservation-cell">
+                                    {book.canLend === 'L' ? 
+                                        <button onClick={isLoginedCheck} className="btn-reserve">예약하기</button>
+                                        : ""
+                                    }    
+                                </td> 
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* 예약/신청 안내 섹션 */}
+                <div className="detail-section guide-section"> {/* 새로운 클래스 추가 */}
+                    <h3 className="section-title">예약/신청 안내</h3>
+                    <p>도서가 [대출중] 도서이고 도서상태가 [신청가능]일 경우, 예약/신청 [신청하기]로 신청하시기 바랍니다.</p>
+                    <p>부득이하게 취소해야 할 경우는 [홈페이지&gt;마이페이지&gt;내서재&gt;신청]에서 취소 가능합니다.</p>
+                    <p>※ 미대출로 인한 자동취소가 3회 발생 시, 30일간 도서 예약이 불가합니다.</p>
+                </div>
+
+                {/* 보존서고 이용안내 섹션 */}
+                <div className="detail-section guide-section"> {/* 새로운 클래스 추가 */}
+                    <h3 className="section-title">보존서고 이용안내</h3>
+                    <p>소장처가 [보존서고]이고 도서상태가 [신청가능]일 경우, 예약/신청의 [신청하기]로 신청하시기 바랍니다.</p>
+                    <p>※ 일반자료실은 평일 18시, 주말 16시까지 이용 가능합니다.</p>
+                    <p>※ 보존서고 자료는 대출이 불가하며, 방문하셔서 열람하실 수 있습니다.</p>
+                </div>
+
+                {/* 서평란 섹션 : 별도의 컴포넌트로 분리 */}
+                <BookComment callNo={callNo} axiosInstance={axiosInstance} serverUrl={serverUrl}/>
+
+                {/* 이 분야의 인기 도서 섹션 */}
+                <div className="detail-section related-books-section popular-books">
+                    <h3 className="section-title">이 분야의 인기 도서</h3>
+                    <div className="book-carousel">
+                        {popularBooks.length > 0 ? (
+                            popularBooks.map((bookItem, index) => (
+                                <SameGenreBooks key={index} book={bookItem} navigate={navigate} /> 
+                            ))
+                        ) : (
+                            <p className="no-related-books">인기 도서 정보가 없습니다.</p>
+                        )}
+                    </div>
+                </div>
+
+                {/* 이 분야의 신착 도서 섹션 */}
+                <div className="detail-section related-books-section new-arrivals">
+                    <h3 className="section-title">이 분야의 신착 도서</h3>
+                    <div className="book-carousel">
+                        {newArrivalBooks.length > 0 ? (
+                            newArrivalBooks.map((bookItem, index) => (
+                                <SameGenreBooks key={index} book={bookItem} navigate={navigate} /> 
+                            ))
+                        ) : (
+                            <p className="no-related-books">신착 도서 정보가 없습니다.</p>
+                        )}
+                    </div>
                 </div>
             </div>
-
-            {/* 소장 정보 섹션 */}
-            <div className="holding-info-section">
-                <h3 className="section-title">소장정보</h3>
-                <table className="holding-table">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>청구기호</th>
-                            <th>도서상태</th>
-                            <th>반납예정일</th>
-                            <th>예약/신청</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1.</td>
-                            <td>{book.callNo || '정보 없음'}</td>
-                            <td>
-                                {book.canLend === 'T' ? '대출가능'
-                                : book.canLend === 'R' ? '예약중'
-                                : book.canLend === 'L' ? '대출중'
-                                : '대출불가'}
-                            </td>
-                            <td className="return-date-cell">-</td> 
-                            <td className="reservation-cell">
-                            {book.canLend === 'L' ? 
-                                <button onClick={reservation}>예약하기</button>
-                                : ""
-                            }    
-                            </td> 
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            {/* 예약/신청 안내 섹션 */}
-            <div className="reservation-guide-section">
-                <h3 className="section-title">예약/신청 안내</h3>
-                <p>도서가 [대출중] 도서이고 도서상태가 [신청가능]일 경우, 예약/신청 [신청하기]로 신청하시기 바랍니다.</p>
-                <p>부득이하게 취소해야 할 경우는 [홈페이지&gt;마이페이지&gt;내서재&gt;신청]에서 취소 가능합니다.</p>
-                <p>※ 미대출로 인한 자동취소가 3회 발생 시, 30일간 도서 예약이 불가합니다.</p>
-            </div>
-
-            {/* 보존서고 이용안내 섹션 */}
-            <div className="reservation-guide-section">
-                <h3 className="section-title">보존서고 이용안내</h3>
-                <p>소장처가 [보존서고]이고 도서상태가 [신청가능]일 경우, 예약/신청의 [신청하기]로 신청하시기 바랍니다.</p>
-                <p>※ 일반자료실은 평일 18시, 주말 16시까지 이용 가능합니다.</p>
-                <p>※ 보존서고 자료는 대출이 불가하며, 방문하셔서 열람하실 수 있습니다.</p>
-            </div>
-
-            {/* 서평란 섹션 : 별도의 컴포넌트로 분리 */}
-            <BookComment callNo={callNo} axiosInstance={axiosInstance} serverUrl={serverUrl}/>
-
-            {/* 이 분야의 인기 도서 섹션 */}
-            <div className="related-books-section popular-books">
-                <h3 className="section-title">이 분야의 인기 도서</h3>
-                <div className="book-carousel">
-                    {popularBooks.length > 0 ? (
-                        popularBooks.map((bookItem, index) => (
-                            <SameGenreBooks key={index} book={bookItem} navigate={navigate} /> 
-                        ))
-                    ) : (
-                        <p className="no-related-books">인기 도서 정보가 없습니다.</p>
-                    )}
-                </div>
-            </div>
-
-            {/* 이 분야의 신착 도서 섹션 */}
-            <div className="related-books-section new-arrivals">
-                <h3 className="section-title">이 분야의 신착 도서</h3>
-                <div className="book-carousel">
-                    {newArrivalBooks.length > 0 ? (
-                        newArrivalBooks.map((bookItem, index) => (
-                            <SameGenreBooks key={index} book={bookItem} navigate={navigate} /> 
-                        ))
-                    ) : (
-                        <p className="no-related-books">신착 도서 정보가 없습니다.</p>
-                    )}
-                </div>
-            </div>
-        </div>
+        </section> 
     );
 }
 
-//인기도서/신규도서를 출력할 컴포넌트
+//인기도서/신규도서를 출력할 컴포넌트 (변경 없음)
 function SameGenreBooks({ book, navigate }) {
     
     //책 표지를 클릭하면 해당 책의 상세 페이지로 이동
@@ -300,11 +307,10 @@ function SameGenreBooks({ book, navigate }) {
 
     return (
         <div className="book-small-item" onClick={clickImg}>
-            <img src={book.imageUrl} className="book-small-cover" />
+            <img src={book.imageUrl} className="book-small-cover" alt={book.titleInfo} />
             <div className="book-small-title">
                 {book?.titleInfo}
             </div>
-            <div className="book-small-author">{book?.authorInfo}</div>
         </div>
     );
 }

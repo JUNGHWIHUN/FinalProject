@@ -32,26 +32,26 @@ export default function Comment (props) {
     function isLoginedCheck(){
         if(!isLogined){
             Swal.fire({
-                tite : '알림',
+                title : '알림',
                 text : '로그인이 필요합니다',
                 icon : 'warning',
                 confirmButtonText : '확인'
             })
-            navigate('/login', { state: { from: location.pathname } });
+            // navigate('/login', { state: { from: location.pathname } }); // 이 부분은 Comment 컴포넌트 내에 navigate가 없어 주석 처리하거나, Comment 컴포넌트에도 navigate를 props로 전달해야 함.
         }
     }
 
     return (
-        <>
+        <div className="detail-section comment-area-section"> {/* 서평 섹션 전체를 감싸는 div */}
+            <h3 className="section-title">한줄 서평</h3> {/* 서평 섹션 제목 */}
             <CommentInput callNo={callNo} axiosInstance={axiosInstance} serverUrl={serverUrl} 
                             isLogined={isLogined} loginMember={loginMember} isLoginedCheck={isLoginedCheck} 
                             updateComment={updateComment} setUpdateComment={setUpdateComment} commentCheck={commentCheck}/>
             <CommentList callNo={callNo} axiosInstance={axiosInstance} serverUrl={serverUrl} 
                             isLogined={isLogined} loginMember={loginMember} 
                             setUpdateComment={setUpdateComment} commentCheck={commentCheck}/>
-        </>
+        </div>
     )
-
 }
 
 
@@ -85,7 +85,7 @@ function CommentInput ({ callNo, axiosInstance, serverUrl, loginMember, isLogine
 
     // 수정 취소 함수 (수정 모드일 때만 노출)
     function cancelUpdate(){
-        setEditingComment(null); // 수정 모드 해제
+        setUpdateComment(null); // 수정 모드 해제
         setCommentInputValues({ commentContent: "", memberId: loginMember?.memberId || "", callNo: callNo }); // 입력값 초기화
     }
 
@@ -137,18 +137,20 @@ function CommentInput ({ callNo, axiosInstance, serverUrl, loginMember, isLogine
     }
 
     return (
-        <div className="comment-section">
-            {/* 서평 등록란 */}
-            <h3 className="section-title">한줄 서평</h3>
+        // Comment 컴포넌트에서 이미 section-title을 포함한 comment-section을 감싸고 있으므로 이 div는 제거
+        <div className="comment-input-container"> {/* 서평 입력 컨테이너 */}
             <form onSubmit={function(e){
                 e.preventDefault(); //기본 submit 이벤트 제어 : 별도의 함수로 분리
                 commentSubmit();          //등록 함수 호출
             }}>
                 <div className="comment-input-area">
-                    <textarea type="text" placeholder="비방, 욕설, 인신공격성 글은 삭제 처리될 수 있습니다." id='commentContent' className="comment-content" 
+                    <textarea type="text" placeholder="비방, 욕설, 인신공격성 글은 삭제 처리될 수 있습니다." id='commentContent' className="comment-content-textarea"
                     value={commentInputValues.commentContent} onFocus={isLoginedCheck} onChange={commentInput}
-                    style={{width : '500px', height : '30px'}} maxLength={100}/>
-                    <button type='submit'className="btn-comment-submit">등록</button>
+                    maxLength={100}/>
+                    <button type='submit'className="btn-comment-submit">{updateComment ? "수정" : "등록"}</button>
+                    {updateComment && ( // 수정 모드일 때만 취소 버튼 노출
+                        <button type='button' onClick={cancelUpdate} className="btn-comment-cancel">취소</button>
+                    )}
                 </div>
             </form>
         </div>
@@ -230,32 +232,34 @@ function CommentList({ callNo, axiosInstance, serverUrl, isLogined, loginMember,
 
 
     return (
-        <>
+        <div className="comment-list-container"> {/* 서평 목록 전체를 감싸는 div */}
             {/* 작성된 서평 목록 */}
             <div className="comment-list">
                 {comments.length > 0 ? (
                     comments.map((comment, index) => (
                         <div className="comment-item" key={'comment'+index}> 
-                            <p className="comment-content">
+                            <p className="comment-content-text"> {/* 텍스트용 클래스 추가 */}
                                 {comment.commentContent}
                             </p>
-                            <span className="comment-meta">
-                                {comment.memberId} 작성일: {comment.commentDate} 
-                                {comment.commentUpdateDate != "" || comment.commentUpdateDate != null
-                                 ? comment.commentUpdateDate
-                                 : ""
-                                }
-                            </span>
-                            <div className="comment-actions">
-                                {/* 로그인한 회원이 서평 작성자일 때 수정/삭제 버튼 보이게 */}
-                                {isLogined && loginMember.memberId == comment.memberId ?
-                                    <>
-                                        <button onClick={() => commentUpdate(comment)} className="btn btn-update-comment">수정</button>
-                                        <button onClick={() => commentDelete(comment)} className="btn btn-delete-comment">삭제</button>
-                                    </>
-                                :
-                                    <button className="btn btn-report-comment">신고</button>
-                                }
+                            <div className="comment-footer"> {/* 메타 정보와 버튼을 감싸는 div */}
+                                <span className="comment-meta">
+                                    {comment.memberId} 작성일: {comment.commentDate} 
+                                    {comment.commentUpdateDate && ( // commentUpdateDate가 있을 때만 표시
+                                        <span> (수정일: {comment.commentUpdateDate})</span>
+                                    )}
+                                </span>
+                                <div className="comment-actions">
+                                    {/* 로그인한 회원이 서평 작성자일 때 수정/삭제 버튼 보이게 */}
+                                    {isLogined && loginMember.memberId === comment.memberId ?
+                                        <>
+                                            <button onClick={() => commentUpdate(comment)} className="btn-comment-action btn-update">수정</button>
+                                            <button onClick={() => commentDelete(comment)} className="btn-comment-action btn-delete">삭제</button>
+                                        </>
+                                        :
+                                        // 로그인하지 않았거나 다른 작성자의 서평일 경우
+                                        <button className="btn-comment-action btn-report">신고</button>
+                                    }
+                                </div>
                             </div>
                         </div>
                     ))
@@ -265,9 +269,11 @@ function CommentList({ callNo, axiosInstance, serverUrl, isLogined, loginMember,
             </div>
 
             {/* 페이지네이션 (CommentList 내부에서 관리) */}
-            <div className="comment-pagination">
-                <PageNavi pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage} />
-            </div>
-        </>
+            {pageInfo.totalPage > 1 && ( /* 전체 페이지가 1보다 클 때만 페이지네이션 표시 */
+                <div className="comment-pagination">
+                    <PageNavi pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage} />
+                </div>
+            )}
+        </div>
     );
-}
+} 
