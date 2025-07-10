@@ -2,6 +2,7 @@ package kr.or.iei.admin.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -313,5 +314,41 @@ public class AdminController {
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
 	
+	//희망도서 리스트 가져오기
+	@GetMapping("/requestList/{reqPage}")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> requestList(@PathVariable int reqPage){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		
+		try {
+			HashMap<String, Object> requestMap = service.selectRequestList(reqPage);
+			res = new ResponseDto(HttpStatus.OK, "", requestMap, "");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//희망도서에서 한권에 대한 처리 상태 변경
+	@PostMapping("/requestUpdate")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> requestUpdate(@RequestBody Map<String, String> param){
+		String type = param.get("type");
+	    String target = param.get("target");
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		try {
+			int result = service.requestUpdate(type, target);
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "수정 완료", null, "");
+			}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
 	
 }
