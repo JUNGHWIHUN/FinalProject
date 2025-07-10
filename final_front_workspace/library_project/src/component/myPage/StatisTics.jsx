@@ -29,8 +29,7 @@ import createInstance from '../../axios/Interceptor';
      const serverUrl = import.meta.env.VITE_BACK_SERVER;
 
 
-     useEffect(function(){
-      
+     useEffect(function(){   
         let options = {};
         options.url = serverUrl + "/statistics/months";
         options.method = "get";
@@ -40,6 +39,7 @@ import createInstance from '../../axios/Interceptor';
 
         axiosInstacne(options)
         .then(function(res){
+          
           const months = res.data.resData;
 
             // 객체면 month 필드만 추출
@@ -57,17 +57,21 @@ import createInstance from '../../axios/Interceptor';
 
 
     function fetchLoanStats(){
+       
         let options = {};
         options.url = serverUrl + "/statistics";
         options.method = "get";
         options.params = {
             memberNo : loginMember.memberNo,
             month : selectedMonth
-        }
+        };
 
         axiosInstacne(options)
         .then(function(res){
+          
             const data = res.data.resData;
+
+         
 
             const labels = data.map(item => item.category);
             const values = data.map(item => item.cnt);
@@ -96,29 +100,37 @@ import createInstance from '../../axios/Interceptor';
     return(
         
     <div>
-      <h2>📊 월별 대출 통계</h2>
+  <h2>📊 월별 대출 통계</h2>
 
-         <select value={selectedMonth} onChange={handleMonthChange}>
-        {monthList.map((month) => (
-          <option key={month} value={month}>
-            {month}
-          </option>
-        ))}
-      </select>
+  <select value={selectedMonth} onChange={handleMonthChange}>
+    {monthList.map((month) => (
+      <option key={month} value={month}>
+        {month}
+      </option>
+    ))}
+  </select>
 
-      <button onClick={fetchLoanStats}>선택</button>
+  <button onClick={fetchLoanStats}>선택</button>
 
-      {chartData && (
-        <Bar
-          data={chartData}
-          options={{
-            responsive: true,
-            plugins: { legend: { position: "top" } },
-            scales: { y: { beginAtZero: true } },
-          }}
-        />
-      )}
+  {chartData && (
+    <div style={{ maxWidth: "400px", margin: "0 auto" }}>
+      <Bar
+        data={chartData}
+        options={{
+          responsive: true,
+          plugins: { legend: { position: "top" } },
+          scales: {
+            y: { beginAtZero: true },
+            x: {
+              barPercentage: 0.3,
+              categoryPercentage: 0.6,
+            },
+          },
+        }}
+      />
     </div>
+  )}
+</div>
   );
     
 }

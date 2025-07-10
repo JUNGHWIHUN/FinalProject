@@ -440,6 +440,7 @@
 	 where rnum between #{pageInfo.start} and #{pageInfo.end}
 	</select>
 	
+	<!-- 유저 한명의 정보 검색 -->
 	<select id="getOneMember" parameterType="String" resultType="MemberDto">
 	    select member_no as memberNo,
 			   member_id as memberId,
@@ -461,6 +462,7 @@
 		from tbl_member where member_no = #{memberNo}
 	</select>
 	
+	<!-- 책 한권의 정보 검색 -->
 	<select id="getOneBook" parameterType="String" resultType="BookList">
 	select call_no as bookNo,
 			   author_info as author,
@@ -481,5 +483,47 @@
 						  can_comment = #{canComment},
 						  max_borrow_count = #{maxBorrowedCount}
 				where member_no = #{memberNo}
+	</update>
+	
+	<!-- 희망도서 목록 수 검색 -->
+	<select id="selectRequestCount" resultType="_int">
+	select count(*) from tbl_book_request where request_status = 0
+	</select>
+	
+	<!-- 희망도서 정보 리스트 검색 -->
+	<select id="selectRequestList" resultType="RequestBook">
+		select member_no as memberNo,
+			   requested_reason as requestReason,
+			   requested_book_name as requestBookName,
+			   requested_book_author as requestBookAuthor,
+			   requested_book_pub as requestBookPub,
+			   request_status as status,
+			   requested_date as requestDate
+	  from (
+	  		select rownum rnum, a.*
+	  		  from (
+	  		  		  select member_no,
+                           requested_reason,
+                           requested_book_name,
+                           requested_book_author,
+                           requested_book_pub,
+                           request_status,
+                           requested_date
+                      from tbl_book_request
+    					where request_status = 0
+                     order by requested_date desc
+	  		  	   ) a
+	  	   ) a
+	 where rnum between #{start} and #{end}
+	</select>
+	
+	<!-- 희망도서 상태 변경'승인' -->
+	<update id="requestUpdateYes" parameterType="String">
+	update tbl_book_request set request_status = 2 where member_no = #{target}
+	</update>
+	
+	<!-- 희망도서 상태 변경'반려' -->
+	<update id="requestUpdateNo" parameterType="String">
+	update tbl_book_request set request_status = 1 where member_no = #{target}
 	</update>
 </mapper>

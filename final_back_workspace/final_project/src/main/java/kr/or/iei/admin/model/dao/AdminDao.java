@@ -13,6 +13,7 @@ import kr.or.iei.admin.model.dto.BookSelectDto;
 import kr.or.iei.admin.model.dto.LentBookDto;
 import kr.or.iei.admin.model.dto.LentBookList;
 import kr.or.iei.admin.model.dto.MemberDto;
+import kr.or.iei.admin.model.dto.RequestBook;
 import kr.or.iei.admin.model.dto.UserOne;
 import kr.or.iei.book.model.dto.Book;
 import kr.or.iei.common.model.dto.PageInfoDto;
@@ -80,10 +81,13 @@ public interface AdminDao {
 
 	int fixMember(MemberDto memberDto);
 
-	
+	int selectRequestCount();
 
-	
+	ArrayList<RequestBook> selectRequestList(PageInfoDto pageInfo);
 
-	
+	int requestUpdateYes(String target);
+
+	int requestUpdateNo(String target);
+
 
 }

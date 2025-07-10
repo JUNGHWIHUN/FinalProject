@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import AllbookPage from "./AllBookPage";
 import AdminMemberPage from "./AdminMemberPage";
+import RequestBook from "./RequestBook";
 
 export default function AdminPage(){
 
@@ -100,6 +101,8 @@ export default function AdminPage(){
         {mode == "allBook" && <AllbookPage />} 
 
         {mode == "allMember" && <AdminMemberPage />}
+
+        {mode == "bookRequest" && <RequestBook />}
 
 
         {mode == "lend" && (
