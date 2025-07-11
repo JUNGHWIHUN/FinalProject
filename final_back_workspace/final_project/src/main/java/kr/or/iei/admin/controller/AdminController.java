@@ -336,6 +336,7 @@ public class AdminController {
 	@NoTokenCheck
 	public ResponseEntity<ResponseDto> requestUpdate(@RequestBody Map<String, String> param){
 		String type = param.get("type");
+		System.out.println("type : " + type);
 	    String target = param.get("target");
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
 		

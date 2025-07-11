@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 
@@ -6,7 +6,7 @@ export default function RequestDetail(){
     const location = useLocation();
     const list = location.state.list;
 
-    const [selectType, setSelectType] = useState();
+    const [selectType, setSelectType] = useState("yes");
     const [isCompleted, setIsCompleted] = useState(false);
 
      function keywordType(e){
@@ -35,6 +35,10 @@ export default function RequestDetail(){
             .catch(function(err){
             console.log(err); 
             });
+    }
+
+    if (!list) {
+    return <p>잘못된 접근입니다.</p>;
     }
 
     return(
