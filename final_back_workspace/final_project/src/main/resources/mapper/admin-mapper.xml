@@ -526,4 +526,40 @@
 	<update id="requestUpdateNo" parameterType="String">
 	update tbl_book_request set request_status = 1 where member_no = #{target}
 	</update>
+	
+	<!-- 건의사항 목록 수 검색 -->
+	<select id="selectSuggesCount" resultType="_int">
+	select count(*) from tbl_suggestion
+	</select>
+	
+	<!-- 건의사항 리스트 검색 -->
+	<select id="selectSuggesList" resultType="AdSuggestion">
+	 SELECT suggestion_no  		 AS suggesNo,
+            suggestion_content   AS suggesContent,
+            suggestion_title  	 AS suggesTitle,
+            suggestion_date 	 AS suggesDate,
+     	    member_no			 AS memberNo,
+            member_name 		 AS memberName
+    FROM (
+        SELECT rownum rnum, a.*
+        FROM (
+            SELECT s.suggestion_no,
+                   s.suggestion_content,
+                   s.suggestion_title,
+                   s.suggestion_date,
+                   s.member_no,
+                   m.member_name
+            FROM tbl_suggestion s
+            JOIN tbl_member m ON s.member_no = m.member_no
+            ORDER BY s.suggestion_date DESC
+        ) a
+    ) a
+    WHERE rnum BETWEEN #{start} AND #{end}
+	</select>
+	
+	<!--회원 번호를 기준으로 건의사항 하나 삭제-->
+	<delete id="suggesDelete" parameterType="String">
+	delete tbl_suggestion where member_no = #{target}
+	</delete>
+	
 </mapper>

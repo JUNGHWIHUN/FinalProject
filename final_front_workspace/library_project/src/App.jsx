@@ -27,8 +27,10 @@ import FindId from './component/member/FindId';
 import NoticeMain from './component/notice/NoticeMain';
 
 
+
 import FindPassword from './component/member/FindPassword';
 import RequestDetail from './component/admin/RequestDetail';
+import SuggestDetail from './component/admin/SuggesDetail';
 
 
 function App() {
@@ -49,6 +51,8 @@ function App() {
             <Route path='/LenterBookDetil' element={<LenterBookDetil />} />
             <Route path='/requestBook/*' element={<RequestBookMain />} />
             <Route path='/RequestDetail' element={<RequestDetail />} />
+            <Route path='/SuggestDetail' element={<SuggestDetail />} />
+            
 
             <Route path='/admin/FixBookDetail' element={<FixBookDetail />} />
             <Route path='/admin/newBook' element={<NewBook />} />

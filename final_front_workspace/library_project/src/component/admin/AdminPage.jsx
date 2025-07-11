@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import AllbookPage from "./AllBookPage";
 import AdminMemberPage from "./AdminMemberPage";
 import RequestBook from "./RequestBook";
+import Suggestion from "./Suggestion";
 
 export default function AdminPage(){
 
@@ -104,6 +105,7 @@ export default function AdminPage(){
 
         {mode == "bookRequest" && <RequestBook />}
 
+        {mode == "suggestion" && <Suggestion />}
 
         {mode == "lend" && (
             <>

@@ -352,4 +352,42 @@ public class AdminController {
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
 	
+	//건의사항 리스트 가져오기
+	@GetMapping("/suggesList/{reqPage}")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> suggesList(@PathVariable int reqPage){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		
+		try {
+			HashMap<String, Object> suggesMap = service.selectSuggesList(reqPage);
+			res = new ResponseDto(HttpStatus.OK, "", suggesMap, "");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//건의사항 하나 삭제 처리
+	@PostMapping("/suggesDelete")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> suggesDelete(@RequestBody Map<String, Object> param){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		String target = (String) param.get("target");
+		System.out.println("건의사항 삭제 타겟" + target);
+		try {
+			int result = service.suggesDelete(target);
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "수정 완료", null, "");
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+		
+	}
+	
+	
 }
