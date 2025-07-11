@@ -114,9 +114,9 @@ public class AdminController {
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "책 검색중 오류 발생..", null, "error");
 		
 		try {
-			int result = service.returnBook(lentBook);
+			int result = service.returnBook(lentBook);	
 			if(result > 0) {
-	            res = new ResponseDto(HttpStatus.OK, "반납 완료", null, "");
+	            res = new ResponseDto(HttpStatus.OK, "반납 완료", "OK", "");
 	        }
 		}catch(Exception e) {
 			e.printStackTrace();

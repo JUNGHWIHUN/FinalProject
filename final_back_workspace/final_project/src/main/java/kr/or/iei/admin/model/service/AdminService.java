@@ -111,7 +111,7 @@ public class AdminService {
 		HashMap<String, String> param = new HashMap<String, String>();
 		param.put("lentbookNo", lentBook.getLentbookNo());
 		param.put("memberNo", lentBook.getMemberNo());
-
+		
 		dao.updateOverdueDayCount(param);
 		System.out.println("성공4");
 		

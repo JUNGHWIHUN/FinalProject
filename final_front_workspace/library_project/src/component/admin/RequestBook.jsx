@@ -2,6 +2,7 @@ import axios from "axios";
 import { useParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import PageNaviNew from './PageNaviNew';
 
 
 export default function RequestBook(){
@@ -55,6 +56,10 @@ export default function RequestBook(){
                           })}
                          </tbody>
             </table>
+
+            <div>
+                <PageNaviNew pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage} />
+            </div>
         </h3>
         </>
     )
