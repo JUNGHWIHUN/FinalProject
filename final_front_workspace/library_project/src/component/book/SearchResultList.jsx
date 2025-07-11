@@ -50,6 +50,9 @@ export default function SearchResultList (){
         .catch(function(err){
     
         })
+
+        //페이지 전환 시 맨 위 창으로
+        window.scrollTo(0,0)
     }, [location.state, reqPage]); //요청 페이지가 달라지면 리렌더링
 
     return (

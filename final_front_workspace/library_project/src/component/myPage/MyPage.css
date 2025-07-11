@@ -1,0 +1,1044 @@
+/* MyPage.css */
+
+/* MyPageMain.css */
+
+.mypage-wrapper {
+    width: 90%; /* 전체 마이페이지 영역 너비 */
+    max-width: 1200px; /* 최대 너비 */
+    margin: 40px auto; /* 상하 여백 40px, 좌우 자동 (가운데 정렬) */
+    padding: 0 20px; /* 좌우 패딩 */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column; /* 제목과 콘텐츠를 세로로 정렬 */
+}
+
+.mypage-title-section {
+    padding-bottom: 20px; /* 제목 아래 여백 */
+    border-bottom: 1px solid #ddd; /* 제목 아래 구분선 */
+    margin-bottom: 30px; /* 제목 영역과 콘텐츠 영역 사이 간격 */
+}
+
+.mypage-title-section h1 {
+    font-size: 2em; /* 마이페이지 제목 크기 */
+    color: #333;
+    margin: 0;
+}
+
+.mypage-content-wrapper {
+    display: flex; /* LeftMenu와 메인 콘텐츠를 가로로 나란히 배치 */
+    gap: 40px; /* LeftMenu와 메인 콘텐츠 사이의 간격 */
+    flex-grow: 1; /* 남은 공간을 차지하도록 */
+    align-items: flex-start; /* 상단 정렬 */
+}
+
+/* LeftMenu의 경우 Common.css (또는 LeftMenu.css)에 이미 스타일이 정의되어 있다고 가정합니다.
+   LeftMenu의 너비는 LeftMenu.css에서 정의된 .left-menu-container의 width를 따릅니다. */
+.mypage-main-content {
+    flex-grow: 1; /* Routes가 렌더링되는 영역이 남은 공간을 모두 차지하도록 */
+    min-width: 0; /* flex 아이템이 내용물보다 커지지 않도록 */
+}
+
+/* 스크린샷과 같이 '마이페이지' 제목과 '내 서재' 제목 사이에 공간이 있고,
+   왼쪽 메뉴가 '마이페이지' 제목 아래에 위치하도록 구성했습니다.
+   '내 서재' 컴포넌트 내부의 스타일은 MyPage.css에서 담당합니다. */
+
+/* 전체 마이페이지 레이아웃 (mypagemain 컴포넌트에서 이 클래스를 사용한다고 가정) */
+.mypage-layout {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+    padding: 40px 20px; /* 상하좌우 여백 */
+    max-width: 1200px; /* 최대 너비 설정 */
+    margin: 0 auto; /* 가운데 정렬 */
+}
+
+/* LeftMenu와 MyLibrary를 감싸는 컨텐츠 영역 (mypagemain에서 사용) */
+.mypage-content-area {
+    display: flex;
+    width: 100%;
+}
+
+/* MyLibrary 컴포넌트의 전체 컨테이너 */
+.my-library-container {
+    flex-grow: 1; /* 남은 공간을 모두 차지 */
+    padding-left: 40px; /* 왼쪽 메뉴와의 간격 */
+    box-sizing: border-box;
+    max-width: 800px; /* 내 서재 컨텐츠의 최대 너비 */
+}
+
+/* 내 서재 헤더 (제목 및 추가 버튼) */
+.my-library-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.my-library-header h3 {
+    margin: 0;
+    font-size: 1.0em;
+    color: #333;
+    cursor: pointer;
+
+
+}
+
+/* '내 서재' 옆 추가 버튼 스타일 수정 */
+.add-library-button {
+    background-color: transparent; /* 배경색 투명하게 */
+    border-radius: 8px; /* 둥근 사각형 모서리 */
+    width: 38px; /* 너비 조정 (원하는 크기로) */
+    height: 38px; /* 높이 조정 (원하는 크기로) */
+    font-size: 1.8em; /* '+' 아이콘/글자 크기 키움 */
+    font-weight: bold; /* '+' 글자를 굵게 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    padding: 0; /* 내부 패딩 제거 */
+}
+
+/* 액션 버튼 그룹 (도움말, 다운로드) */
+.my-library-actions {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    gap: 10px; /* 버튼 간 간격 */
+    margin-bottom: 30px;
+}
+
+.action-button {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    color: #555;
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.action-button:hover {
+    background-color: #e0e0e0;
+    border-color: #bbb;
+}
+
+/* 서재 목록 섹션 */
+.my-library-list-section {
+    width: 100%;
+}
+
+/* 각 서재 아코디언 아이템 */
+.library-accordion-item {
+    margin-bottom: 15px;
+}
+
+.library-accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+    border-bottom: 2px solid #5cb85c; /* 초록색 밑줄 */
+    margin-bottom: 15px;
+}
+
+.library-accordion-header:hover {
+    background-color: #f9f9f9;
+}
+
+.library-accordion-header .library-title {
+    margin: 0;
+    font-size: 1.4em;
+    color: #333;
+}
+
+.library-accordion-header .toggle-icon {
+    font-size: 1.2em;
+    color: #555;
+}
+
+/* 서재 내용 영역 (책 목록) */
+.library-content-area {
+    padding: 10px 0;
+}
+
+/* 등록된 도서가 없을 때 메시지 */
+.no-library-message, .no-books-message {
+    text-align: center;
+    color: #777;
+    padding: 20px;
+    border: 1px dashed #ccc;
+    margin-top: 20px;
+}
+
+/* 책 목록 그리드 컨테이너 */
+.book-grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 반응형 그리드 */
+    gap: 20px;
+    padding: 20px 0;
+}
+
+/* 각 책 아이템 카드 */
+.book-item-card {
+    position: relative; /* 자식 요소인 오버레이의 absolute 포지셔닝을 위한 기준 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #eee;
+    padding: 10px; /* 패딩을 줄여 카드 자체 크기 확보 */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+    /* 카드 크기 조정 */
+    width: 180px; /* 기본 너비 설정 (이전 150px에서 증가) */
+    height: 300px; /* 고정 높이 설정 */
+    overflow: hidden; /* 오버레이가 카드 밖으로 나가지 않도록 */
+}
+
+.book-item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.book-image-wrapper {
+    position: relative; /* 오버레이의 absolute 포지셔닝을 위한 기준 */
+    width: 100%;
+    height: 100%; /* 부모 카드에 꽉 채우도록 */
+    display: flex; /* 이미지를 중앙에 배치하기 위함 */
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* 이미지가 넘치지 않도록 */
+    /* margin-bottom: 10px; // 이제 필요 없음 (오버레이가 이미지 위에 덮이므로) */
+}
+
+.book-image {
+    width: 100%; /* 래퍼에 꽉 차도록 */
+    height: 100%; /* 래퍼에 꽉 차도록 */
+    object-fit: contain; /* 이미지 비율 유지하며 꽉 채움 */
+    border-radius: 4px;
+    /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); // 오버레이 때문에 그림자가 가려질 수 있음 */
+    transition: filter 0.3s ease; /* 호버 시 필터 변화 애니메이션 */
+}
+
+/* 호버 시 나타날 오버레이 */
+.book-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* 어두운 오버레이 */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0; /* 평소에는 숨김 */
+    transition: opacity 0.3s ease;
+    padding: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    text-align: center;
+    font-size: 0.9em; /* 오버레이 내부 텍스트 크기 */
+}
+
+.book-item-card:hover .book-overlay {
+    opacity: 1; /* 호버 시 나타남 */
+}
+
+.book-item-card:hover .book-image {
+    filter: brightness(0.5); /* 호버 시 이미지 어둡게 */
+}
+
+
+.overlay-book-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 1.1em; /* 오버레이 제목은 조금 더 크게 */
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box; /* 여러 줄 말줄임표 */
+    -webkit-line-clamp: 2; /* 2줄까지 표시 */
+    -webkit-box-orient: vertical;
+    white-space: normal; /* 줄바꿈 허용 */
+    word-break: keep-all; /* 단어 단위로 줄바꿈 시도 */
+}
+
+.overlay-book-author-pub {
+    font-size: 0.9em;
+    color: #ccc;
+    margin-bottom: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.overlay-buttons {
+    display: flex;
+    gap: 10px; /* 버튼 사이 간격 유지 */
+    margin-top: 15px;
+}
+
+.overlay-action-button {
+    background-color: rgba(255, 255, 255, 0.2); /* 반투명 흰색 배경 */
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    /* border-radius: 50%; /* 이 부분을 제거하여 사각형으로 만듭니다. */
+    width: 50px; /* 버튼 너비 조정 (원하는 크기로) */
+    height: 50px; /* 버튼 높이 조정 (원하는 크기로) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    padding: 0; /* 아이콘이 중앙에 오도록 내부 패딩 제거 */
+    border-radius: 5px; /* 약간의 둥근 모서리 추가 (선택 사항) */
+}
+
+.overlay-action-button:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    border-color: white;
+}
+
+.overlay-action-button .material-icons {
+    font-size: 28px; /* Material Icons 크기 조정 */
+}
+
+/* 구분선 스타일 */
+.my-library-divider {
+    border: 0;
+    height: 1px;
+    background: #5cb85c; /* 초록색 선 */
+    margin: 20px 0;
+}
+
+.library-content-divider {
+    border: 0;
+    height: 1px;
+    background: #eee;
+    margin: 15px 0;
+}
+
+.my-library-section-divider {
+    border: 0;
+    height: 1px;
+    background: #ddd;
+    margin: 30px 0;
+}
+
+
+
+/* MyPage.css 또는 MyInfo.css */
+
+/* MyInfo 컴포넌트 전용 스타일 */
+
+/* 전체 페이지 래퍼 (Login.css의 .login-page-wrapper, .section 참고) */
+.myinfo-section-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 70vh; /* 뷰포트 높이의 70% 이상 (조절 가능) */
+    background-color: #ffffff; /* 배경색을 흰색으로 유지 */
+    font-family: 'Noto Sans KR', sans-serif; /* 폰트 설정 */
+    padding: 30px 20px; /* 상하좌우 여백 */
+    box-sizing: border-box;
+    align-items: center; /* 내용을 가로 중앙에 배치 */
+    width: 100%;
+}
+
+/* 페이지 제목 (Login.css의 .login-form-title, FindId/Password의 .page-title 참고) */
+.myinfo-section-wrapper .page-title {
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 40px; /* 폼과의 간격 */
+    text-align: center;
+    position: relative;
+    padding-top: 0; /* myinfo-section-wrapper에 패딩이 있으므로 여기서는 0 */
+}
+
+.myinfo-section-wrapper .page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: #a8d58c;
+}
+
+/* 폼 컨테이너 (Login.css의 .login-form-container, FindId/Password의 form 참고) */
+.myinfo-form-container {
+    background-color: #fff;
+    padding: 40px 50px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px; /* 로그인 폼과 동일한 최대 너비 */
+    text-align: center; /* 폼 내의 요소를 중앙 정렬 (필요시 조정) */
+}
+
+/* 입력 그룹 (Login.css의 .input-group 참고) */
+/* .input-group { 이미 다른 곳에서 정의되어 있으므로 중복 선언 피함 } */
+
+/* 입력 라벨 (Login.css의 .input-label 참고) */
+/* .input-label { 이미 다른 곳에서 정의되어 있으므로 중복 선언 피함 } */
+
+/* 입력 필드 (Login.css의 .login-input 참고) */
+/* .login-input { 이미 다른 곳에서 정의되어 있으므로 중복 선언 피함 } */
+/* .found-id-display { 이미 다른 곳에서 정의되어 있으므로 중복 선언 피함 } */
+
+
+/* 비밀번호 변경 그룹 */
+.password-change-group {
+    margin-bottom: 25px; /* input-group과 동일한 마진 */
+    text-align: left; /* 왼쪽 정렬 */
+}
+
+/* 비밀번호 수정 버튼 스타일 (이전 수정 내용 유지) */
+.btn-password-change {
+    background-color: #a8d58c; /* 호버 시 나타나는 색상으로 배경 설정 */
+    color: white; /* 글자색은 흰색 */
+    border: none;
+    border-radius: 5px; /* 약간의 둥근 모서리 */
+
+    padding: 8px 15px; /* 라벨 크기에 맞게 패딩 조절 */
+    font-size: 15px; /* 다른 라벨 글자 크기와 유사하게 */
+    font-weight: bold; /* 다른 라벨과 유사하게 */
+
+    display: inline-block; /* 텍스트 내용에 맞춰 크기 조절 */
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    margin-top: 0;
+    width: auto;
+    min-width: 120px;
+}
+
+.btn-password-change:hover {
+    background-color: #8cc46d;
+    color: white;
+}
+
+/* 버튼 박스 */
+.myinfo-button-box {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px; /* 버튼 사이 간격 */
+    justify-content: center; /* 버튼들을 가운데 정렬 */
+}
+
+/* 정보수정 버튼 */
+.btn-login-submit {
+    /* 기존 .btn-login-submit의 기본 스타일 유지하며 크기만 조정 */
+    width: 150px; /* 고정 너비로 균형 맞춤 */
+    padding: 10px 15px; /* 패딩을 더 축소 */
+    font-size: 15px; /* 폰트 크기를 더 축소 */
+    /* flex-grow: 1; 이 부분은 고정 너비를 사용하면 필요 없습니다. */
+
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-login-submit:hover {
+    background-color: #4CAF50;
+}
+
+/* 회원 탈퇴 버튼 */
+.btn-delete-member {
+    /* 기존 스타일 유지하며 크기만 조정 */
+    width: 150px; /* 고정 너비로 균형 맞춤 */
+    padding: 10px 15px; /* 패딩을 더 축소 */
+    font-size: 15px; /* 폰트 크기를 더 축소 */
+    /* flex-grow: 1; 이 부분은 고정 너비를 사용하면 필요 없습니다. */
+
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-delete-member:hover {
+    background-color: #c82333;
+}
+
+
+/* MyPage.css 또는 MemberPwChg.css */
+
+/* MemberPwChg 컴포넌트 전용 스타일 */
+
+/* 섹션 래퍼 */
+.pwChg-section {
+    display: flex;
+    flex-direction: column;
+    min-height: 70vh;
+    background-color: #ffffff; /* 배경을 흰색으로 변경 */
+    font-family: 'Noto Sans KR', sans-serif;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    align-items: center;
+    width: 100%;
+}
+
+/* 페이지 제목 */
+/* .page-title { 이미 다른 곳에서 정의되어 있으므로 필요에 따라 수정 } */
+.pwChg-section .page-title { /* pwChg-section 내의 page-title에만 적용 */
+    font-size: 26px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 60px; /* page-title과 form-container 간격 증가 (40px -> 60px) */
+    text-align: center;
+    position: relative;
+    padding-top: 0;
+}
+
+.pwChg-section .page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: #a8d58c;
+}
+
+/* 폼 컨테이너 */
+.pwChg-form-container {
+    background-color: #fff;
+    padding: 40px 50px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+/* 버튼 존 */
+.button-zone {
+    margin-top: 30px;
+    text-align: center; /* 버튼 중앙 정렬 (혹시 필요할까봐) */
+}
+
+/* 버튼 스타일 (.btn-primary.lg는 이미 정의되어 있다고 가정) */
+/* 확인 버튼 크기 축소 */
+.button-zone .btn-primary.lg {
+    padding: 12px 20px; /* 패딩 축소 */
+    font-size: 16px; /* 폰트 크기 축소 */
+    width: auto; /* 내용에 맞게 너비 조정 */
+    min-width: 100px; /* 최소 너비 설정 (선택 사항) */
+}
+
+/* 첫 번째 input-wrap 마진 */
+.pwChg-form-container .input-wrap:first-child {
+    margin-bottom: 50px;
+}
+
+
+/* 대출현황 */
+
+.lent-book-list {
+  padding: 20px;
+  padding-top: 0;
+}
+
+.lent-book-list h2{
+  margin-top: 0;
+      border-bottom: 2px solid #5cb85c; /* 초록색 밑줄 */
+
+}
+
+.book-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding: 15px 0;
+}
+
+.book-img {
+  width: 100px;
+  height: auto;
+  margin-right: 20px;
+  object-fit: contain;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.book-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.book-title {
+  font-style: bold;
+}
+
+.book-info button {
+  width: 120px;
+  padding: 5px;
+  background-color: #a8d58c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+
+/* MyPage.css 또는 LentHistory.css */
+
+/* LentHistory 컴포넌트 전용 스타일 */
+
+/* 전체 컨테이너 */
+.lent-history-container {
+    flex-grow: 1; /* LeftMenu를 제외한 나머지 공간 차지 */
+    padding-left: 0; /* LeftMenu와의 간격 */
+    box-sizing: border-box;
+}
+
+/* 페이지 제목 */
+/* .page-title { 이미 정의되어 있으므로 여기서는 추가 조정만 함 } */
+.lent-history-container .page-title {
+    margin-bottom: 30px; /* 제목 아래 간격 */
+    padding-bottom: 10px; /* 밑줄과의 간격 */
+    padding-top : 0;
+    padding-left: 10px; /* 좌측 불릿을 위한 여백 */
+    position: relative; /* 불릿 위치 조정을 위해 */
+}
+
+/* LentHistory의 page-title::after만 숨기기 (핵심 수정 부분) */
+.lent-history-container .page-title::after {
+    content: ''; /* 내용 유지 (필요하다면) 또는 제거 */
+    background-color: transparent !important; /* 배경색을 투명으로, !important로 우선순위 강제 */
+    height: 0 !important; /* 높이를 0으로 만들어 보이지 않게, !important로 우선순위 강제 */
+    /* 기존 bottom, left, transform 값은 그대로 두거나 필요에 따라 조정 가능 */
+    /* position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px; */ /* 기존 width도 필요 없으면 제거 */
+}
+/* 대출 이력 테이블 */
+.lent-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    border-top: 2px solid #5cb85c;
+    table-layout: fixed; /* 중요: 테이블 레이아웃을 고정하여 width가 정확히 적용되도록 합니다. */
+}
+
+.lent-history-table thead th {
+    background-color: #f7f7f7;
+    color: #333;
+    font-weight: bold;
+    padding: 12px 10px;
+    text-align: center; /* 헤더 텍스트도 가운데 정렬 */
+    border-bottom: 1px solid #ddd;
+}
+
+/* 각 열의 너비 설정 */
+.lent-history-table thead th:nth-child(1), /* 제목 열 */
+.lent-history-table tbody td:nth-child(1) {
+    width: 40%; /* 제목 열 크기 증가 (예시 값) */
+}
+
+.lent-history-table thead th:nth-child(2), /* 카테고리 열 */
+.lent-history-table tbody td:nth-child(2) {
+    width: 20%; /* 다른 열 크기 감소 및 동일하게 설정 */
+}
+
+.lent-history-table thead th:nth-child(3), /* 대출일 열 */
+.lent-history-table tbody td:nth-child(3) {
+    width: 20%; /* 다른 열 크기 감소 및 동일하게 설정 */
+}
+
+.lent-history-table thead th:nth-child(4), /* 실제 반납일 열 */
+.lent-history-table tbody td:nth-child(4) {
+    width: 20%; /* 다른 열 크기 감소 및 동일하게 설정 */
+}
+
+.lent-history-table tbody td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+    color: #555;
+    font-size: 0.95em;
+    text-align: center; /* 테이블 바디 셀 텍스트 가운데 정렬 */
+    word-break: break-all; /* 긴 텍스트가 셀을 넘어가지 않도록 단어 단위로 줄바꿈 */
+}
+
+.lent-history-table tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* 대출 이력이 없을 때 메시지 */
+.no-history-message {
+    text-align: center;
+    color: #777;
+    padding: 40px;
+    border: 1px dashed #ccc;
+    margin-top: 30px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+/* 페이지네이션 컨테이너 (PageNavi 컴포넌트 자체는 수정하지 않음) */
+.pagination-container {
+    display: flex;
+    justify-content: center; /* 페이지네이션 중앙 정렬 */
+    margin-top: 20px; /* 위쪽 콘텐츠와의 간격 */
+}
+
+
+
+
+/* MyPage.css 또는 Reservation.css */
+
+/* Reservation 컴포넌트 전용 스타일 */
+
+/* 전체 컨테이너 (LentHistory와 동일한 폭 설정) */
+.reservation-container {
+    flex-grow: 1; /* LeftMenu를 제외한 나머지 공간 차지 */
+    box-sizing: border-box;
+}
+
+/* 페이지 제목 */
+/* .page-title는 MyPage.css에 공통으로 정의되어 있으므로 여기서는 추가 조정만 함 */
+.reservation-container .page-title {
+    margin-bottom: 30px; /* 제목 아래 간격 */
+    padding-top: 0;
+    padding-bottom: 10px; /* 밑줄과의 간격 */
+    padding-left: 10px; /* 좌측 불릿을 위한 여백 */
+    position: relative; /* 불릿 위치 조정을 위해 */
+}
+
+/* LentHistory의 page-title::after만 숨기기 (핵심 수정 부분) */
+.reservation-container .page-title::after {
+    content: ''; /* 내용 유지 (필요하다면) 또는 제거 */
+    background-color: transparent !important; /* 배경색을 투명으로, !important로 우선순위 강제 */
+    height: 0 !important; /* 높이를 0으로 만들어 보이지 않게, !important로 우선순위 강제 */
+    /* 기존 bottom, left, transform 값은 그대로 두거나 필요에 따라 조정 가능 */
+    /* position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px; */ /* 기존 width도 필요 없으면 제거 */
+}
+
+/* 예약 내역 테이블 (LentHistory.css의 .lent-history-table과 유사하게) */
+.reservation-table {
+    width: 100%;
+    border-collapse: collapse; /* 셀 경계선 병합 */
+    margin-bottom: 30px; /* 페이지네이션과의 간격 */
+    border-top: 2px solid #5cb85c; /* 상단 초록색 라인 */
+    table-layout: fixed; /* 테이블 레이아웃을 고정하여 width가 정확히 적용되도록 합니다. */
+}
+
+.reservation-table thead th {
+    background-color: #f7f7f7; /* 헤더 배경색 */
+    color: #333;
+    font-weight: bold;
+    padding: 12px 10px; /* 헤더 패딩 */
+    text-align: center; /* 헤더 텍스트 가운데 정렬 */
+    border-bottom: 1px solid #ddd; /* 헤더 아래 회색 라인 */
+}
+
+/* 각 열의 너비 설정 (총 6개 열: 책제목, 저자, 출판사, 예약날짜, 상태, 취소) */
+.reservation-table thead th:nth-child(1), /* 책제목 */
+.reservation-table tbody td:nth-child(1) {
+    width: 38%; /* 제목 열을 가장 넓게 (예시 값) */
+}
+
+.reservation-table thead th:nth-child(2), /* 저자 */
+.reservation-table tbody td:nth-child(2) {
+    width: 17%; /* 저자/출판사 그 다음으로 넓게 */
+}
+
+.reservation-table thead th:nth-child(3), /* 출판사 */
+.reservation-table tbody td:nth-child(3) {
+    width: 17%; /* 저자/출판사 그 다음으로 넓게 */
+}
+
+.reservation-table thead th:nth-child(4), /* 예약날짜 */
+.reservation-table tbody td:nth-child(4) {
+    width: 10%; /* 예약날짜/상태/취소 크기 줄이고 동일하게 */
+}
+
+.reservation-table thead th:nth-child(5), /* 상태 */
+.reservation-table tbody td:nth-child(5) {
+    width: 10%; /* 예약날짜/상태/취소 크기 줄이고 동일하게 */
+}
+
+.reservation-table thead th:nth-child(6), /* 취소 */
+.reservation-table tbody td:nth-child(6) {
+    width: 8%; /* 예약날짜/상태/취소 크기 줄이고 동일하게 (취소 버튼 공간 고려하여 약간 작게) */
+}
+
+
+.reservation-table tbody td {
+    padding: 12px 10px; /* 셀 패딩 */
+    border-bottom: 1px solid #eee; /* 셀 하단 라인 */
+    color: #555;
+    font-size: 0.95em; /* 폰트 크기 */
+    text-align: center; /* 테이블 바디 셀 텍스트 가운데 정렬 */
+    word-break: break-all; /* 긴 텍스트가 셀을 넘어가지 않도록 단어 단위로 줄바꿈 */
+}
+
+.reservation-table tbody tr:hover {
+    background-color: #f9f9f9; /* 호버 시 배경색 변경 */
+}
+
+/* 예약 취소 버튼 */
+.cancel-reservation-button {
+    background-color: #dc3545; /* 빨간색 (삭제/취소 계열) */
+    color: white;
+    border: none;
+    padding: 6px 10px; /* 버튼 패딩 */
+    border-radius: 5px;
+    font-size: 0.85em; /* 폰트 크기 */
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+.cancel-reservation-button:hover {
+    background-color: #c82333; /* 호버 시 진한 빨간색 */
+}
+
+/* 예약 내역이 없을 때 메시지 */
+.no-reservations-message {
+    text-align: center;
+    color: #777;
+    padding: 40px;
+    border: 1px dashed #ccc;
+    margin-top: 30px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+/* 페이지네이션 컨테이너 (PageNavi 컴포넌트 자체는 수정하지 않음) */
+.pagination-container {
+    display: flex;
+    justify-content: center; /* 페이지네이션 중앙 정렬 */
+    margin-top: 20px; /* 위쪽 콘텐츠와의 간격 */
+}
+
+
+
+
+/* MyPage.css 또는 RequestBook.css */
+
+/* RequestBook 컴포넌트 전용 스타일 */
+
+/* 전체 컨테이너 (LentHistory, Reservation과 동일한 폭 설정) */
+.request-book-container {
+    flex-grow: 1; /* LeftMenu를 제외한 나머지 공간 차지 */
+    padding-left: 0px; /* LeftMenu와의 간격 */
+    box-sizing: border-box;
+    max-width: 1000px; /* 동일한 폭으로 설정 */
+}
+
+/* 페이지 제목 */
+/* .page-title는 MyPage.css에 공통으로 정의되어 있으므로 여기서는 추가 조정만 함 */
+.request-book-container .page-title {
+    margin-bottom: 30px; /* 제목 아래 간격 */
+    padding-top: 0;
+    padding-bottom: 10px; /* 밑줄과의 간격 */
+    padding-left: 10px; /* 좌측 불릿을 위한 여백 */
+    position: relative; /* 불릿 위치 조정을 위해 */
+}
+
+.request-book-container .page-title::after {
+    content: ''; /* 내용 유지 (필요하다면) 또는 제거 */
+    background-color: transparent !important; /* 배경색을 투명으로, !important로 우선순위 강제 */
+    height: 0 !important; /* 높이를 0으로 만들어 보이지 않게, !important로 우선순위 강제 */
+    /* 기존 bottom, left, transform 값은 그대로 두거나 필요에 따라 조정 가능 */
+    /* position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px; */ /* 기존 width도 필요 없으면 제거 */
+}
+
+/* 희망도서 신청 내역 테이블 (LentHistory, Reservation과 유사하게) */
+.request-book-table {
+    width: 100%;
+    border-collapse: collapse; /* 셀 경계선 병합 */
+    margin-bottom: 30px; /* 페이지네이션과의 간격 */
+    border-top: 2px solid #5cb85c; /* 상단 초록색 라인 */
+    table-layout: fixed; /* 테이블 레이아웃을 고정하여 width가 정확히 적용되도록 합니다. */
+}
+
+.request-book-table thead th {
+    background-color: #f7f7f7; /* 헤더 배경색 */
+    color: #333;
+    font-weight: bold;
+    padding: 12px 10px; /* 헤더 패딩 */
+    text-align: center; /* 헤더 텍스트 가운데 정렬 */
+    border-bottom: 1px solid #ddd; /* 헤더 아래 회색 라인 */
+}
+
+/* 각 열의 너비 설정 (총 4개 열: 책제목, 저자, 출판사, 상태) */
+.request-book-table thead th:nth-child(1), /* 책제목 */
+.request-book-table tbody td:nth-child(1) {
+    width: 40%; /* 제목 열 크기 (조정 가능) */
+}
+
+.request-book-table thead th:nth-child(2), /* 저자 */
+.request-book-table tbody td:nth-child(2) {
+    width: 25%; /* 저자 열 크기 */
+}
+
+.request-book-table thead th:nth-child(3), /* 출판사 */
+.request-book-table tbody td:nth-child(3) {
+    width: 25%; /* 출판사 열 크기 */
+}
+
+.request-book-table thead th:nth-child(4), /* 상태 */
+.request-book-table tbody td:nth-child(4) {
+    width: 10%; /* 상태 열 크기 */
+}
+
+
+.request-book-table tbody td {
+    padding: 12px 10px; /* 셀 패딩 */
+    border-bottom: 1px solid #eee; /* 셀 하단 라인 */
+    color: #555;
+    font-size: 0.95em; /* 폰트 크기 */
+    text-align: center; /* 테이블 바디 셀 텍스트 가운데 정렬 */
+    word-break: break-all; /* 긴 텍스트가 셀을 넘어가지 않도록 단어 단위로 줄바꿈 */
+}
+
+.request-book-table tbody tr:hover {
+    background-color: #f9f9f9; /* 호버 시 배경색 변경 */
+}
+
+/* 희망도서 신청 내역이 없을 때 메시지 */
+.no-request-books-message {
+    text-align: center;
+    color: #777;
+    padding: 40px;
+    border: 1px dashed #ccc;
+    margin-top: 30px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+/* 페이지네이션 컨테이너 (PageNavi 컴포넌트 자체는 수정하지 않음) */
+.pagination-container {
+    display: flex;
+    justify-content: center; /* 페이지네이션 중앙 정렬 */
+    margin-top: 20px; /* 위쪽 콘텐츠와의 간격 */
+}
+
+
+
+/* StatisTics 컴포넌트 전용 스타일 */
+
+/* 전체 컨테이너 (LentHistory, Reservation과 동일한 폭 설정) */
+.statistics-container {
+    flex-grow: 1; /* LeftMenu를 제외한 나머지 공간 차지 */
+    padding-left: 0px; /* LeftMenu와의 간격 */
+    box-sizing: border-box;
+    max-width: 1000px; /* 동일한 폭으로 설정 */
+}
+
+/* 페이지 제목 */
+/* .page-title는 MyPage.css에 공통으로 정의되어 있으므로 여기서는 추가 조정만 함 */
+.statistics-container .page-title {
+    margin-bottom: 30px; /* 제목 아래 간격 */
+    padding-top: 0;
+    padding-bottom: 10px; /* 밑줄과의 간격 */
+    border-bottom: 2px solid #5cb85c; /* 초록색 밑줄 */
+    padding-left: 10px; /* 좌측 불릿을 위한 여백 */
+    position: relative; /* 불릿 위치 조정을 위해 */
+}
+
+.statistics-container .page-title::after {
+    content: ''; /* 내용 유지 (필요하다면) 또는 제거 */
+    background-color: transparent !important; /* 배경색을 투명으로, !important로 우선순위 강제 */
+    height: 0 !important; /* 높이를 0으로 만들어 보이지 않게, !important로 우선순위 강제 */
+    /* 기존 bottom, left, transform 값은 그대로 두거나 필요에 따라 조정 가능 */
+    /* position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px; */ /* 기존 width도 필요 없으면 제거 */
+}
+
+/* 월 선택 셀렉트 박스 및 버튼 그룹 */
+.month-selector-group {
+    display: flex;
+    gap: 10px; /* 셀렉트 박스와 버튼 사이 간격 */
+    margin-bottom: 30px; /* 차트 또는 메시지와의 간격 */
+    align-items: center; /* 세로 중앙 정렬 */
+}
+
+.month-select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    color: #333;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.month-select:focus {
+    border-color: #a8d58c;
+    box-shadow: 0 0 0 3px rgba(168, 213, 140, 0.2);
+}
+
+.select-month-button {
+    background-color: #5cb85c; /* 녹색 계열 */
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.select-month-button:hover {
+    background-color: #4CAF50; /* 호버 시 진한 녹색 */
+}
+
+/* 차트 컨테이너 */
+.chart-container {
+    max-width: 600px; /* 차트의 최대 너비 (조절 가능) */
+    margin: 0 auto; /* 차트 중앙 정렬 */
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* 독서 통계 데이터가 없을 때 메시지 */
+.no-statistics-message {
+    text-align: center;
+    color: #777;
+    padding: 40px;
+    border: 1px dashed #ccc;
+    margin-top: 30px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}

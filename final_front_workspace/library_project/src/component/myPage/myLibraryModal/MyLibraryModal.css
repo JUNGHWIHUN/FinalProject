@@ -1,0 +1,308 @@
+/* ModalStyles.css - 모든 모달 컴포넌트의 공통 및 개별 스타일 */
+
+/* --- 공통 모달 스타일 시작 (MyLibraryModal에서 가져옴) --- */
+
+.modal-header {
+    margin-bottom: 20px;
+    text-align: left;
+    position: relative;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #a8d58c; /* 페이지 제목 밑줄과 유사하게 */
+}
+
+.modal-title {
+    font-size: 22px; /* 제목 크기 조정 */
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+/* 모달 내용 영역 (label, select, input 등 포함) */
+.modal-content-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 요소들 사이 간격 */
+    margin-bottom: 20px; /* 내용과 버튼 사이 간격 */
+    overflow-y: auto; /* 내용이 넘치면 스크롤바 생성 (관리 모달용) */
+    padding-right: 5px; /* 스크롤바 공간 확보 */
+}
+
+/* 웹킷 (Chrome, Safari) 스크롤바 스타일 */
+.modal-content-area::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-content-area::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+.modal-content-area::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.modal-content-area::-webkit-scrollbar-thumb:hover {
+    background: #bbb;
+}
+
+
+/* 모달 라벨 */
+.modal-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px; /* 라벨과 입력 필드 사이 간격 */
+}
+
+/* 모달 셀렉트 박스 (MyLibraryModal, MoveBookModal) */
+.modal-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s ease;
+    -webkit-appearance: none; /* 기본 셀렉트 박스 스타일 제거 */
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M5.5%208.5L10%2013l4.5-4.5z%22%2F%3E%3C%2Fsvg%3E'); /* 커스텀 화살표 */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+.modal-select:focus {
+    border-color: #a8d58c;
+}
+
+/* 모달 입력 필드 (MyLibraryEditModal, MyLibraryManageModal) */
+.modal-input {
+    width: 100%; /* 부모 너비에 맞게 */
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+}
+
+.modal-input:focus {
+    border-color: #a8d58c;
+}
+
+.modal-input::placeholder {
+    color: #aaa;
+}
+
+/* 모달 액션 버튼 그룹 */
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px; /* 버튼 그룹 상단 간격 */
+}
+
+/* 모달 버튼 공통 스타일 */
+.btn-modal-confirm, .btn-modal-cancel {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    flex-grow: 1; /* 버튼이 공간을 채우도록 */
+    max-width: 150px; /* 버튼 최대 너비 설정 */
+}
+
+/* '확인' 또는 '등록', '이동', '수정' 버튼 스타일 (검색 버튼과 유사) */
+.btn-modal-confirm {
+    background-color: #a8d58c;
+    color: white;
+}
+
+.btn-modal-confirm:hover {
+    background-color: #92c079;
+}
+
+/* '취소' 또는 '닫기' 버튼 스타일 (리셋 버튼과 유사) */
+.btn-modal-cancel {
+    background-color: #f0f0f0;
+    color: #666;
+    border: 1px solid #ccc;
+}
+
+.btn-modal-cancel:hover {
+    background-color: #e0e0e0;
+}
+
+/* --- 공통 모달 스타일 끝 --- */
+
+/* --- MoveBookModal 개별 스타일 시작 --- */
+.modal-message {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+    margin-bottom: 15px; /* 메시지 아래 간격 */
+    text-align: center; /* 메시지 가운데 정렬 */
+}
+
+.modal-message strong {
+    color: #92c079; /* 책 제목 강조 색상 */
+}
+/* --- MoveBookModal 개별 스타일 끝 --- */
+
+
+/* --- MyLibraryEditModal 개별 스타일 시작 --- */
+/* (MyLibraryEditModal에서는 MyLibraryModal의 .modal-message, .modal-input을 재활용하므로 추가적인 CSS는 많지 않습니다.) */
+/* --- MyLibraryEditModal 개별 스타일 끝 --- */
+
+
+/* --- MyLibraryManageModal 개별 스타일 시작 --- */
+
+/* Add Library Section */
+.add-library-section {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.add-library-section .modal-input {
+    flex-grow: 1; /* 입력 필드가 남은 공간을 채우도록 */
+    width: auto; /* flex-grow와 함께 사용 시 auto가 적절 */
+    /* .modal-input 공통 스타일을 따릅니다. */
+}
+
+.add-library-section .modal-action-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    flex-shrink: 0; /* 버튼이 줄어들지 않도록 */
+}
+
+.add-library-section .modal-action-button.primary {
+    background-color: #a8d58c; /* MyLibraryModal의 검색 버튼 색상과 유사하게 */
+    color: white;
+}
+
+.add-library-section .modal-action-button.primary:hover {
+    background-color: #92c079;
+}
+
+
+/* Library List Section */
+.library-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 250px; /* 목록 최대 높이 설정 */
+    /* overflow-y: auto; 는 .modal-content-area에 정의됨 */
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #fcfcfc;
+}
+
+.library-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.library-list-item:last-child {
+    border-bottom: none;
+}
+
+.library-list-item .library-name {
+    font-size: 16px;
+    color: #333;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.library-list-item .library-name strong {
+    font-weight: normal; /* 기본 서재 텍스트는 굵게 하지 않음 */
+    color: #666;
+}
+
+.library-actions {
+    display: flex;
+    gap: 8px; /* 버튼 사이 간격 */
+}
+
+.action-button {
+    width: 32px; /* 버튼 고정 너비 */
+    height: 32px; /* 버튼 고정 높이 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    color: #555;
+    font-size: 18px; /* 아이콘 크기 */
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.action-button:hover {
+    background-color: #e0e0e0;
+}
+
+
+.action-button.delete-button {
+    color: #dc3545; /* 삭제 버튼은 빨간색 */
+    border-color: #dc3545;
+    background-color: #fff;
+}
+
+.action-button.delete-button:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+.no-library-message {
+    text-align: center;
+    color: #888;
+    padding: 30px 0;
+    font-size: 16px;
+}
+
+/* SweetAlert2 버튼 커스텀 스타일 (모든 SweetAlert2 팝업에 적용됨) */
+.swal2-confirm-button-custom {
+    background-color: #a8d58c !important;
+    color: white !important;
+    border-radius: 5px !important;
+    font-weight: bold !important;
+    margin: 0 5px !important;
+    padding: 10px 20px !important;
+}
+
+.swal2-confirm-button-custom:hover {
+    background-color: #92c079 !important;
+}
+
+.swal2-cancel-button-custom {
+    background-color: #f0f0f0 !important;
+    color: #666 !important;
+    border: 1px solid #ccc !important;
+    border-radius: 5px !important;
+    font-weight: bold !important;
+    margin: 0 5px !important;
+    padding: 10px 20px !important;
+}
+
+.swal2-cancel-button-custom:hover {
+    background-color: #e0e0e0 !important;
+}
+/* --- MyLibraryManageModal 개별 스타일 끝 --- */

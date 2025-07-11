@@ -13,7 +13,25 @@ public class RequestBookService {
 	private RequestBookDao dao;
 
 	public int insertRequestBook(SubmitRequestBook book) {
-		// TODO Auto-generated method stub
-		return dao.insertRequestBook(book);
+		//신청자격확인
+		String canRequest = dao.canRequestChk(book.getMemberNo());
+
+		if(canRequest.equals("T")) {
+			//신청
+			int result = dao.insertRequestBook(book);
+			
+			if(result > 0) {
+				//신청 후 신청자격 F로
+				result = dao.makeCanRequestToF(book.getMemberNo());
+				
+				return result;
+				
+			}
+			else {
+				return 0;	//실패
+			}
+		} else 
+			return -1;	//자격없음
+		
 	}
 }

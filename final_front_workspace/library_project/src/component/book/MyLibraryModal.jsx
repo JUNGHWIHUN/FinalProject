@@ -50,13 +50,17 @@ export default function MyLibraryModal ({isVisible, closeMyLibraryModal, addToMy
     return (
         //react-modal 컴포넌트 사용
         <Modal
-            isOpen={isVisible}                      // 모달 표시 여부 (isVisible prop 사용)
+            isOpen={isVisible}             // 모달 표시 여부 (isVisible prop 사용)
             onRequestClose={closeMyLibraryModal}    // 배경 클릭 또는 ESC 키 눌렀을 때 닫는 함수
-            style={customModalStyles}               // 커스텀 스타일 적용 (예시)
+            style={customModalStyles}                // 커스텀 스타일 적용 (예시)
             contentLabel="내 서재에 도서 등록"        // 접근성을 위한 레이블
+            ariaHideApp={false} // 이 줄을 추가하여 "Please ensure that the element that the Modal is rendered into is not hidden from screenreaders!" 경고를 제거할 수 있습니다.
         >
             {/* 모달 내부에 렌더링될 내용 */}
-            <div className="modal-content">
+            <div className="modal-header">
+                <h2 className="modal-title">내 서재에 등록</h2>
+            </div>
+            <div className="modal-content-area">
                 <label htmlFor="librarySelect" className="modal-label">
                     등록할 서재 선택:
                 </label>
@@ -66,13 +70,16 @@ export default function MyLibraryModal ({isVisible, closeMyLibraryModal, addToMy
                     onChange={librarySelect}
                     className="modal-select"
                 >
-                    <option value="">-- 서재 종류를 선택하세요 --</option>
                     {/* myLibraryList 상태를 사용하여 옵션 렌더링*/}
-                    {myLibraryList.map(item => (
+                    {myLibraryList.length > 0 ? (
+                        myLibraryList.map(item => (
                             <option key={item.myLibraryNo} value={item.myLibraryNo}>
                                 {item.myLibraryName}
                             </option>
-                    ))}
+                        ))
+                    ) : (
+                        <option value="">등록된 서재가 없습니다.</option>
+                    )}
                 </select>
             </div>
 
@@ -87,7 +94,7 @@ export default function MyLibraryModal ({isVisible, closeMyLibraryModal, addToMy
 // react-modal을 위한 커스텀 스타일 (예시)
 const customModalStyles = {
     overlay: { // 모달 배경 스타일
-        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)', // 배경을 더 어둡게
         zIndex: 1000,
         display: 'flex',
         justifyContent: 'center',
@@ -99,15 +106,18 @@ const customModalStyles = {
         left: 'auto',
         right: 'auto',
         bottom: 'auto',
-        border: '1px solid #ccc',
+        border: 'none', // 테두리 제거 (shadow로 대체)
         background: '#fff',
-        overflow: 'auto',
+        overflow: 'visible', // 스크롤바가 필요 없도록 변경
         WebkitOverflowScrolling: 'touch',
         borderRadius: '8px',
         outline: 'none',
         padding: '30px',
-        maxWidth: '400px',
+        maxWidth: '450px', // 최대 너비를 약간 늘림
         width: '90%',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+        boxShadow: '0 5px 15px rgba(0, 0, 0, 0.3)', // 그림자 강화
+        display: 'flex', // 내부 요소들을 flex로 정렬
+        flexDirection: 'column', // 세로 정렬
+        gap: '20px', // 요소들 간의 간격 추가
     }
 };

@@ -1,5 +1,10 @@
 .lent-book-list {
   padding: 20px;
+  padding-top: 0;
+}
+
+.lent-book-list h2{
+  margin-top: 0;
 }
 
 .book-item {
@@ -24,10 +29,14 @@
   gap: 8px;
 }
 
+.book-title {
+  font-style: bold;
+}
+
 .book-info button {
   width: 120px;
   padding: 5px;
-  background-color: #2c7be5;
+  background-color: #a8d58c;
   color: white;
   border: none;
   border-radius: 5px;
