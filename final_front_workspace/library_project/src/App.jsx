@@ -4,6 +4,8 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { Route, Routes } from 'react-router-dom';
 import { Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
 
 import AdminPage from './component/admin/AdminPage';
 import Header from './component/common/Header';
@@ -28,15 +30,17 @@ import SuggestDetail from './component/admin/SuggesDetail';
 import LentBookDetail from './component/admin/LentBookDetail';
 import LenterBookDetil from './component/admin/LenterBookDetil';
 import AdminMemberDetailPage from './component/admin/AdminMemberDetailPage';
-
-
-
-
 import FindPassword from './component/member/FindPassword';
+
+
 
 
 function App() {
   const [count, setCount] = useState(0)
+  const navigate = useNavigate();
+
+  
+
 
   return (
     <>
@@ -75,10 +79,13 @@ function App() {
             <Route path="/find-id" element={<FindId />} />
             <Route path="/find-password" element={<FindPassword />} />
 
+          
           </Routes>
         </div>
 
       <Footer />
+
+      
 
     </>
   )
