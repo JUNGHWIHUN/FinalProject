@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import kr.or.iei.admin.model.dto.AdRepartDto;
 import kr.or.iei.admin.model.dto.AdSuggestion;
 import kr.or.iei.admin.model.dto.BookLenterDto;
 import kr.or.iei.admin.model.dto.BookList;
@@ -95,6 +96,12 @@ public interface AdminDao {
 	ArrayList<AdSuggestion> selectSuggesList(PageInfoDto pageInfo);
 
 	int suggesDelete(String target);
+
+	int selectReportCount();
+
+	ArrayList<AdRepartDto> selectReportList(PageInfoDto pageInfo);
+
+	int repartDelete(String target);
 
 
 }

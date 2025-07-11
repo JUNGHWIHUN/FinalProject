@@ -6,6 +6,7 @@ import AllbookPage from "./AllBookPage";
 import AdminMemberPage from "./AdminMemberPage";
 import RequestBook from "./RequestBook";
 import Suggestion from "./Suggestion";
+import ReportList from "./RepoartList";
 
 export default function AdminPage(){
 
@@ -95,9 +96,11 @@ export default function AdminPage(){
          <a href="#" onClick={() => setMode("allBook")}>도서관리</a> |
          <a href="#" onClick={() => setMode("allMember")}>회원관리</a> |
          <a href="#" onClick={() => setMode("suggestion")}>건의 사항</a> |
-         <a href="#" onClick={() => setMode("bookRequest")}>희망도서</a> | {" "}
+         <a href="#" onClick={() => setMode("bookRequest")}>희망도서</a> |
+         <a href="#" onClick={() => setMode("report")}>신고</a> |
          <a href="#" onClick={() => setMode("lend")}>대출</a> |{" "}
          <a href="#" onClick={() => setMode("return")}>반납</a> 
+          
 
         {mode == "allBook" && <AllbookPage />} 
 
@@ -106,6 +109,8 @@ export default function AdminPage(){
         {mode == "bookRequest" && <RequestBook />}
 
         {mode == "suggestion" && <Suggestion />}
+
+        {mode == "report" && <ReportList />}
 
         {mode == "lend" && (
             <>

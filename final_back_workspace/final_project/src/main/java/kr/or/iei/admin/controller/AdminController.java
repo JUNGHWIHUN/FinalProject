@@ -389,5 +389,41 @@ public class AdminController {
 		
 	}
 	
+	//신고 테이블 가져오기
+	@GetMapping("/reportList/{reqPage}")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> reportList(@PathVariable int reqPage){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		
+		try {
+			HashMap<String, Object> reportMap = service.selectReportList(reqPage);
+			res = new ResponseDto(HttpStatus.OK, "", reportMap, "");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//건의사항 하나 삭제 처리
+	@PostMapping("/repartDelete")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> repartDelete(@RequestBody Map<String, Object> param){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		String target = (String) param.get("target");
+		System.out.println("건의사항 삭제 타겟" + target);
+		try {
+			int result = service.repartDelete(target);
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "수정 완료", null, "");
+			}	
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+			
+	}
+	
 	
 }

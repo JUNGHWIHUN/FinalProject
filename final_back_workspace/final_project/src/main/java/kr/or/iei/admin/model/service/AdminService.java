@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import kr.or.iei.admin.model.dao.AdminDao;
+import kr.or.iei.admin.model.dto.AdRepartDto;
 import kr.or.iei.admin.model.dto.AdSuggestion;
 import kr.or.iei.admin.model.dto.BookLenterDto;
 import kr.or.iei.admin.model.dto.BookList;
@@ -299,6 +300,31 @@ public class AdminService {
 	@Transactional
 	public int suggesDelete(String target) {
 		return dao.suggesDelete(target);
+	}
+
+
+	public HashMap<String, Object> selectReportList(int reqPage) {
+		int viewCnt = 10;						//한 페이지당 게시글 수
+		int pageNaviSize = 5;					//페이지 네비게이션 길이
+		int totalCount = dao.selectReportCount();//건의사항 갯수
+		
+		PageInfoDto pageInfo = pageUtil.getPageInfo(reqPage, viewCnt, pageNaviSize, totalCount);
+		System.out.println("여기까진 잘 되나");
+		
+		//게시글 목록
+		ArrayList<AdRepartDto> ReportList = dao.selectReportList(pageInfo);
+		System.out.println("리스트 정보 조회");
+		HashMap<String, Object> memberMap = new HashMap<String, Object>();
+		memberMap.put("ReportList", ReportList);
+		memberMap.put("pageInfo", pageInfo);
+						
+		return memberMap;
+	}
+
+	@Transactional
+	public int repartDelete(String target) {
+		// TODO Auto-generated method stub
+		return dao.repartDelete(target);
 	}
 	
 	
