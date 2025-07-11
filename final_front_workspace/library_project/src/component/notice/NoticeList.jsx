@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import createInstance from "../../axios/Interceptor";
 import PageNavi from "../common/PageNavi";
+import { useNavigate } from "react-router-dom";
 
 
 export default function NoticeList(){
@@ -13,15 +14,19 @@ export default function NoticeList(){
     const [pageInfo, setPageInfo] = useState({});
     const  [reqPage , setReqPage] = useState(1);
 
+    const navigate = useNavigate();
+
     useEffect(function(){
         let options = {};
-        options.url = serverUrl + "/notice/noticeList" + reqPage;
+        options.url = serverUrl + "/notice/noticeList/" + reqPage;
         options.method = "get"
       
 
         axiosInstacne(options)
         .then(function(res){
             console.log(res.data.resData);
+            setNotices(res.data.resData.noticeList);
+            setPageInfo(res.data.resData.pageInfo);
         })
         .catch(function(err){
 
@@ -30,6 +35,7 @@ export default function NoticeList(){
     },[reqPage])
 
     return(
+        <>
         <table>
             <thead>
                 <tr>
@@ -41,17 +47,23 @@ export default function NoticeList(){
             </thead>
             <tbody>
                 {notices.map(function(notice, index){
+
                     return <tr key={"notice"+ index}>
                         <td>{notice.noticeNo}</td>
-                        <td>{notice.noticeTitle}</td>
-                        <td>{notice.noticeFile}</td>
+                        <td onClick={() => navigate(`noticeDetail/${notice.noticeNo}`)} >
+                        {notice.noticeTitle}
+                        </td>
+                        <td>{notice.fileList && notice.fileList.length > 0 ?
+                        <i className="material-icons">attach_file</i> : 
+                        ""}</td>
                         <td>{notice.noticeDate}</td>
                     </tr>
                 })}
             </tbody>
+        </table>
             <div>
                 <PageNavi pageInfo = {pageInfo} reqPage = {reqPage} setReqPage={setReqPage}/>
             </div>
-        </table>
+        </>
     )
 }
