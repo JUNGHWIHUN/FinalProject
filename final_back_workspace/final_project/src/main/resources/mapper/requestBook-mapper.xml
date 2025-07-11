@@ -3,7 +3,7 @@
 <mapper namespace="kr.or.iei.requestBook.model.dao.RequestBookDao">
 	
 	<insert id="insertRequestBook"
-	parameterType="RequestBook"
+	parameterType="kr.or.iei.requestBook.model.dto.SubmitRequestBook"
 	>
 	insert into tbl_book_request values (TO_CHAR(SYSDATE,'YYMMDD') || LPAD(SEQ_request_book.NEXTVAL, 4,'0'),
 										#{memberNo},

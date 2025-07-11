@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router-dom";
 import useUserStore from "../../store/useUserStore";
 import createInstance from "../../axios/Interceptor";
+import './Member.css';
 
 //로그인
 export default function Login() {
@@ -63,13 +64,7 @@ export default function Login() {
                 if(res.data.resData === null){ // 변경: === 사용 // 로그인 실패했을 경우
                     let alertText = res.data.clientMsg;
 
-                    // 이메일 미인증 상태에 대한 메시지 추가 (백엔드에서 메시지를 명확히 구분하여 보낼 경우 활용)
-                    // 현재 백엔드 로직에서는 단순히 null을 반환하므로, '아이디 및 비밀번호를 확인하세요.'로 표시될 수 있습니다.
-                    // 필요하다면 백엔드 ResponseDto에 추가적인 status 또는 code를 포함시켜 구분할 수 있습니다.
                     if (res.data.clientMsg === '아이디 및 비밀번호를 확인하세요.') {
-                        // 여기서는 특정 조건으로 이메일 미인증 메시지를 구분하기 어려울 수 있으니
-                        // 백엔드에서 좀 더 명확한 응답 메시지를 주도록 하는 것이 좋습니다.
-                        // 예: "이메일 인증이 필요합니다." 와 같은 특정 메시지가 올 경우 분기
                     }
 
                     Swal.fire({
@@ -107,42 +102,46 @@ export default function Login() {
         }
     }
 
+    //로고 클릭시 메인화면
+    function home(){
+        navigate('/');
+    }
+
     return (
-        <section className="section login-wrap">
-            <div className="page-title">로그인</div>
-            <form autoComplete="off" onSubmit={function(e){
-                e.preventDefault();
-                login();
-            }}>
-                <div className="input-wrap">
-                    <div className="input-title">
-                        <label htmlFor="memberId">아이디</label>
+        <div className="login-page-wrapper">
+            <main className="login-main-content">
+                <div className="login-form-container">
+                    <div>
+                        <img onClick={home} src="src/image/final_logo.png" />
+                        <h1 className="login-form-title">로그인</h1>
                     </div>
-                    <div className="input-item">
-                        <input type="text" id="memberId" value={member.memberId} onChange={chgMember}/>
-                    </div>
+                    <form autoComplete="off" onSubmit={function(e){
+                        e.preventDefault();
+                        login();
+                    }}>
+                        <div className="input-group">
+                            <label htmlFor="memberId" className="input-label">아이디</label>
+                            <input type="text" id="memberId" value={member.memberId} onChange={chgMember} placeholder="example1234" className="login-input"/>
+                        </div>
+                        <div className="input-group">
+                            <label htmlFor="memberPw" className="input-label">비밀번호</label>
+                            <input type="password" id="memberPw" value={member.memberPw} onChange={chgMember} placeholder="비밀번호 (8~16자리)" className="login-input"/>
+                        </div>
+                        <div className="login-button-box">
+                            <button type="submit" className="btn-login-submit">
+                                로그인
+                            </button>
+                        </div>
+                        <div className="login-bottom-links">
+                            <span className="link-item" onClick={() => navigate('/find-id')}>아이디 찾기</span>
+                            <span className="link-separator">/</span>
+                            <span className="link-item" onClick={() => navigate('/find-password')}>비밀번호 찾기</span>
+                            <span className="link-separator">/</span>
+                            <span className="link-item" onClick={() => navigate('/join')}>회원가입</span>
+                        </div>
+                    </form>
                 </div>
-                <div className="input-wrap">
-                    <div className="input-title">
-                        <label htmlFor="memberPw">비밀번호</label>
-                    </div>
-                    <div className="input-item">
-                        <input type="password" id="memberPw" value={member.memberPw} onChange={chgMember}/>
-                    </div>
-                </div>
-                <div className="login-button-box">
-                    <button type="submit" className="btn-primary lg">
-                        로그인
-                    </button>
-                </div>
-                {/* 아이디 / 비밀번호 찾기 링크 추가 */}
-                <div className="link-box">
-                    <p>
-                        <span onClick={() => navigate('/find-id')} className="find-link">아이디 찾기</span> <br/>
-                        <span onClick={() => navigate('/find-password')} className="find-link">비밀번호 찾기</span>
-                    </p>
-                </div>
-            </form>
-        </section>
+            </main>
+        </div>
     );
 }

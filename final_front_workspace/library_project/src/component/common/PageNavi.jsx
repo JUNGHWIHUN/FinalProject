@@ -13,7 +13,7 @@ export default function PageNavi (props){
             <span className="material-icons page-item" onClick={function(){
                 setReqPage(1);  //클릭시 첫 페이지(1) 로 이동
             }}>
-                first_page
+                &lt;&lt;
             </span>
         </li>
     );
@@ -26,7 +26,7 @@ export default function PageNavi (props){
                     setReqPage(reqPage-1);  //클릭시 이전 페이지 (현재 요청 페이지 -1 )로 이동
                 }
             }}>
-                navigate_before
+                &lt;
             </span>
         </li>
     );
@@ -60,7 +60,7 @@ export default function PageNavi (props){
                     setReqPage(reqPage+1);  //클릭시 다음 페이지 (현재 요청 페이지 +1 )로 이동
                 }
             }}>
-                navigate_next
+                &gt;
             </span>
         </li>
     );
@@ -71,7 +71,7 @@ export default function PageNavi (props){
             <span className="material-icons page-item" onClick={function(){
                 setReqPage(pageInfo.totalPage); //클릭시 마지막 페이지 (=전체 페이지 수) 로 이동
             }}>
-                last_page
+                &gt;&gt;
             </span>
         </li>
     );

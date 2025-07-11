@@ -13,7 +13,7 @@ header {
     justify-content: space-between; /* 로고와 검색/로그인 그룹을 양 끝으로 정렬 */
     align-items: center;
     width: 90%;
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 25px 0; /* 상하 패딩을 크게 늘려 전체적인 상하 폭 확대 */
 }
@@ -37,7 +37,7 @@ header {
 }
 
 .header-logo img.book-icon-img {
-    height: 55px; /* 책 아이콘 크기를 더 크게 조정 */
+    height: 90px; /* 책 아이콘 크기를 더 크게 조정 */
     margin-bottom: 5px; /* 아이콘과 텍스트 사이 간격 조정 */
 }
 
@@ -568,4 +568,73 @@ footer {
     height: auto;
     border-radius: 4px;
     margin-top: 10px;
+}
+
+
+/*페이지네이션*/
+.pagination {
+    list-style: none;
+    padding: 0;
+    margin: 0; /* 기본 마진 제거 */
+    display: flex; /* flexbox 사용 */
+    justify-content: center; /* 가운데 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+    gap: 15px; /* 각 페이지 아이템 사이의 간격 */
+}
+
+.pagination li {
+    display: flex; /* span 요소를 감싸는 li를 flex로 만들어 가운데 정렬 */
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination .page-item {
+    font-size: 16px; /* 폰트 크기 */
+    color: #333;
+    cursor: pointer;
+    padding: 5px 8px; /* 클릭 영역 확보 및 여백 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    transition: background-color 0.2s ease, color 0.2s ease, font-weight 0.2s ease;
+    text-decoration: none; /* 밑줄 제거 */
+    display: inline-flex; /* 아이콘과 텍스트가 같이 있을 경우 정렬 */
+    align-items: center;
+    justify-content: center;
+    min-width: 25px; /* 작은 숫자도 최소 너비 유지 */
+    height: 25px; /* 높이 고정 */
+}
+
+.pagination .page-item:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+.pagination .page-item.active-page { /* 현재 활성 페이지 */
+    font-weight: bold; /* 굵게 */
+    color: #a8d58c; /* 녹색 */
+    text-decoration: underline; /* 밑줄 */
+    background-color: transparent; /* 배경색 없음 */
+}
+
+/* Material Icons 스타일 조정 (기존에 Material Icons CSS가 로드되어 있다고 가정) */
+.pagination .material-icons {
+    font-size: 20px; /* 아이콘 크기 조절 */
+    vertical-align: middle; /* 텍스트와 세로 정렬 */
+    line-height: 1; /* 높이 조정 */
+}
+
+/* 첫 페이지 (<<), 이전 페이지 (<), 다음 페이지 (>), 마지막 페이지 (>>) 아이콘에 대한 스타일 */
+.pagination li:first-child .page-item,
+.pagination li:nth-child(2) .page-item,
+.pagination li:nth-last-child(2) .page-item,
+.pagination li:last-child .page-item {
+    color: #555; /* 아이콘 색상 */
+    font-size: 20px;
+}
+
+.pagination li:first-child .page-item:hover,
+.pagination li:nth-child(2) .page-item:hover,
+.pagination li:nth-last-child(2) .page-item:hover,
+.pagination li:last-child .page-item:hover {
+    background-color: #f0f0f0;
+    color: #333;
 }

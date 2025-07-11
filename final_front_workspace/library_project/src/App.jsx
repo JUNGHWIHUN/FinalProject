@@ -23,8 +23,13 @@ import NewBook from './component/admin/NewBook';
 import AdminMemberPage from './component/admin/AdminMemberPage';
 import AdminMemberDetailPage from './component/admin/AdminMemberDetailPage';
 import FindId from './component/member/FindId'; 
+
+import NoticeMain from './component/notice/NoticeMain';
+
+
 import FindPassword from './component/member/FindPassword';
 import RequestDetail from './component/admin/RequestDetail';
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -54,6 +59,7 @@ function App() {
             <Route path = "/myPage/*" element={<MyPageMain/>}/>
 
             <Route path="/book/*" element={<BookSearchMain />}/>
+            <Route path='/notice/*' element={<NoticeMain/>}/>
 
             {/* 아이디/비밀번호 찾기 페이지 라우트 추가 */}
             <Route path="/find-id" element={<FindId />} />
