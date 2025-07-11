@@ -14,23 +14,25 @@ import Login from './component/member/Login'
 import MyPageMain from './component/myPage/MyPageMain';
 import BookSearchMain from './component/book/BookSearchMain';
 import SelectBook from './component/admin/SelectBook';
-import LentBookDetail from './component/admin/LentBookDetail';
 import SelectLentBook from './component/admin/SelectLentBook';
-import LenterBookDetil from './component/admin/LenterBookDetil';
 import RequestBookMain from './component/requestBook/requestBookMain';
-import FixBookDetail from './component/admin/FixBookDetail';
 import NewBook from './component/admin/NewBook';
 import AdminMemberPage from './component/admin/AdminMemberPage';
-import AdminMemberDetailPage from './component/admin/AdminMemberDetailPage';
 import FindId from './component/member/FindId'; 
 
 import NoticeMain from './component/notice/NoticeMain';
 
+import FixBookDetail from './component/admin/FixBookDetail';
+import RequestDetail from './component/admin/RequestDetail';
+import SuggestDetail from './component/admin/SuggesDetail';
+import LentBookDetail from './component/admin/LentBookDetail';
+import LenterBookDetil from './component/admin/LenterBookDetil';
+import AdminMemberDetailPage from './component/admin/AdminMemberDetailPage';
+
+
 
 
 import FindPassword from './component/member/FindPassword';
-import RequestDetail from './component/admin/RequestDetail';
-import SuggestDetail from './component/admin/SuggesDetail';
 
 
 function App() {
@@ -46,18 +48,22 @@ function App() {
             <Route path='/join' element={<Join />}/>
             <Route path='/login' element={<Login />}/>
             <Route path='/adminPage' element={<AdminPage />} />
-            <Route path='/LentBookDetail' element={<LentBookDetail />} />
+            
             <Route path='/admin/selectReTrunBook' element={<SelectLentBook />}/>
-            <Route path='/LenterBookDetil' element={<LenterBookDetil />} />
+            
             <Route path='/requestBook/*' element={<RequestBookMain />} />
-            <Route path='/RequestDetail' element={<RequestDetail />} />
+             <Route path='/RequestDetail' element={<RequestDetail />} />
             <Route path='/SuggestDetail' element={<SuggestDetail />} />
+            <Route path='/LentBookDetail' element={<LentBookDetail />} />
+            <Route path='/admin/FixBookDetail' element={<FixBookDetail />} />
+            <Route path='/LenterBookDetil' element={<LenterBookDetil />} />
+            <Route path='/admin/memberDetail/:memberNo' element={<AdminMemberDetailPage />} />
             
 
-            <Route path='/admin/FixBookDetail' element={<FixBookDetail />} />
+            
             <Route path='/admin/newBook' element={<NewBook />} />
             <Route path='/admin/Member' element={<AdminMemberPage />} />
-            <Route path='/admin/memberDetail/:memberNo' element={<AdminMemberDetailPage />} />
+            
 
             <Route path='/admin/selectBook' element={<SelectBook />} />
             <Route path = "/myPage/*" element={<MyPageMain/>}/>

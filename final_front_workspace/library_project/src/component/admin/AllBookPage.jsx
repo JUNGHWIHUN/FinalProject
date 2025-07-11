@@ -1,5 +1,4 @@
 import axios from "axios";
-import PageNavi from '../common/PageNavi';
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PageNaviNew from './PageNaviNew';
@@ -182,7 +181,7 @@ function BookItem(props){
 
             axios(options)
             .then(function(res){
-
+              console.log(res);
               navigate("/admin/FixBookDetail", { state: { bookDetails: res.data.resData } });
             })
             .catch(function(err){

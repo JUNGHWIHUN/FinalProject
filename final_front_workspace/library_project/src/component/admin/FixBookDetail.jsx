@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function FixBookDetail(){
-
+  
     const location = useLocation();
     const bookDetails = location.state?.bookDetails;
     const navigate = useNavigate();
