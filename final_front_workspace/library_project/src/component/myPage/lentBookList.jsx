@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
-import "./lentBookList.css";
+//import "./lentBookList.css"; 아래 MyPage.css 로 통합
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import "./MyPage.css"
 
 // 현재 대출 목록 컴포넌트
 export default function LentBookList() {
@@ -10,6 +12,7 @@ export default function LentBookList() {
     const serverUrl = import.meta.env.VITE_BACK_SERVER;
     const axiosInstance = createInstance();
     const { loginMember } = useUserStore();
+    const navigate = useNavigate();
 
     // 대출 목록 불러오기
     function getLentBookList() {
@@ -71,8 +74,11 @@ export default function LentBookList() {
 
     return (
         <div className="lent-book-list">
-            <h2>현 대출 목록</h2>
+            <h2>대출 현황</h2>
             {lentBookList.map(function (lentBook, index) {
+                {if(lentBookList.size == 0){
+                    <h2>대출중인 도서가 없습니다</h2>
+                }}
                 
                 const today = new Date();
                 today.setHours(0,0,0,0);        //시간을 00시로 초기화
@@ -86,7 +92,7 @@ export default function LentBookList() {
                     <div key={"lentBook" + index} className="book-item">
                         <img src={lentBook.imageUrl} className="book-img" />
                         <div className="book-info">
-                            <div>책 제목 : {lentBook.title}</div>
+                            <div className="book-title">{lentBook.title}</div>
                             <div>대출번호 : {lentBook.lentBookNo}</div>
                             <div style={{ color: isOverdue ? "red" : "black" }}>
                                 반납 예정일 : {lentBook.returnDate} 

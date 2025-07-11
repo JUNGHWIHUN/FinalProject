@@ -104,7 +104,7 @@ export default function SearchResultDetail (){
             //인기도서 저장
             setPopularBooks(popularRes.data.resData);
             //신착도서 저장
-            setNewArrivals(newArrivalsRes.data.resData);
+            setNewArrivalBooks(newArrivalsRes.data.resData);
         })
         
     },[refreshTrigger])
@@ -239,7 +239,7 @@ export default function SearchResultDetail (){
                                 </td> 
                                 <td className="reservation-cell">
                                     {book.canLend === 'L' ? 
-                                        <button onClick={isLoginedCheck} className="btn-reserve">예약하기</button>
+                                        <button onClick={reservation} className="btn-reserve">예약하기</button>
                                         : ""
                                     }    
                                 </td> 

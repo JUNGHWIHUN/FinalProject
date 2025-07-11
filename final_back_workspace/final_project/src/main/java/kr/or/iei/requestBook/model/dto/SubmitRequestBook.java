@@ -7,12 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-<<<<<<<< HEAD:final_back_workspace/final_project/src/main/java/kr/or/iei/requestBook/model/dto/SubRequestBook.java
-public class SubRequestBook {
-========
-
 public class SubmitRequestBook {
->>>>>>>> master:final_back_workspace/final_project/src/main/java/kr/or/iei/requestBook/model/dto/SubmitRequestBook.java
 	
 	private String requestBookNo;		//신청도서 번호
 	private String memberNo;			//회원 번호

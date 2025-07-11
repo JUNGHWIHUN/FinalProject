@@ -1,0 +1,645 @@
+/* RequestInfo 컴포넌트의 전체 컨테이너 */
+.request-info-wrap {
+    width: 90%;
+    max-width: 800px; /* 전체 컨테이너의 최대 너비 */
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 30px; /* 좌우 패딩 유지 */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 제목 영역 */
+.request-info-title-area {
+    margin-bottom: 30px;
+    text-align: left;
+    position: relative;
+    padding-bottom: 10px; /* 제목과 줄 사이 간격 */
+    padding-left: 30px; /* 텍스트 시작점 정렬 유지 */
+}
+
+/* 페이지 제목 */
+.request-info-page-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+/* 제목 밑줄 */
+.request-info-title-underline {
+    position: absolute;
+    bottom: 0;
+    left: 30px; /* request-info-wrap의 padding-left와 동일하게 설정 */
+    width: 80px; /* 밑줄 너비 */
+    height: 3px;
+    background-color: #a8d58c;
+}
+
+/* 각 정보 섹션 */
+.info-section {
+    margin-bottom: 25px; /* 섹션 간 간격 */
+    padding-left: 30px; /* 왼쪽 여백 유지 */
+}
+
+/* 섹션 제목 (희망도서 신청 안내, 처리현황 안내, 제외 기준, 유의사항) */
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px; /* 제목과 내용 사이 간격 */
+}
+
+/* 일반 정보 텍스트 */
+.info-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 5px; /* 각 줄 사이 간격 */
+}
+
+/* 정보 라벨 (예: 신청자격, 신청권수) */
+.info-label {
+    font-weight: bold;
+    color: #333;
+    margin-right: 5px;
+    white-space: nowrap; /* 라벨이 줄바꿈되지 않도록 */
+}
+
+/* 상세 설명 텍스트 (예: 스프링 제본...) */
+.info-detail {
+    font-size: 14px;
+    color: #777;
+    margin-left: 70px; /* 상위 info-text 들여쓰기 */
+    margin-top: -3px; /* 위쪽 info-text와의 간격 조절 */
+    margin-bottom: 5px;
+}
+
+/* 버튼 컨테이너 */
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* 신청하기 버튼 */
+.request-button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #ffb74d; /* 검색 버튼과 동일한 색상 */
+    color: white;
+    transition: background-color 0.2s ease;
+}
+
+.request-button:hover {
+    background-color: #ffa726; /* 검색 버튼과 동일한 호버 색상 */
+}
+
+/* Link 컴포트에 스타일을 적용하기 위한 클래스 */
+.request-button-link {
+    text-decoration: none; /* 링크 밑줄 제거 */
+}
+
+
+
+
+
+/* WishBook 컴포넌트의 전체 래퍼 */
+.wishbook-container {
+    width: 90%;
+    max-width: 900px; /* 스크린샷에 맞춰 너비 조정 */
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 페이지 제목 */
+.wishbook-page-title {
+    font-size: 24px; /* 더 큰 제목 */
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 30px; /* 제목 아래 간격 */
+    text-align: left; /* 왼쪽 정렬 */
+    padding-left: 0; /* 기존 padding 제거 */
+    position: relative;
+    padding-bottom: 10px; /* 밑줄과의 간격 */
+}
+
+/* 제목 밑줄 */
+.wishbook-page-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100px; /* 밑줄 너비 */
+    height: 3px;
+    background-color: #a8d58c; /* 이전 컴포넌트와 동일한 색상 */
+}
+
+
+/* 검색 입력 및 버튼 컨테이너 */
+.wishbook-search-input-group {
+    display: flex;
+    gap: 10px; /* input과 버튼 사이 간격 */
+    margin-bottom: 30px; /* 검색창 아래 간격 */
+    width: 100%; /* 너비 100% */
+}
+
+/* 검색 입력 필드 */
+.wishbook-search-input {
+    flex-grow: 1; /* 남은 공간 채우기 */
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.wishbook-search-input:focus {
+    border-color: #a8d58c; /* 포커스 시 색상 변경 */
+}
+
+/* 검색 버튼 */
+.wishbook-search-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #ffb74d; /* 주황색 계열 */
+    color: white;
+    transition: background-color 0.2s ease;
+}
+
+.wishbook-search-button:hover {
+    background-color: #ffa726; /* 호버 시 진한 주황색 */
+}
+
+/* 도서 목록 그리드 컨테이너 */
+.wishbook-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* 280px 최소 너비, 1fr로 자동 채움 */
+    gap: 25px; /* 그리드 항목 간 간격 */
+    list-style: none; /* ul 기본 스타일 제거 */
+    padding: 0; /* ul 기본 패딩 제거 */
+    margin: 0; /* ul 기본 마진 제거 */
+}
+
+/* 개별 도서 카드 스타일 */
+.wishbook-card {
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); /* 더 부드러운 그림자 */
+    overflow: hidden; /* 내용이 넘칠 때 숨김 */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    padding: 15px; /* 내부 패딩 */
+}
+
+.wishbook-card:hover {
+    transform: translateY(-3px); /* 호버 시 약간 위로 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); /* 그림자 강화 */
+}
+
+/* 도서 이미지 컨테이너 (flex-direction: column으로 인해 중앙 정렬) */
+.wishbook-image-container {
+    display: flex;
+    justify-content: center; /* 이미지 중앙 정렬 */
+    margin-bottom: 15px;
+}
+
+/* 도서 표지 이미지 */
+.wishbook-cover-image {
+    width: 120px; /* 스크린샷과 유사하게 조정 */
+    height: 170px; /* 스크린샷과 유사하게 조정 */
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    cursor: pointer; /* 클릭 가능한 요소임을 표시 */
+    flex-shrink: 0; /* 크기 줄어들지 않도록 */
+}
+
+/* 이미지가 없을 때의 플레이스홀더 */
+.wishbook-no-image {
+    width: 120px;
+    height: 170px;
+    background-color: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 13px;
+    color: #999;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/* 도서 정보 텍스트 컨테이너 */
+.wishbook-info-text-group {
+    flex-grow: 1; /* 남은 공간 채우기 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 내용과 버튼을 위아래로 분리 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+/* 각 정보 줄 (제목, 저자, 출판사, 가격) */
+.wishbook-info-item {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 5px; /* 각 정보 줄 사이 간격 */
+}
+
+/* 정보 라벨 (예: 제목:, 저자:) */
+.wishbook-info-label {
+    font-weight: bold;
+    color: #333;
+    margin-right: 5px;
+}
+
+/* 가격 정보 */
+.wishbook-info-price {
+    font-weight: bold;
+    color: #d9534f; /* 가격은 눈에 띄는 색상 */
+}
+
+/* 신청 버튼 */
+.wishbook-apply-button {
+    width: 100%; /* 버튼 너비 100% */
+    padding: 10px 15px;
+    margin-top: 15px; /* 정보와 버튼 사이 간격 */
+    border: none;
+    border-radius: 5px;
+    background-color: #ffb74d; /* 주황색 계열 */
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.wishbook-apply-button:hover {
+    background-color: #ffa726; /* 호버 시 진한 주황색 */
+}
+
+/* 검색 결과가 없을 때 메시지 */
+.wishbook-no-results {
+    text-align: center;
+    color: #777;
+    font-size: 16px;
+    margin-top: 30px;
+}
+
+/* 페이지네이션 컨테이너 */
+.wishbook-pagination-container {
+    margin-top: 40px; /* 페이지네이션 위 간격 */
+    display: flex;
+    justify-content: center;
+}
+
+
+
+/* DetailBook 컴포넌트의 전체 컨테이너 */
+.detail-book-wrap {
+    max-width: 890px; /* 이전 컴포넌트와 동일한 최대 너비 */
+    margin: 50px auto; /* 중앙 정렬 및 상하 마진 */
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 제목 영역 */
+.detail-book-title-area {
+    margin-bottom: 30px;
+    text-align: left;
+    position: relative;
+    padding-bottom: 10px;
+    padding-left: 30px; /* 기존 search-wrap과 유사하게 정렬 */
+}
+
+/* 페이지 제목 */
+.detail-book-page-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+/* 제목 밑줄 */
+.detail-book-title-underline {
+    position: absolute;
+    bottom: 0;
+    left: 30px;
+    width: 80px;
+    height: 3px;
+    background-color: #a8d58c; /* 이전 컴포넌트와 동일한 색상 */
+}
+
+/* 도서 정보 섹션 (이미지와 상세 정보 그룹) */
+.detail-book-info-section {
+    display: flex;
+    align-items: flex-start; /* 상단 정렬 */
+    gap: 30px; /* 이미지와 텍스트 정보 사이 간격 */
+    margin-bottom: 30px;
+    padding-left: 30px; /* 왼쪽 여백 */
+    padding-right: 30px; /* 오른쪽 여백 */
+}
+
+/* 도서 이미지 컨테이너 */
+.book-image-container {
+    flex-shrink: 0; /* 이미지가 줄어들지 않도록 */
+    width: 150px; /* 이미지 너비 고정 */
+    height: 200px; /* 이미지 높이 고정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden; /* 이미지가 컨테이너를 벗어나지 않도록 */
+}
+
+/* 도서 표지 이미지 */
+.book-cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 비율을 유지하며 컨테이너를 채우도록 */
+}
+
+/* 도서 상세 정보 그룹 (제목, 저자, 출판사) */
+.book-details-group {
+    flex-grow: 1; /* 남은 공간 채우기 */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 각 정보 줄 사이 간격 */
+}
+
+/* 회원 정보 및 신청 사유 섹션 */
+.member-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 각 정보 줄 사이 간격 */
+    padding-left: 30px; /* 왼쪽 여백 */
+    padding-right: 30px; /* 오른쪽 여백 */
+    margin-top: 30px; /* 구분선 위 간격 */
+}
+
+/* 각 입력 필드와 레이블을 위한 행 (재사용) */
+.form-row {
+    display: flex;
+    align-items: center;
+    width: 100%; /* 부모 너비에 맞춤 */
+}
+
+/* 레이블 스타일 (재사용) */
+.form-label {
+    flex-basis: 90px; /* 레이블의 고정 너비 조정 */
+    flex-shrink: 0;
+    font-size: 15px;
+    font-weight: bold;
+    color: #555;
+    margin-right: 15px; /* 레이블과 입력 필드 사이 간격 */
+    text-align: left;
+}
+
+/* 읽기 전용 입력 필드 */
+.form-input-readonly {
+    flex-grow: 1;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #333;
+    background-color: #f9f9f9; /* 읽기 전용 필드 배경색 */
+    outline: none;
+    cursor: default; /* 마우스 커서 변경 */
+    max-width: 615px; /* 이전 컴포넌트와 동일하게 유지 */
+}
+
+/* 일반 입력 필드 (신청 사유) */
+.form-input {
+    flex-grow: 1;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s ease;
+    max-width: 615px; /* 이전 컴포넌트와 동일하게 유지 */
+}
+
+.form-input:focus {
+    border-color: #a8d58c;
+}
+
+/* 구분선 */
+.section-divider {
+    border: 0;
+    height: 1px;
+    background-color: #eee;
+    margin: 30px 0; /* 위아래 간격 */
+    width: calc(100% - 60px); /* 좌우 패딩 고려 */
+    margin-left: 30px; /* 왼쪽 정렬 */
+}
+
+/* 버튼 그룹 */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* 신청 버튼 */
+.submit-button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #ffb74d; /* 주황색 계열 */
+    color: white;
+    transition: background-color 0.2s ease;
+}
+
+.submit-button:hover {
+    background-color: #ffa726;
+}
+
+/* 직접 입력하기 버튼 */
+.direct-input-button {
+    padding: 12px 25px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #f0f0f0; /* 회색 계열 */
+    color: #666;
+    transition: background-color 0.2s ease;
+}
+
+.direct-input-button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Link 컴포넌트에 스타일을 적용하기 위한 클래스 */
+.link-button {
+    text-decoration: none; /* 링크 밑줄 제거 */
+}
+
+
+
+/* WishBookDirect 컴포넌트의 전체 컨테이너 */
+.wishbook-direct-wrap {
+    max-width: 890px; /* 이전 컴포넌트와 동일한 최대 너비 */
+    margin: 50px auto; /* 중앙 정렬 및 상하 마진 */
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 제목 영역 */
+.wishbook-direct-title-area {
+    margin-bottom: 30px;
+    text-align: left;
+    position: relative;
+    padding-bottom: 10px;
+    padding-left: 30px; /* 기존 search-wrap과 유사하게 정렬 */
+}
+
+/* 페이지 제목 */
+.wishbook-direct-page-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+/* 제목 밑줄 */
+.wishbook-direct-title-underline {
+    position: absolute;
+    bottom: 0;
+    left: 30px;
+    width: 80px;
+    height: 3px;
+    background-color: #a8d58c; /* 이전 컴포넌트와 동일한 색상 */
+}
+
+/* 도서 정보 입력 섹션 */
+.book-direct-input-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 각 정보 줄 사이 간격 */
+    padding-left: 30px; /* 왼쪽 여백 */
+    padding-right: 30px; /* 오른쪽 여백 */
+}
+
+/* 회원 정보 및 신청 사유 섹션 */
+.member-direct-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 각 정보 줄 사이 간격 */
+    padding-left: 30px; /* 왼쪽 여백 */
+    padding-right: 30px; /* 오른쪽 여백 */
+    margin-top: 30px; /* 구분선 위 간격 */
+}
+
+/* 각 입력 필드와 레이블을 위한 행 (재사용) */
+.form-row {
+    display: flex;
+    align-items: center;
+    width: 100%; /* 부모 너비에 맞춤 */
+}
+
+/* 레이블 스타일 (재사용) */
+.form-label {
+    flex-basis: 90px; /* 레이블의 고정 너비 조정 */
+    flex-shrink: 0;
+    font-size: 15px;
+    font-weight: bold;
+    color: #555;
+    margin-right: 15px; /* 레이블과 입력 필드 사이 간격 */
+    text-align: left;
+}
+
+/* 읽기 전용 입력 필드 */
+.form-input-readonly {
+    flex-grow: 1;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #333;
+    background-color: #f9f9f9; /* 읽기 전용 필드 배경색 */
+    outline: none;
+    cursor: default; /* 마우스 커서 변경 */
+    max-width: 615px; /* 이전 컴포넌트와 동일하게 유지 */
+}
+
+/* 일반 입력 필드 */
+.form-input {
+    flex-grow: 1;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s ease;
+    max-width: 615px; /* 이전 컴포넌트와 동일하게 유지 */
+}
+
+.form-input:focus {
+    border-color: #a8d58c;
+}
+
+/* 구분선 */
+.section-divider {
+    border: 0;
+    height: 1px;
+    background-color: #eee;
+    margin: 30px 0; /* 위아래 간격 */
+    width: calc(100% - 60px); /* 좌우 패딩 고려 */
+    margin-left: 30px; /* 왼쪽 정렬 */
+}
+
+/* 버튼 그룹 */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+/* 신청 버튼 */
+.submit-button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #ffb74d; /* 주황색 계열 */
+    color: white;
+    transition: background-color 0.2s ease;
+}
+
+.submit-button:hover {
+    background-color: #ffa726;
+}

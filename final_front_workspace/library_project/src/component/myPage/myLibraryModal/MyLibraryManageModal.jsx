@@ -1,9 +1,41 @@
-// MyLibraryManageModal.jsx
 import { useEffect, useState } from "react";
 import Modal from 'react-modal';
 import createInstance from "../../../axios/Interceptor";
-import Swal from "sweetalert2"; // 알림용 Swal 유지
-import MyLibraryEditModal from "./MyLibraryEditModal"; // 새로 생성한 수정 모달 임포트
+import Swal from "sweetalert2";
+import MyLibraryEditModal from "./MyLibraryEditModal";
+import './MyLibraryModal.css'; // 새로 생성한 통합 CSS 파일 임포트
+
+// react-modal을 위한 커스텀 스타일 (JSX 파일 내에 유지)
+const customManageModalStyles = {
+    overlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        zIndex: 1000,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    content: {
+        position: 'static',
+        top: 'auto',
+        left: 'auto',
+        right: 'auto',
+        bottom: 'auto',
+        border: 'none',
+        background: '#fff',
+        overflow: 'visible',
+        WebkitOverflowScrolling: 'touch',
+        borderRadius: '8px',
+        outline: 'none',
+        padding: '30px',
+        maxWidth: '550px',
+        width: '90%',
+        boxShadow: '0 5px 15px rgba(0, 0, 0, 0.3)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px',
+        maxHeight: '80vh',
+    }
+};
 
 export default function MyLibraryManageModal({
     isVisible,
@@ -17,18 +49,15 @@ export default function MyLibraryManageModal({
 
     const [newLibraryName, setNewLibraryName] = useState("");
     
-    // 서재 이름 수정 모달 제어를 위한 상태 추가
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-    const [libraryToEdit, setLibraryToEdit] = useState(null); // 수정할 서재 정보
+    const [libraryToEdit, setLibraryToEdit] = useState(null);
 
-    // 모달이 열릴 때마다 입력 필드 초기화
     useEffect(() => {
         if (isVisible) {
             setNewLibraryName("");
         }
     }, [isVisible]);
 
-    // '내 서재 추가' 기능 (기존 MyLibrarySubmit의 '추가 모드' 부분만 남김)
     async function addNewLibrary(enteredName) {
         if (!enteredName.trim()) {
             Swal.fire({
@@ -52,7 +81,12 @@ export default function MyLibraryManageModal({
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: '예',
-            cancelButtonText: '아니오'
+            cancelButtonText: '아니오',
+            customClass: {
+                confirmButton: 'swal2-confirm-button-custom',
+                cancelButton: 'swal2-cancel-button-custom'
+            },
+            buttonsStyling: false
         });
 
         if (confirmResult.isConfirmed) {
@@ -63,8 +97,8 @@ export default function MyLibraryManageModal({
                     text: res.data.clientMsg,
                     icon: res.data.alertIcon
                 });
-                setRefreshTrigger(prev => prev + 1); // 화면 새로고침 (서재 목록 갱신)
-                setNewLibraryName(""); // 입력 필드 초기화
+                setRefreshTrigger(prev => prev + 1);
+                setNewLibraryName("");
                 return true;
             } catch (err) {
                 console.error("서재 추가 중 오류 발생:", err);
@@ -72,16 +106,15 @@ export default function MyLibraryManageModal({
                 return false;
             }
         }
-        return false; // 취소 시
+        return false;
     }
 
-    // '내 서재 이름 수정' 기능 (MyLibraryEditModal에서 호출될 콜백)
     async function updateMyLibraryName(editedName, library) {
         const payload = {
             myLibraryNo: library.myLibraryNo,
-            myLibraryMemberNo: loginMember.memberNo, // 사실 이 필드는 필요 없을 수도 있지만, 기존 로직 유지
+            myLibraryMemberNo: loginMember.memberNo,
             myLibraryName: editedName,
-            isDefault: library.isDefault // 기존 isDefault 값 유지
+            isDefault: library.isDefault
         };
 
         try {
@@ -91,7 +124,7 @@ export default function MyLibraryManageModal({
                 text: res.data.clientMsg,
                 icon: res.data.alertIcon
             });
-            setRefreshTrigger(prev => prev + 1); // 화면 새로고침 (서재 목록 갱신)
+            setRefreshTrigger(prev => prev + 1);
             return true;
         } catch (err) {
             console.error("서재 이름 수정 실패:", err);
@@ -100,7 +133,6 @@ export default function MyLibraryManageModal({
         }
     }
 
-    // 서재 삭제 기능 (이전과 동일)
     function deleteMyLibrary(library) {
         Swal.fire({
             title: '서재 삭제',
@@ -108,7 +140,12 @@ export default function MyLibraryManageModal({
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: '삭제',
-            cancelButtonText: '취소'
+            cancelButtonText: '취소',
+            customClass: {
+                confirmButton: 'swal2-confirm-button-custom',
+                cancelButton: 'swal2-cancel-button-custom'
+            },
+            buttonsStyling: false
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
@@ -118,7 +155,7 @@ export default function MyLibraryManageModal({
                         text: res.data.clientMsg,
                         icon: res.data.alertIcon
                     });
-                    setRefreshTrigger(prev => prev + 1); // 화면 새로고침 (서재 목록 갱신)
+                    setRefreshTrigger(prev => prev + 1);
                 } catch (err) {
                     console.error("서재 삭제 실패:", err);
                     Swal.fire('오류', '서재 삭제에 실패했습니다.', 'error');
@@ -127,28 +164,20 @@ export default function MyLibraryManageModal({
         });
     }
 
-    // 새 서재 등록 버튼 클릭 핸들러
     const handleAddLibrary = async () => {
-        const success = await addNewLibrary(newLibraryName);
-        if (success) {
-            // 새 서재 추가 후에는 manage modal을 닫지 않고 유지할 수도 있습니다.
-            // closeManageModal(); // 필요에 따라 추가
-        }
+        await addNewLibrary(newLibraryName);
     };
 
-    // 수정 모달 열기 핸들러
     const openEditModal = (library) => {
         setLibraryToEdit(library);
         setIsEditModalVisible(true);
     };
 
-    // 수정 모달 닫기 핸들러
     const closeEditModal = () => {
         setIsEditModalVisible(false);
-        setLibraryToEdit(null); // 초기화
+        setLibraryToEdit(null);
     };
 
-    // myLibraryList를 myLibraryNo의 숫자 부분을 기준으로 정렬 (오래된 순서대로)
     const sortedMyLibraryList = [...myLibraryList].sort((a, b) => {
         const numA = parseInt(a.myLibraryNo.split('_').pop());
         const numB = parseInt(b.myLibraryNo.split('_').pop());
@@ -159,14 +188,14 @@ export default function MyLibraryManageModal({
         <Modal
             isOpen={isVisible}
             onRequestClose={closeManageModal}
-            style={customManageModalStyles} // MyLibraryManageModal 전용 스타일 (MyLibraryEditModal과 구분)
+            style={customManageModalStyles}
             contentLabel="내 서재 관리"
+            ariaHideApp={false}
         >
             <div className="modal-header">
-                <h2>내 서재 관리</h2>
-                <button onClick={closeManageModal} className="close-button">&times;</button>
+                <h2 className="modal-title">내 서재 관리</h2>
             </div>
-            <div className="modal-body">
+            <div className="modal-content-area">
                 <div className="add-library-section">
                     <input
                         type="text"
@@ -179,71 +208,48 @@ export default function MyLibraryManageModal({
                         등록
                     </button>
                 </div>
-                <ul className="library-list">
-                    {sortedMyLibraryList.map(library => (
-                        <li key={library.myLibraryNo} className="library-list-item">
-                            <span>{library.myLibraryName} {library.isDefault === 'T' ? '(기본 서재)' : ''}</span>
-                            <div className="library-actions">
-                                <button
-                                    className="action-button edit-button"
-                                    onClick={() => openEditModal(library)} // 수정 모달 열기
-                                >
-                                    &#x2699;
-                                </button>
-                                {library.isDefault !== 'T' && (
+                {sortedMyLibraryList.length > 0 ? (
+                    <ul className="library-list">
+                        {sortedMyLibraryList.map(library => (
+                            <li key={library.myLibraryNo} className="library-list-item">
+                                <span className="library-name">{library.myLibraryName} {library.isDefault === 'T' ? '(기본 서재)' : ''}</span>
+                                <div className="library-actions">
                                     <button
-                                        className="action-button delete-button"
-                                        onClick={() => deleteMyLibrary(library)}
+                                        className="action-button edit-button"
+                                        onClick={() => openEditModal(library)}
+                                        title="서재 이름 수정"
                                     >
-                                        &times;
+                                        &#x2699;
                                     </button>
-                                )}
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                                    {library.isDefault !== 'T' && (
+                                        <button
+                                            className="action-button delete-button"
+                                            onClick={() => deleteMyLibrary(library)}
+                                            title="서재 삭제"
+                                        >
+                                            &times;
+                                        </button>
+                                    )}
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p className="no-library-message">등록된 서재가 없습니다. 새로운 서재를 추가해보세요.</p>
+                )}
+            </div>
+            <div className="modal-actions">
+                <button onClick={closeManageModal} className="btn-modal-cancel">닫기</button>
             </div>
 
-            {/* 서재 이름 수정 모달 렌더링 */}
             {isEditModalVisible && (
                 <MyLibraryEditModal
                     isVisible={isEditModalVisible}
                     closeEditModal={closeEditModal}
                     libraryToEdit={libraryToEdit}
-                    onUpdateLibraryName={updateMyLibraryName} // MyLibraryEditModal로 업데이트 함수 전달
+                    onUpdateLibraryName={updateMyLibraryName}
                 />
             )}
         </Modal>
     );
 }
-
-// MyLibraryManageModal 전용 스타일 (이름을 다르게 하여 혼동 방지)
-const customManageModalStyles = {
-    overlay: {
-        backgroundColor: 'rgba(0, 0, 0, 0.75)',
-        zIndex: 1000,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    content: {
-        position: 'static',
-        top: 'auto',
-        left: 'auto',
-        right: 'auto',
-        bottom: 'auto',
-        border: '1px solid #ccc',
-        background: '#fff',
-        overflow: 'auto',
-        WebkitOverflowScrolling: 'touch',
-        borderRadius: '8px',
-        outline: 'none',
-        padding: '30px',
-        maxWidth: '500px',
-        width: '90%',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px'
-    }
-};

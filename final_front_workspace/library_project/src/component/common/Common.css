@@ -629,6 +629,7 @@ footer {
 .pagination li:last-child .page-item {
     color: #555; /* 아이콘 색상 */
     font-size: 20px;
+    justify-content: center;
 }
 
 .pagination li:first-child .page-item:hover,
@@ -638,3 +639,48 @@ footer {
     background-color: #f0f0f0;
     color: #333;
 }
+
+
+/* LeftMenu.css */
+
+.left-menu-container {
+    width: 200px; /* 사이드 메뉴의 너비 */
+    padding-right: 20px; /* 컨텐츠와의 간격 */
+    box-sizing: border-box; /* 패딩 포함 너비 계산 */
+    flex-shrink: 0; /* 중요: 이 요소는 줄어들지 않도록 합니다. */
+    min-width: 200px; /* 최소 너비도 설정하여 확장을 방지합니다. */
+}
+
+.left-menu-container ul {
+    list-style: none; /* 목록 마커 제거 */
+    padding: 0;
+    margin: 0;
+}
+
+.left-menu-container li {
+    margin-bottom: 10px; /* 메뉴 항목 간 간격 */
+}
+
+.left-menu-container li a {
+    text-decoration: none; /* 밑줄 제거 */
+    color: #333; /* 기본 텍스트 색상 */
+    font-size: 1.1em;
+    padding: 8px 0;
+    display: block; /* 링크 전체 영역 클릭 가능하도록 */
+    transition: color 0.2s ease-in-out;
+}
+
+.left-menu-container li a:hover {
+    color: #a8d58c; /* 호버 시 색상 변경 */
+}
+
+.left-menu-container li.active a {
+    color: #a8d58c; /* 활성 메뉴 색상 */
+    font-weight: bold;
+    border-left: 3px solid #a8d58c; /* 활성 메뉴 표시 */
+    padding-left: 17px; /* 경계선과 텍스트 간격 */
+}
+
+/* 추가적으로 MyPageMain 컴포넌트에서 LeftMenu를 감싸는 div에 클래스를 적용해야 할 수 있습니다.
+   예시: <div className="left-menu-wrapper"><LeftMenu /></div>
+   LeftMenu.jsx 파일 자체에 직접 클래스를 추가하는 것은 지시사항에 어긋나지 않습니다. */

@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.or.iei.requestBook.model.dao.RequestBookDao">
 	
+	<!-- 신청자격 확인 -->
+	<select id="canRequestChk" parameterType="string" resultType="string">
+	select can_request from tbl_member where member_no = #{_parameter}
+	</select>
+	
+	<!-- 신규도서신청 -->
 	<insert id="insertRequestBook"
 	parameterType="kr.or.iei.requestBook.model.dto.SubmitRequestBook"
 	>
@@ -14,4 +20,10 @@
 										default,
 										default)
 	</insert>
+	
+	<!-- 도서신청 후 추가신청 막기 -->
+	<update id="makeCanRequestToF" parameterType="string">
+	update tbl_member set can_request = 'F' where member_no = #{_parameter}
+	</update>
+	
 	</mapper>

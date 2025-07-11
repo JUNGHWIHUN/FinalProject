@@ -116,8 +116,8 @@
     SET overdue_day_count = overdue_day_count +
         (SELECT 
             CASE 
-                WHEN lb.actual_return_date > TO_DATE(lb.return_date, 'YY/MM/DD')
-                THEN TRUNC(lb.actual_return_date - TO_DATE(lb.return_date, 'YY/MM/DD'))
+                WHEN to_date(lb.actual_return_date) > TO_DATE(lb.return_date, 'YY/MM/DD')
+                THEN TRUNC(to_date(lb.actual_return_date) - TO_DATE(lb.return_date, 'YY/MM/DD'))
                 ELSE 0
             END
          FROM tbl_lent_book lb

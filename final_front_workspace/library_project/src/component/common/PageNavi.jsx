@@ -7,6 +7,11 @@ export default function PageNavi (props){
 
     const pageArr = new Array();            //페이지네이션 jsx 를 저장할 배열
 
+    console.log(pageInfo);
+        console.log(reqPage);
+    console.log(setReqPage);
+
+
     //제일 앞 페이지로 이동 버튼 (<<)
     pageArr.push(
         <li key="first-page">
