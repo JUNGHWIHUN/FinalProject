@@ -5,6 +5,7 @@ import useUserStore from "../../store/useUserStore";
 import { useNavigate } from "react-router-dom";
 import MyLibraryManageModal from "./myLibraryModal/MyLibraryManageModal"; // 새로 생성한 모달 임포트
 import MoveBookModal from "./myLibraryModal/MoveBookModal"; // 새로 생성한 모달 임포트
+import './MyPage.css'; // MyPage.css 임포트 추가
 
 //마이페이지 하위의 '내 서재' 기능 컴포넌트
 export default function MyLibrary() {
@@ -139,87 +140,90 @@ export default function MyLibrary() {
     }
 
     return (
-        <>
-            <div>
-                <div>
-                    <h2>책장만들기</h2>
-                    <button onClick={openManageModal}>
-                        &#x2b; {/* 플러스 아이콘 */}
-                    </button>
-                </div>
-                <div>
-                    <button>도움말</button>
-                    <button>목록엑셀다운로드 &#x21e3;</button> {/* 다운로드 아이콘 */}
-                </div>
+        <div className="my-library-container"> {/* 전체 컨테이너 추가 */}
+            <div className="my-library-header"> {/* 헤더 div에 클래스 추가 */}
+                <h3 onClick={openManageModal}>내 서재 편집하기 ＋ {/* h2 태그로 변경 */}
+                </h3>
             </div>
-            <hr />
 
-            {/* 모든 서재 목록과 각각의 책 목록 (아코디언 형태) */}
-            <div>
-                {myLibraryList.length === 0 ? (
-                    <p>내 서재가 없습니다. 새로운 서재를 추가해보세요!</p>
-                ) : (
-                    myLibraryList.map((library) => {
-                        const isOpened = openLibraries.includes(library.myLibraryNo);
-                        // booksInMyLibrary에서 해당 서재의 책 목록을 가져오거나, 없으면 빈 배열
-                        const booksForThisLibrary = booksInMyLibrary[library.myLibraryNo] || [];
+        {/* 모든 서재 목록과 각각의 책 목록 (아코디언 형태) */}
+        <div className="my-library-list-section">
+            {myLibraryList.length === 0 ? (
+                <p className="no-library-message">내 서재가 없습니다. 새로운 서재를 추가해보세요!</p>
+            ) : (
+                myLibraryList.map((library) => {
+                    const isOpened = openLibraries.includes(library.myLibraryNo);
+                    const booksForThisLibrary = booksInMyLibrary[library.myLibraryNo] || [];
 
-                        return (
-                            <div key={library.myLibraryNo}>
-                                <div
-                                    onClick={() => toggleLibrary(library.myLibraryNo)}
-                                >
-                                    <h3>
-                                        {library.myLibraryName}
-                                    </h3>
-                                    <span>{isOpened ? '▲' : '▼'}</span> {/* 위/아래 화살표 아이콘 */}
-                                </div>
-                                {isOpened && ( //isOpened 상태일 때만 책 목록을 렌더링
-                                    <>
-                                        <hr />
-                                        <div>
-                                            {booksForThisLibrary.length === 0 ? (
-                                                <p>등록된 도서가 없습니다.</p>
-                                            ) : (
-                                                <div className="book-grid-container">
-                                                    {booksForThisLibrary.map((bookObj) => (
-                                                        <div key={bookObj.myLibraryBookNo} className="book-item-card">
-                                                            <div
-                                                                onClick={() => navigate('/book/searchResultDetail/' + bookObj.book.callNo)}
-                                                                className="book-image-wrapper"
-                                                            >
-                                                                <img
-                                                                    src={bookObj.book.imageUrl}
-                                                                    className="book-image"
-                                                                />
-                                                            </div>
-                                                            <p className="book-title">{bookObj.book.titleInfo}</p>
-                                                            <p className="book-author-pub">{bookObj.book.authorInfo} | {bookObj.book.pubInfo}</p>
-                                                            <button
-                                                                onClick={() => openMoveBookModal(bookObj)}
-                                                                className="action-button move-button"
-                                                            >
-                                                                이동
-                                                            </button>
-                                                            <button
-                                                                onClick={() => removeBookFromLibrary(bookObj)}
-                                                                className="action-button delete-button"
-                                                            >
-                                                                삭제
-                                                            </button>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
-                                    </>
-                                )}
-                                <hr /> {/* 각 서재 섹션 사이에 구분선 */}
+                    return (
+                        <div key={library.myLibraryNo} className="library-accordion-item">
+                            <div
+                                className="library-accordion-header"
+                                onClick={() => toggleLibrary(library.myLibraryNo)}
+                            >
+                                <h3 className="library-title">
+                                    {library.myLibraryName}
+                                </h3>
+                                <span className="toggle-icon">{isOpened ? '▲' : '▼'}</span>
                             </div>
-                        );
-                    })
-                )}
-            </div>
+                            {isOpened && (
+                                <div className="library-content-area">
+                                    <hr className="library-content-divider" />
+                                    <div>
+                                        {booksForThisLibrary.length === 0 ? (
+                                            <p className="no-books-message">등록된 도서가 없습니다.</p>
+                                        ) : (
+                                            <div className="book-grid-container">
+                                                {booksForThisLibrary.map((bookObj) => (
+                                                    <div key={bookObj.myLibraryBookNo} className="book-item-card">
+                                                        <div
+                                                            className="book-image-wrapper"
+                                                            // onClick={() => navigate('/book/searchResultDetail/' + bookObj.book.callNo)} // 이 클릭 이벤트를 오버레이에 줍니다.
+                                                        >
+                                                            <img
+                                                                src={bookObj.book.imageUrl}
+                                                                alt={bookObj.book.titleInfo}
+                                                                className="book-image"
+                                                            />
+                                                            {/* 호버 시 나타날 오버레이 */}
+                                                            <div className="book-overlay" onClick={() => navigate('/book/searchResultDetail/' + bookObj.book.callNo)}>
+                                                                <p className="overlay-book-title">{bookObj.book.titleInfo}</p>
+                                                                <p className="overlay-book-author-pub">{bookObj.book.authorInfo} | {bookObj.book.pubInfo}</p>
+                                                                <div className="overlay-buttons">
+                                                                <div className="overlay-buttons">
+                                                                    <button
+                                                                        onClick={(e) => { e.stopPropagation(); openMoveBookModal(bookObj); }} // 이벤트 버블링 방지
+                                                                        className="overlay-action-button move-button"
+                                                                        title="이동"
+                                                                    >
+                                                                        {/* 기존 <image> 태그를 <i> 태그로 변경하고 Material Icons 이름을 넣어줍니다. */}
+                                                                        <i className="material-icons">east</i> {/* 이동 아이콘: 오른쪽 화살표 */}
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={(e) => { e.stopPropagation(); removeBookFromLibrary(bookObj); }} // 이벤트 버블링 방지
+                                                                        className="overlay-action-button delete-button"
+                                                                        title="삭제"
+                                                                    >
+                                                                        {/* 기존 <image> 태그를 <i> 태그로 변경하고 Material Icons 이름을 넣어줍니다. */}
+                                                                        <i className="material-icons">delete</i> {/* 삭제 아이콘: 휴지통 */}
+                                                                    </button>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                            <hr className="my-library-section-divider" />
+                        </div>
+                    );
+                })
+            )}
+        </div>
 
             {/* 서재 관리 모달 */}
             <MyLibraryManageModal
@@ -240,6 +244,6 @@ export default function MyLibrary() {
                     selectMyLibraryBooks={selectMyLibraryBooks}
                 />
             )}
-        </>
+        </div>
     );
 }

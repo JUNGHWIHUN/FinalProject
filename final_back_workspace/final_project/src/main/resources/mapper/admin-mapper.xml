@@ -87,7 +87,7 @@
 	from tbl_lent_book lb
 	join tbl_book b ON lb.lent_call_no = b.call_no
 	join tbl_member m ON lb.lent_member_no = m.member_no
-	where lb.lent_call_no = #{callNo}
+	where lb.lent_call_no = #{callNo} AND actual_return_date is null
 	</select>
 	
 	
@@ -116,8 +116,8 @@
     SET overdue_day_count = overdue_day_count +
         (SELECT 
             CASE 
-                WHEN lb.actual_return_date > TO_DATE(lb.return_date, 'YY/MM/DD')
-                THEN TRUNC(lb.actual_return_date - TO_DATE(lb.return_date, 'YY/MM/DD'))
+                WHEN TO_DATE(lb.actual_return_date) > TO_DATE(lb.return_date, 'YY/MM/DD')
+                THEN TRUNC(TO_DATE(lb.actual_return_date) - TO_DATE(lb.return_date, 'YY/MM/DD'))
                 ELSE 0
             END
          FROM tbl_lent_book lb
@@ -526,4 +526,75 @@
 	<update id="requestUpdateNo" parameterType="String">
 	update tbl_book_request set request_status = 1 where member_no = #{target}
 	</update>
+	
+	<!-- 건의사항 목록 수 검색 -->
+	<select id="selectSuggesCount" resultType="_int">
+	select count(*) from tbl_suggestion
+	</select>
+	
+	<!-- 건의사항 리스트 검색 -->
+	<select id="selectSuggesList" resultType="AdSuggestion">
+	 SELECT suggestion_no  		 AS suggesNo,
+            suggestion_content   AS suggesContent,
+            suggestion_title  	 AS suggesTitle,
+            suggestion_date 	 AS suggesDate,
+     	    member_no			 AS memberNo,
+            member_name 		 AS memberName
+    FROM (
+        SELECT rownum rnum, a.*
+        FROM (
+            SELECT s.suggestion_no,
+                   s.suggestion_content,
+                   s.suggestion_title,
+                   s.suggestion_date,
+                   s.member_no,
+                   m.member_name
+            FROM tbl_suggestion s
+            JOIN tbl_member m ON s.member_no = m.member_no
+            ORDER BY s.suggestion_date DESC
+        ) a
+    ) a
+    WHERE rnum BETWEEN #{start} AND #{end}
+	</select>
+	
+	<!--회원 번호를 기준으로 건의사항 하나 삭제-->
+	<delete id="suggesDelete" parameterType="String">
+	delete tbl_suggestion where member_no = #{target}
+	</delete>
+	
+	<!-- 신고 리스트 수 가져오기 -->
+	<select id="selectReportCount" resultType="_int">
+	select count(*) from tbl_report
+	</select>
+	
+	<!-- 신고 리스트 가져오기 -->
+	<select id="selectReportList" resultType="AdRepartDto">
+	SELECT 	comment_report_no  		 AS repartNo,
+            report_reason   		 AS repartReson,
+            comment_no  	 		 AS commentNo,
+            reported_member_no 	 	 AS repoterNo
+    FROM (
+        SELECT rownum rnum, a.*
+        FROM (
+            SELECT comment_report_no,
+                   report_reason,
+                   comment_no,
+                   reported_member_no
+            FROM tbl_report 
+            ORDER BY comment_report_no DESC
+        ) a
+    ) a
+    WHERE rnum BETWEEN #{start} AND #{end}
+	</select>
+	
+	<!-- 신고 리스트에서 삭제. -->
+	<delete id="repartDelete" parameterType="String">
+	delete tbl_report where comment_report_no = #{target}
+	</delete>
+	
+	<!-- 건의사항 등록 -->
+	<insert id="insertSuggestion">
+	insert into tbl_suggestion values (#{memberNo}, seq_suggestion.nextval, #{suggestion.suggesContent}, #{suggestion.suggesTitle}, sysdate)
+	</insert>
+	
 </mapper>

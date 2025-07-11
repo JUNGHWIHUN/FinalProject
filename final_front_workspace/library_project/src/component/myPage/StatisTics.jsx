@@ -10,8 +10,8 @@ import useUserStore from '../../store/useUserStore';
 import { useEffect, useState } from 'react';
 import createInstance from '../../axios/Interceptor';
 
- ChartJs.register(BarElement, CategoryScale, LinearScale, Legend, Tooltip);
- 
+ChartJs.register(BarElement, CategoryScale, LinearScale, Legend, Tooltip);
+
  //독서 통계 컴포넌트
  export default function StatisTics(){
      //선택된 월
@@ -19,7 +19,7 @@ import createInstance from '../../axios/Interceptor';
 
      //월별 리스트를 위한 state변수
      const [monthList , setMonthList] = useState([]);
-     
+
      const [chartData, setCharData] = useState(null);
 
      //로그인한 회원 정보 가져오기
@@ -29,7 +29,7 @@ import createInstance from '../../axios/Interceptor';
      const serverUrl = import.meta.env.VITE_BACK_SERVER;
 
 
-     useEffect(function(){   
+     useEffect(function(){
         let options = {};
         options.url = serverUrl + "/statistics/months";
         options.method = "get";
@@ -39,7 +39,6 @@ import createInstance from '../../axios/Interceptor';
 
         axiosInstacne(options)
         .then(function(res){
-          
           const months = res.data.resData;
 
             // 객체면 month 필드만 추출
@@ -48,12 +47,21 @@ import createInstance from '../../axios/Interceptor';
         );
 
           setMonthList(monthArray);
-          if(months.length > 0) setSelectedMonth(monthArray[0]);
+          if(monthArray.length > 0) setSelectedMonth(monthArray[0]); // months가 아니라 monthArray로 접근
         })
         .catch(function(err){
           console.log(err);
         })
      },[])
+
+
+    useEffect(() => { // selectedMonth가 변경될 때마다 통계 데이터를 가져오도록
+        if (selectedMonth) {
+            fetchLoanStats();
+        } else {
+            setCharData(null); // 월이 선택되지 않으면 차트 데이터 초기화
+        }
+    }, [selectedMonth]); // selectedMonth가 변경될 때 실행되도록 의존성 배열에 추가
 
 
     function fetchLoanStats(){
@@ -70,8 +78,6 @@ import createInstance from '../../axios/Interceptor';
         .then(function(res){
           
             const data = res.data.resData;
-
-         
 
             const labels = data.map(item => item.category);
             const values = data.map(item => item.cnt);
@@ -96,41 +102,47 @@ import createInstance from '../../axios/Interceptor';
     function handleMonthChange(e){
       setSelectedMonth(e.target.value);
     }
-    
+
     return(
-        
-    <div>
-  <h2>📊 월별 대출 통계</h2>
+        <div className="statistics-container"> {/* 전체 컨테이너 추가 */}
+            <h2 className="page-title">독서 통계</h2> {/* 페이지 제목에 클래스 추가 */}
 
-  <select value={selectedMonth} onChange={handleMonthChange}>
-    {monthList.map((month) => (
-      <option key={month} value={month}>
-        {month}
-      </option>
-    ))}
-  </select>
+            <div className="month-selector-group"> {/* 셀렉트 박스, 버튼 그룹 */}
+                <select value={selectedMonth} onChange={handleMonthChange} className="month-select">
+                    {monthList.length === 0 ? (
+                        <option value="">데이터 없음</option>
+                    ) : (
+                        monthList.map((month) => (
+                            <option key={month} value={month}>
+                                {month}
+                            </option>
+                        ))
+                    )}
+                </select>
+                <button onClick={fetchLoanStats} className="select-month-button">선택</button>
+            </div>
 
-  <button onClick={fetchLoanStats}>선택</button>
+            {chartData ? (
+                <div className="chart-container"> {/* 차트 컨테이너 추가 */}
+                    <Bar
+                        data={chartData}
+                        options={{
+                            responsive: true,
+                            plugins: { legend: { position: "top" } },
+                            scales: {
+                                y: { beginAtZero: true },
+                                x: {
+                                    barPercentage: 0.3,
+                                    categoryPercentage: 0.6,
+                                },
+                            },
+                        }}
+                    />
+                </div>
+            ) : (
+                <p className="no-statistics-message">선택된 월에 대한 독서 통계 데이터가 없습니다.</p>
+            )}
+        </div>
+    );
 
-  {chartData && (
-    <div style={{ maxWidth: "400px", margin: "0 auto" }}>
-      <Bar
-        data={chartData}
-        options={{
-          responsive: true,
-          plugins: { legend: { position: "top" } },
-          scales: {
-            y: { beginAtZero: true },
-            x: {
-              barPercentage: 0.3,
-              categoryPercentage: 0.6,
-            },
-          },
-        }}
-      />
-    </div>
-  )}
-</div>
-  );
-    
 }

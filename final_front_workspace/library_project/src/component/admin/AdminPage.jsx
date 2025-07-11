@@ -5,6 +5,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import AllbookPage from "./AllBookPage";
 import AdminMemberPage from "./AdminMemberPage";
 import RequestBook from "./RequestBook";
+import Suggestion from "./Suggestion";
+import ReportList from "./RepoartList";
+import { Route, Routes } from 'react-router-dom';
+
+import FixBookDetail from "./FixBookDetail";
+import RequestDetail from "./RequestDetail";
+import SuggestDetail from "./SuggesDetail";
+import LentBookDetail from "./LentBookDetail";
+import AdminMemberDetailPage from "./AdminMemberDetailPage";
+import LenterBookDetil from "./LenterBookDetil";
+
+
 
 export default function AdminPage(){
 
@@ -91,12 +103,16 @@ export default function AdminPage(){
 
     return(
         <div>
-         <a href="#" onClick={() => setMode("allBook")}>도서관리</a> |
-         <a href="#" onClick={() => setMode("allMember")}>회원관리</a> |
-         <a href="#" onClick={() => setMode("suggestion")}>건의 사항</a> |
-         <a href="#" onClick={() => setMode("bookRequest")}>희망도서</a> | {" "}
-         <a href="#" onClick={() => setMode("lend")}>대출</a> |{" "}
-         <a href="#" onClick={() => setMode("return")}>반납</a> 
+         <a href="#" onClick={function(e){e.preventDefault(); setMode("allBook")}}>도서관리</a> |
+         <a href="#" onClick={(e) => setMode("allMember")}>회원관리</a> |
+         <a href="#" onClick={(e) => setMode("suggestion")}>건의 사항</a> |
+         <a href="#" onClick={(e) => setMode("bookRequest")}>희망도서</a> |
+         <a href="#" onClick={(e) => setMode("report")}>신고</a> |
+         <a href="#" onClick={(e) => setMode("lend")}>대출</a> |{" "}
+         <a href="#" onClick={(e) => setMode("return")}>반납</a> 
+
+         
+          
 
         {mode == "allBook" && <AllbookPage />} 
 
@@ -104,6 +120,9 @@ export default function AdminPage(){
 
         {mode == "bookRequest" && <RequestBook />}
 
+        {mode == "suggestion" && <Suggestion />}
+
+        {mode == "report" && <ReportList />}
 
         {mode == "lend" && (
             <>
@@ -126,6 +145,8 @@ export default function AdminPage(){
 
 
         )}
+
+        
          
 
         </div>

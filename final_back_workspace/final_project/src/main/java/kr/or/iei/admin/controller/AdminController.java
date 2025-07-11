@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.or.iei.admin.model.dto.AdSuggestion;
 import kr.or.iei.admin.model.dto.BookLenterDto;
 import kr.or.iei.admin.model.dto.BookList;
 import kr.or.iei.admin.model.dto.BookSelectDto;
@@ -114,9 +115,9 @@ public class AdminController {
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "책 검색중 오류 발생..", null, "error");
 		
 		try {
-			int result = service.returnBook(lentBook);
+			int result = service.returnBook(lentBook);	
 			if(result > 0) {
-	            res = new ResponseDto(HttpStatus.OK, "반납 완료", null, "");
+	            res = new ResponseDto(HttpStatus.OK, "반납 완료", "OK", "");
 	        }
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -336,6 +337,7 @@ public class AdminController {
 	@NoTokenCheck
 	public ResponseEntity<ResponseDto> requestUpdate(@RequestBody Map<String, String> param){
 		String type = param.get("type");
+		System.out.println("type : " + type);
 	    String target = param.get("target");
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
 		
@@ -348,6 +350,96 @@ public class AdminController {
 			e.printStackTrace();
 		}
 		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//건의사항 리스트 가져오기
+	@GetMapping("/suggesList/{reqPage}")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> suggesList(@PathVariable int reqPage){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		
+		try {
+			HashMap<String, Object> suggesMap = service.selectSuggesList(reqPage);
+			res = new ResponseDto(HttpStatus.OK, "", suggesMap, "");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//건의사항 하나 삭제 처리
+	@PostMapping("/suggesDelete")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> suggesDelete(@RequestBody Map<String, Object> param){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		String target = (String) param.get("target");
+		System.out.println("건의사항 삭제 타겟" + target);
+		try {
+			int result = service.suggesDelete(target);
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "수정 완료", null, "");
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+		
+	}
+	
+	//신고 테이블 가져오기
+	@GetMapping("/reportList/{reqPage}")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> reportList(@PathVariable int reqPage){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		
+		try {
+			HashMap<String, Object> reportMap = service.selectReportList(reqPage);
+			res = new ResponseDto(HttpStatus.OK, "", reportMap, "");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
+	//건의사항 하나 삭제 처리
+	@PostMapping("/repartDelete")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> repartDelete(@RequestBody Map<String, Object> param){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		String target = (String) param.get("target");
+		System.out.println("건의사항 삭제 타겟" + target);
+		try {
+			int result = service.repartDelete(target);
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "수정 완료", null, "");
+			}	
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+			
+	}
+	
+	
+	@PostMapping("/insertSuggestion/{memberNo}")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> insertSuggestion(@PathVariable String memberNo,@RequestBody AdSuggestion suggestion){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		try {
+			int result = service.insertSuggestion(memberNo, suggestion);
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "등록 완료", null, "");
+			}	
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
 	

@@ -3,6 +3,7 @@ import WishBook from "./wishBook";
 import RequestInfo from "./RequestInfo";
 import WishBookDirect from "./WishBookDirect";
 import DetailBook from "./DetailBook";
+import './RequestBook.css'
 
 
 export default function RequestBookMain(){

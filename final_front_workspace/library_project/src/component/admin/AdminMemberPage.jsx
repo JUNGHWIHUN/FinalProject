@@ -1,9 +1,8 @@
 import axios from "axios";
-import PageNavi from '../common/PageNavi';
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-
+import PageNaviNew from './PageNaviNew';
 
 export default function AdminMemberPage(){
 
@@ -35,7 +34,7 @@ export default function AdminMemberPage(){
       setKeyword(e.target.value);
     }
 
-    function fetAllMemberList(){
+    function fetAllMemberList(page = reqPage){
             let options = {};
             options.url='http://localhost:9999/admin/allMemberList/'+ reqPage;
             options.method = 'get';
@@ -45,13 +44,14 @@ export default function AdminMemberPage(){
             .then(function(res){
               setAllMemberList(res.data.resData.memberList)
               setPageInfo(res.data.resData.pageInfo)
+              setReqPage(page);
             })
             .catch(function(err){
             console.log(err); 
             }); 
     }
 
-    function fetOverdueList(){
+    function fetOverdueList(page = reqPage){
         let options = {};
             options.url='http://localhost:9999/admin/overMemberList/'+ reqPage;
             options.method = 'get';
@@ -61,11 +61,20 @@ export default function AdminMemberPage(){
             .then(function(res){
               setOverMemberList(res.data.resData.memberList)
               setPageInfo(res.data.resData.pageInfo)
+              setReqPage(page);
             })
             .catch(function(err){
             console.log(err); 
             }); 
     }
+
+    useEffect(() => {
+        if (subMode === "userList") {
+            fetAllMemberList(reqPage);
+        } else if (subMode === "overdueList") {
+            fetOverdueList(reqPage);
+        }
+    }, [reqPage, subMode]);
 
 
 
@@ -102,6 +111,9 @@ export default function AdminMemberPage(){
                           })}
                          </tbody>
                   </table>
+                  <div>
+                        <PageNaviNew pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage}></PageNaviNew>
+                  </div>
             
             </>
 
@@ -130,6 +142,10 @@ export default function AdminMemberPage(){
                           })}
                          </tbody>
                   </table>
+
+                  <div>
+                        <PageNaviNew pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage}></PageNaviNew>
+                  </div>
             
             </>
 
