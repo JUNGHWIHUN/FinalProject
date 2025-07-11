@@ -1,7 +1,7 @@
 import axios from "axios";
-import PageNavi from '../common/PageNavi';
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import PageNaviNew from './PageNaviNew';
 
 export default function AllbookPage(){
 
@@ -26,7 +26,7 @@ export default function AllbookPage(){
     const [filterType, setFilterType] = useState("title");
     const [keyword, setKeyword] = useState("");
 
-    function fetchAllBooks(){
+    function fetchAllBooks(page = reqPage){
          let options = {};
             options.url='http://localhost:9999/admin/allBookList/'+ reqPage;
             options.method = 'get';
@@ -36,13 +36,14 @@ export default function AllbookPage(){
             .then(function(res){
               setAllBookList(res.data.resData.bookList)
               setPageInfo(res.data.resData.pageInfo)
+              setReqPage(page);
             })
             .catch(function(err){
             console.log(err); 
             });
     }
 
-    function fetchLendBooks(){
+    function fetchLendBooks(page = reqPage){
         let options = {};
             options.url='http://localhost:9999/admin/allLendBookList/'+ reqPage;
             options.method = 'get';
@@ -52,6 +53,7 @@ export default function AllbookPage(){
             .then(function(res){
               setLendBookList(res.data.resData.bookList)
               setPageInfo(res.data.resData.pageInfo)
+              setReqPage(page);
             })
             .catch(function(err){
             console.log(err); 
@@ -75,6 +77,14 @@ export default function AllbookPage(){
     function newbooks(){
       navigate("/admin/newBook");
     }
+
+    useEffect(function(){
+    if(subMode === "bookList") {
+        fetchAllBooks(reqPage);
+    } else if(subMode === "lendList") {
+        fetchLendBooks(reqPage);
+    }
+  }, [reqPage, subMode]);
     
 
     return(
@@ -112,7 +122,7 @@ export default function AllbookPage(){
                   </table>
 
                   <div>
-                    <PageNavi pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage}></PageNavi>
+                    <PageNaviNew pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage}></PageNaviNew>
                   </div>
                    
                 </>
@@ -148,7 +158,7 @@ export default function AllbookPage(){
                   </table>
 
                   <div>
-                    <PageNavi pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage}></PageNavi>
+                     <PageNaviNew pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage}></PageNaviNew>
                   </div>
                 </>
             )}
@@ -171,7 +181,7 @@ function BookItem(props){
 
             axios(options)
             .then(function(res){
-
+              console.log(res);
               navigate("/admin/FixBookDetail", { state: { bookDetails: res.data.resData } });
             })
             .catch(function(err){

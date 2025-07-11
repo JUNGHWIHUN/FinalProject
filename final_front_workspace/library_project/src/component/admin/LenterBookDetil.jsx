@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function LenterBookDetil(){
 
     const location = useLocation();
     const book = location.state.book;
+    const navigate = useNavigate();
 
     function returnThisBook(){
         let options = {};
@@ -18,7 +19,7 @@ export default function LenterBookDetil(){
                 
                 if(res.data.resData == "OK"){
                  alert("반납 처리 완료");
-
+                navigate(-1);
                 }else{
                     alert("검색결과 없음");
                     setUserInfo([]);
