@@ -1,15 +1,13 @@
 import axios from "axios";
 import { useParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import "./Admin.css";
 
 export default function AdminMemberDetailPage(){
-
 
     const memberNo = useParams();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-
-    
 
     const from = queryParams.get("from");  // "member" 또는 "overdue"
     const bookNo = queryParams.get("bookNo"); // 있을 수도 있고, 없을 수도 있음
@@ -27,7 +25,6 @@ export default function AdminMemberDetailPage(){
             let options = {};
             options.url='http://localhost:9999/admin/memberDetails/'+ memberNo.memberNo;
             options.method = 'get';
-            
 
             axios(options)
             .then(function(res){
@@ -51,12 +48,11 @@ export default function AdminMemberDetailPage(){
 
     
      useEffect(() => {
-        if(from == "overdue" && bookNo) {
+        if(from === "overdue" && bookNo) {
             let options = {};
             options.url='http://localhost:9999/admin/bookDetails/'+ bookNo;
             options.method = 'get';
-            
-    
+
             axios(options)
             .then(function(res){
                setBookInfo(res.data.resData[0]);
@@ -68,8 +64,8 @@ export default function AdminMemberDetailPage(){
      },[from, bookNo, refreshTrigger])
 
      if (!memberInfo) {
-        return <div>회원 정보를 불러오는 중...</div>;
-        }
+        return <div className="admin-loading">회원 정보를 불러오는 중...</div>;
+     }
 
     //회원 정보 수정
     function handleUpdate(){
@@ -87,8 +83,7 @@ export default function AdminMemberDetailPage(){
                 canComment: canComment,
                 maxBorrowedCount: maxBorrowCount,
             };
-            
-    
+
             axios(options)
             .then(function(res){
                 alert("수정되었습니다");
@@ -97,65 +92,73 @@ export default function AdminMemberDetailPage(){
             .catch(function(err){
             console.log(err); 
             });
-        
-    }
 
+    }
 
     return(
         <>
-        <h3>회원 상세 정보</h3>
+        <h3 className="admin-title">회원 상세 정보</h3>
 
-        <div>
-           <p>회원 이름 : {memberInfo.memberName}</p>
+        <div className="admin-member-info">
+           <p className="admin-info-item">회원 이름 : {memberInfo.memberName}</p>
+           <p className="admin-info-item">회원 번호 : {memberInfo.memberNo}</p>
+           <p className="admin-info-item">회원 아이디 : {memberInfo.memberId}</p>
+           <p className="admin-info-item">회원 이메일 : {memberInfo.memberEmail}</p>
+           <p className="admin-info-item">회원 전화번호 : {memberInfo.memberPhone}</p>
 
-           <p>회원 번호 : {memberInfo.memberNo}</p>
-           <p>회원 아이디 : {memberInfo.memberId}</p>
-           <p>회원 이메일 : {memberInfo.memberEmail}</p>
-           <p>회원 전화번호 : {memberInfo.memberPhone}</p>
+           <p className="admin-info-item">대출 도서 권수 : {memberInfo.borrowedCount}</p>
+           <p className="admin-info-item">회원 누적 연체일수 : {memberInfo.overudeCount}</p>
+           <p className="admin-info-item">미대출 횟수 : {memberInfo.noLentCount}</p>
+           <p className="admin-info-item">대출불가일자 : {memberInfo.cantBorrowDay}</p>
 
-           <p>대출 도서 권수 : {memberInfo.borrowedCount}</p>
-           <p>회원 누적 연체일수 : {memberInfo.overudeCount}</p>
-           <p>미대출 횟수 : {memberInfo.noLentCount}</p>
-           <p>대출불가일자 : {memberInfo.cantBorrowDay}</p>
-
-
-           <p>
+           <p className="admin-info-item">
                 대출 가능 여부 :
-                <select value={canBorrow} onChange={(e) => setCanBorrow(e.target.value)}>
-                    {console.log('대출'+canBorrow)}
+                <select
+                  className="admin-select"
+                  value={canBorrow}
+                  onChange={(e) => setCanBorrow(e.target.value)}
+                >
                     <option value="T">T</option>
                     <option value="F">F</option>
                 </select>
-                </p>
+           </p>
 
-            <p>
+            <p className="admin-info-item">
                 서평 작성 권한 :
-                <select value={canComment} onChange={(e) => setCanComment(e.target.value)}>
-                    {console.log('서평'+canComment)}
+                <select
+                  className="admin-select"
+                  value={canComment}
+                  onChange={(e) => setCanComment(e.target.value)}
+                >
                     <option value="T">T</option>
                     <option value="F">F</option>
                 </select>
             </p>
 
-            <p>
+            <p className="admin-info-item">
                 최대 대출 가능 권수 :
-            <input type="number" value={maxBorrowCount} onChange={(e) => setMaxBorrowCount(e.target.value)} min={1} max={7} />
-            {console.log('최대 대출'+maxBorrowCount)}
+                <input
+                  className="admin-input"
+                  type="number"
+                  value={maxBorrowCount}
+                  onChange={(e) => setMaxBorrowCount(e.target.value)}
+                  min={1}
+                  max={7}
+                />
             </p>
 
-            <button onClick={handleUpdate}>정보 수정</button>
+            <button className="admin-btn" onClick={handleUpdate}>정보 수정</button>
         </div>
 
-        {from == "overdue" && bookInfo && (
+        {from === "overdue" && bookInfo && (
             <>
-            <h3>연체된 도서 정보</h3>
-            <p>책 제목 : {bookInfo.title}</p>
-            <p>책 번호 : {bookInfo.bookNo}</p>
-            <p>isbn : {bookInfo.isbn}</p>
+            <h3 className="admin-subtitle">연체된 도서 정보</h3>
+            <p className="admin-info-item">책 제목 : {bookInfo.title}</p>
+            <p className="admin-info-item">책 번호 : {bookInfo.bookNo}</p>
+            <p className="admin-info-item">isbn : {bookInfo.isbn}</p>
             </>
-
         )}
-        
+
         </>
     )
 }

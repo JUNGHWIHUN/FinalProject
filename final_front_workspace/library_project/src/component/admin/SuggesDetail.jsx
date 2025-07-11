@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./Admin.css";
 
 export default function SuggestDetail(){
     const location = useLocation();
@@ -44,14 +45,21 @@ export default function SuggestDetail(){
     }, []);
 
     return(
-        <>
-        <h3>{list.suggesTitle}</h3>
+        <div className="suggest-detail-wrapper">
+      <h3 className="suggest-title">{list.suggesTitle}</h3>
 
-        <p>작성자 : {list.memberName}</p>
-        <p>작성일 : {list.suggesDate}</p>
-        <p>내용 : {list.suggesContent}</p>
+      <p><strong>작성자 :</strong> {list.memberName}</p>
+      <p><strong>작성일 :</strong> {list.suggesDate}</p>
+      <p><strong>내용 :</strong></p>
+      <div className="suggest-content">{list.suggesContent}</div>
 
-        <button onClick={deleteList} disabled={isCompleted}>{isCompleted ? "처리완료" : "삭제"}</button>
-        </>
+      <button
+        className="suggest-delete-button"
+        onClick={deleteList}
+        disabled={isCompleted}
+      >
+        {isCompleted ? "처리완료" : "삭제"}
+      </button>
+    </div>
     )
 }
