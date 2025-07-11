@@ -23,11 +23,12 @@ import NewBook from './component/admin/NewBook';
 import AdminMemberPage from './component/admin/AdminMemberPage';
 import AdminMemberDetailPage from './component/admin/AdminMemberDetailPage';
 import FindId from './component/member/FindId'; 
-
+import KakaoMap from './component/libInfo/KakaoMap';
 import NoticeMain from './component/notice/NoticeMain';
 
 
 import FindPassword from './component/member/FindPassword';
+import LibInfoMain from './component/libInfo/LibInfoMain';
 
 
 function App() {
@@ -62,6 +63,9 @@ function App() {
             {/* 아이디/비밀번호 찾기 페이지 라우트 추가 */}
             <Route path="/find-id" element={<FindId />} />
             <Route path="/find-password" element={<FindPassword />} />
+
+            {/*도서관 안내 메인 페이지*/}
+            <Route path='/libInfo/*' element={ <LibInfoMain />} />
 
           </Routes>
         </div>

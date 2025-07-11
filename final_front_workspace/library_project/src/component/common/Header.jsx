@@ -111,7 +111,7 @@ export default function Header(){
                     >
                     마이페이지
                     </Link>
-                <Link to='/intro' className="main-menu-item">도서관 소개</Link>
+                <Link to='/libInfo/introduce' className="main-menu-item">도서관 소개</Link>
             </div>
         </header>
     );
