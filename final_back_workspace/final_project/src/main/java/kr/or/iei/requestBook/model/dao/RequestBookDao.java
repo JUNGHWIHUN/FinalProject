@@ -9,4 +9,8 @@ public interface RequestBookDao {
 
 	int insertRequestBook(SubmitRequestBook book);
 
+	String canRequestChk(String memberNo);
+
+	int makeCanRequestToF(String memberNo);
+
 }

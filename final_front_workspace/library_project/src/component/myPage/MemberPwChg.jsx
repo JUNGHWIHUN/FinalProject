@@ -106,49 +106,48 @@ export default function MemberPwChg(){
 
     
     return(
-         <>  <section className="section pwChg-section">
-                <div className="page-title">비밀번호 변경</div>
-                <div style={{width : "60%", margin : "0 auto"}}>
-                    {isAuth
+        <section className="section pwChg-section"> {/* 전체 섹션 래퍼 */}
+            <div className="page-title">비밀번호 변경</div> {/* 페이지 제목 */}
+            <div className="pwChg-form-container"> {/* 폼 컨테이너 역할 */}
+                {isAuth
                     ?
                     <>
-                        <div className="input-wrap" style={{marginBottom : "50px"}}>
+                        <div className="input-wrap">
                             <div className="input-title">
-                                <label htmlFor="newPw">새 비밀번호 입력</label>
+                                <label htmlFor="newPw" className="input-label">새 비밀번호 입력</label>
                             </div>
                             <div className="input-item">
-                                <input type="password" id="newPw" name="memberPw" value={member.memberPw} onChange={chgMemberPw}/>
+                                <input type="password" id="newPw" name="memberPw" value={member.memberPw} onChange={chgMemberPw} className="login-input"/>
                             </div>
                         </div>
                         <div className="input-wrap">
                             <div className="input-title">
-                                <label htmlFor="newPwRe">새 비밀번호 확인</label>
+                                <label htmlFor="newPwRe" className="input-label">새 비밀번호 확인</label>
                             </div>
                             <div className="input-item">
-                                <input type="password" id="newPwRe" value={memberPwRe} onChange={chgMemberPwRe} />
+                                <input type="password" id="newPwRe" value={memberPwRe} onChange={chgMemberPwRe} className="login-input" />
                             </div>
                         </div>
                         <div className="button-zone">
                             <button type="button" className="btn-primary lg" onClick={updatePw}>변경하기</button>
                         </div>
                     </>
-                     :
+                    :
                     <>
                         <div className="input-wrap">
                             <div className="input-title">
-                                <label htmlFor="oldPw">기존 비밀번호 입력</label>
+                                <label htmlFor="oldPw" className="input-label">기존 비밀번호 입력</label>
                             </div>
                             <div className="input-item">
-                                <input type="password" id="oldPw" name="memberPw" value={member.memberPw} onChange={chgMemberPw}/>
+                                <input type="password" id="oldPw" name="memberPw" value={member.memberPw} onChange={chgMemberPw} className="login-input"/>
                             </div>
                         </div>
                         <div className="button-zone">
                             <button type="button" className="btn-primary lg" onClick={checkPw}>확인</button>
                         </div>
                     </>
-                    }
-                </div>
-            </section>
-        </>
-    )
+                }
+            </div>
+        </section>
+    );
 }

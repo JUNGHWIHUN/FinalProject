@@ -9,7 +9,7 @@ export default function WishBookDirect(){
         title: "",
         author: "",
         publisher: ""
-});
+    });
 
     //기존 회원 정보 표출 및 수정 정보 입력받아 저장할 변수
     const [member, setMember]= useState({
@@ -35,14 +35,13 @@ export default function WishBookDirect(){
                 requestedBookAuthor: book.author,
                 requestedBookPub: book.publisher,
                 memberNo : loginMember.memberNo,
-                memberId: member.memberId,
-                memberPhone: member.memberPhone,
+                memberId: loginMember.memberId, // loginMember.memberId 사용
+                memberPhone: loginMember.memberPhone, // loginMember.memberPhone 사용
                 requestedReason: reason
             };
 
             axiosInstacne(options)
                 .then(function(res){
-                    alert("신청이 완료되었습니다!");
                     console.log(res.data);
                     navigate("/requestBook/wishBook");
                 })
@@ -52,40 +51,53 @@ export default function WishBookDirect(){
                 });
 }
         
-
     return(
-        <div>
-            <h2>도서 상세 정보</h2>
-            <hr />
+        <div className="wishbook-direct-wrap"> {/* 전체 컨테이너 */}
+            <div className="wishbook-direct-title-area"> {/* 제목 영역 */}
+                <h2 className="wishbook-direct-page-title">희망도서 직접 신청</h2> {/* 제목 텍스트 변경 */}
+                <div className="wishbook-direct-title-underline"></div>
+            </div>
+            
             <form onSubmit={function(e){
                 e.preventDefault();
                 requestBook();
             }}>
-                <div className="wishBookDirectInfo">
-                    도서 명 : <input type="text" value={book.title} onChange={(e) => setBook({...book, title: e.target.value })} required/> <br /> 
-                    저자 명 : <input type="text" value={book.author} onChange={(e) => setBook({...book, author: e.target.value})} required/>  <br />
-                    출판사 : <input type="text" value={book.publisher} onChange={(e) => setBook({...book, publisher: e.target.value})} required/><br />
+                <div className="book-direct-input-section"> {/* 도서 정보 입력 섹션 */}
+                    <div className="form-row">
+                        <label htmlFor="bookTitle" className="form-label">도서 명</label>
+                        <input type="text" id="bookTitle" value={book.title} onChange={(e) => setBook({...book, title: e.target.value })} required className="form-input" />
+                    </div> 
+                    <div className="form-row">
+                        <label htmlFor="bookAuthor" className="form-label">저자 명</label>
+                        <input type="text" id="bookAuthor" value={book.author} onChange={(e) => setBook({...book, author: e.target.value})} required className="form-input" />
+                    </div>
+                    <div className="form-row">
+                        <label htmlFor="bookPublisher" className="form-label">출판사</label>
+                        <input type="text" id="bookPublisher" value={book.publisher} onChange={(e) => setBook({...book, publisher: e.target.value})} required className="form-input" />
+                    </div>
                 </div>
                 
-                <hr />
+                <hr className="section-divider" /> {/* 구분선 */}
 
-                <div className="memberInfo">
-                    회원 아이디 : <input type="text" value={loginMember.memberId}  readOnly/> <br />
-                    회원 전화번호 : <input type="text" value={loginMember.memberPhone}  readOnly/> <br />
-                    신청 사유 : <input type="text" value={reason} onChange={(e) => setReason(e.target.value)} /> <br />
+                <div className="member-direct-info-section"> {/* 회원 정보 및 신청 사유 섹션 */}
+                    <div className="form-row">
+                        <label htmlFor="memberId" className="form-label">회원 아이디</label>
+                        <input type="text" id="memberId" value={loginMember.memberId} readOnly className="form-input-readonly" />
+                    </div>
+                    <div className="form-row">
+                        <label htmlFor="memberPhone" className="form-label">회원 전화번호</label>
+                        <input type="text" id="memberPhone" value={loginMember.memberPhone} readOnly className="form-input-readonly" />
+                    </div>
+                    <div className="form-row">
+                        <label htmlFor="requestedReason" className="form-label">신청 사유</label>
+                        <input type="text" id="requestedReason" value={reason} onChange={(e) => setReason(e.target.value)} required className="form-input" />
+                    </div>
                     
-                    <button type="submit">신청</button>
+                    <div className="button-group"> {/* 버튼 그룹 */}
+                        <button type="submit" className="submit-button">신청</button>
+                    </div>
                 </div>
             </form>
         </div>
     )
 }
-
-
-
-
-
-
-
-
-

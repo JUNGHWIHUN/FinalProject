@@ -41,7 +41,6 @@ export default function DetailBook(){
             
             axiosInstacne(options)
                 .then(function(res){
-                    alert("신청이 완료되었습니다!");
                     console.log(res.data);
                     navigate("/requestBook/wishBook");
                 })
@@ -52,36 +51,64 @@ export default function DetailBook(){
 }
         
     return(
-        <div>
-            <h2>도서 상세 정보</h2>
-            <hr />
+        <div className="detail-book-wrap"> {/* 전체 컨테이너 */}
+            <div className="detail-book-title-area"> {/* 제목 영역 */}
+                <h2 className="detail-book-page-title">도서 상세 정보</h2>
+                <div className="detail-book-title-underline"></div>
+            </div>
+            
             <form onSubmit={function(e){
                 e.preventDefault();
                 requestBook();
             }}>
-                <div className="detailBookInfo">
+                <div className="detail-book-info-section"> {/* 도서 정보 섹션 */}
+                    <div className="book-image-container"> {/* 이미지 컨테이너 */}
                         <img
                             src={book.book.image_url}
                             alt={book.book.title_info + " 표지"}
+                            className="book-cover-image"
                             onError={(e) => {
                                 e.currentTarget.src = "https://placehold.co/120x160?text=No+Image";
                         }}
                         />
-                        <br />
-                    도서 명 : <input type="text" value={book.book.title_info} readOnly/> <br /> 
-                    저자 명 : <input type="text" value={book.book.author_info} readOnly/>  <br />
-                    출판사 : <input type="text" value={book.book.pub_info} readOnly/><br />
+                    </div>
+                    <div className="book-details-group"> {/* 도서 상세 정보 그룹 */}
+                        <div className="form-row">
+                            <label htmlFor="titleInfo" className="form-label">도서 명</label>
+                            <input type="text" id="titleInfo" value={book.book.title_info} readOnly className="form-input-readonly" />
+                        </div> 
+                        <div className="form-row">
+                            <label htmlFor="authorInfo" className="form-label">저자 명</label>
+                            <input type="text" id="authorInfo" value={book.book.author_info} readOnly className="form-input-readonly" />
+                        </div>
+                        <div className="form-row">
+                            <label htmlFor="pubInfo" className="form-label">출판사</label>
+                            <input type="text" id="pubInfo" value={book.book.pub_info} readOnly className="form-input-readonly" />
+                        </div>
+                    </div>
                 </div>
                 
-                <hr />
+                <hr className="section-divider" /> {/* 구분선 */}
 
-                <div className="memberInfo">
-                    회원 아이디 : <input type="text" value={loginMember.memberId} readOnly /> <br />
-                    회원 전화번호 : <input type="text" value={loginMember.memberPhone} readOnly /> <br />
-                    신청 사유 : <input type="text" value={reason} onChange={(e) => setReason(e.target.value)} required /> <br />
-                    <button type="submit">신청</button>
-                    <Link to={"/requestBook/wishBookDirect"}><button>직접 입력하기</button></Link>
-                    
+                <div className="member-info-section"> {/* 회원 정보 및 신청 사유 섹션 */}
+                    <div className="form-row">
+                        <label htmlFor="memberId" className="form-label">회원 아이디</label>
+                        <input type="text" id="memberId" value={loginMember.memberId} readOnly className="form-input-readonly" />
+                    </div>
+                    <div className="form-row">
+                        <label htmlFor="memberPhone" className="form-label">회원 전화번호</label>
+                        <input type="text" id="memberPhone" value={loginMember.memberPhone} readOnly className="form-input-readonly" />
+                    </div>
+                    <div className="form-row">
+                        <label htmlFor="requestedReason" className="form-label">신청 사유</label>
+                        <input type="text" id="requestedReason" value={reason} onChange={(e) => setReason(e.target.value)} required className="form-input" />
+                    </div>
+                    <div className="button-group"> {/* 버튼 그룹 */}
+                        <button type="submit" className="submit-button">신청</button>
+                        <Link to={"/requestBook/wishBookDirect"} className="link-button">
+                            <button type="button" className="direct-input-button">직접 입력하기</button>
+                        </Link>
+                    </div>
                 </div>
             </form>
         </div>

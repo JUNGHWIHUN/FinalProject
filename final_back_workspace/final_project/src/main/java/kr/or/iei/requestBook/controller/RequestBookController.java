@@ -28,9 +28,11 @@ public class RequestBookController {
 		try {
 		int result = service.insertRequestBook(book);
 		if(result > 0) {
-			res = new ResponseDto(HttpStatus.OK, "도서신청이 완료되었습니다. 로그인 화면으로 이동합니다.", true, "success");
-		}else {
+			res = new ResponseDto(HttpStatus.OK, "도서신청이 완료되었습니다.", true, "success");
+		}else if(result == 0){
 			res = new ResponseDto(HttpStatus.OK, "도서신청 중, 오류가 발생하였습니다", false, "warning"); 
+		}else {
+			res = new ResponseDto(HttpStatus.OK, "도서신청은 1달에 1권만 가능합니다", false, "warning"); 
 		}
 		}catch(Exception e) {
 		e.printStackTrace();
@@ -45,9 +47,11 @@ public class RequestBookController {
 		try {
 		int result = service.insertRequestBook(book);
 		if(result > 0) {
-			res = new ResponseDto(HttpStatus.OK, "도서신청이 완료되었습니다. 로그인 화면으로 이동합니다.", true, "success");
-		}else {
+			res = new ResponseDto(HttpStatus.OK, "도서신청이 완료되었습니다.", true, "success");
+		}else if(result == 0){
 			res = new ResponseDto(HttpStatus.OK, "도서신청 중, 오류가 발생하였습니다", false, "warning"); 
+		}else {
+			res = new ResponseDto(HttpStatus.OK, "도서신청은 1달에 1권만 가능합니다", false, "warning"); 
 		}
 		}catch(Exception e) {
 		e.printStackTrace();

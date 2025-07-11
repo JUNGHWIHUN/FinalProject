@@ -434,6 +434,7 @@ li {
     font-weight: bold;
     color: #333;
     margin: 0;
+    text-align: left;
 }
 
 .page-title-underline {
@@ -854,4 +855,104 @@ li {
     margin-top: 30px; /* 페이지네이션 상단 간격 */
     display: flex;
     justify-content: center; /* 페이지네이션 컴포넌트 자체를 가운데 정렬 */
+}
+
+
+/* MyLibraryModal CSS */
+
+/* 모달 헤더 */
+.modal-header {
+    margin-bottom: 20px;
+    text-align: left;
+    position: relative;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #a8d58c; /* 페이지 제목 밑줄과 유사하게 */
+}
+
+.modal-title {
+    font-size: 22px; /* 제목 크기 조정 */
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+/* 모달 내용 영역 (label과 select 포함) */
+.modal-content-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 라벨과 셀렉트 박스 사이 간격 */
+    margin-bottom: 20px; /* 내용과 버튼 사이 간격 */
+}
+
+/* 모달 라벨 */
+.modal-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px; /* 라벨과 셀렉트 박스 사이 간격 */
+}
+
+/* 모달 셀렉트 박스 */
+.modal-select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s ease;
+    -webkit-appearance: none; /* 기본 셀렉트 박스 스타일 제거 */
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%3E%3Cpath%20fill%3D%22%23666%22%20d%3D%22M5.5%208.5L10%2013l4.5-4.5z%22%2F%3E%3C%2Fsvg%3E'); /* 커스텀 화살표 */
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+.modal-select:focus {
+    border-color: #a8d58c;
+}
+
+/* 모달 액션 버튼 그룹 */
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px; /* 버튼 그룹 상단 간격 */
+}
+
+/* 모달 버튼 공통 스타일 */
+.btn-modal-confirm, .btn-modal-cancel {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    flex-grow: 1; /* 버튼이 공간을 채우도록 */
+    max-width: 150px; /* 버튼 최대 너비 설정 */
+}
+
+/* '등록' 버튼 스타일 (검색 버튼과 유사) */
+.btn-modal-confirm {
+    background-color: #a8d58c;
+    color: white;
+}
+
+.btn-modal-confirm:hover {
+    background-color: #92c079;
+}
+
+/* '취소' 버튼 스타일 (리셋 버튼과 유사) */
+.btn-modal-cancel {
+    background-color: #f0f0f0;
+    color: #666;
+    border: 1px solid #ccc;
+}
+
+.btn-modal-cancel:hover {
+    background-color: #e0e0e0;
 }
