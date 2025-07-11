@@ -592,4 +592,9 @@
 	delete tbl_report where comment_report_no = #{target}
 	</delete>
 	
+	<!-- 건의사항 등록 -->
+	<insert id="insertSuggestion">
+	insert into tbl_suggestion values (#{memberNo}, seq_suggestion.nextval, #{suggestion.suggesContent}, #{suggestion.suggesTitle}, sysdate)
+	</insert>
+	
 </mapper>

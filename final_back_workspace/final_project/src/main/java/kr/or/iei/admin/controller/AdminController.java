@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.or.iei.admin.model.dto.AdSuggestion;
 import kr.or.iei.admin.model.dto.BookLenterDto;
 import kr.or.iei.admin.model.dto.BookList;
 import kr.or.iei.admin.model.dto.BookSelectDto;
@@ -425,5 +426,21 @@ public class AdminController {
 			
 	}
 	
+	
+	@PostMapping("/insertSuggestion/{memberNo}")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> insertSuggestion(@PathVariable String memberNo,@RequestBody AdSuggestion suggestion){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, " 조회 중, 오류가 발생하였습니다.", null, "error");
+		
+		try {
+			int result = service.insertSuggestion(memberNo, suggestion);
+			if(result > 0) {
+				res = new ResponseDto(HttpStatus.OK, "등록 완료", null, "");
+			}	
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
 	
 }

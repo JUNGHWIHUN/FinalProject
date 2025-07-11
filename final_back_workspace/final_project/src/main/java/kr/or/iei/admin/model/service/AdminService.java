@@ -326,6 +326,12 @@ public class AdminService {
 		// TODO Auto-generated method stub
 		return dao.repartDelete(target);
 	}
+
+
+	public int insertSuggestion(String memberNo, AdSuggestion suggestion) {
+		// TODO Auto-generated method stub
+		return dao.insertSuggestion(memberNo, suggestion);
+	}
 	
 	
 	

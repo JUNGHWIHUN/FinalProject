@@ -103,5 +103,7 @@ public interface AdminDao {
 
 	int repartDelete(String target);
 
+	int insertSuggestion(@Param("memberNo") String memberNo,@Param("suggestion") AdSuggestion suggestion);
+
 
 }
