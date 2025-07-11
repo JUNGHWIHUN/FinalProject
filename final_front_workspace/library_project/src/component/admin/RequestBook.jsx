@@ -98,7 +98,7 @@ function ListItem(props){
     return(
         <>
         <tr>
-            <td><RequestDetail list={list}>{list.memberNo}</RequestDetail></td>
+            <td><Link to="/RequestDetail" state={{ list : list }}>{list.memberNo}</Link></td>
             <td>{list.requestBookName}</td>
             <td>{list.requestDate}</td>
             <td>

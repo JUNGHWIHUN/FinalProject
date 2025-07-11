@@ -24,6 +24,7 @@ import AdminMemberPage from './component/admin/AdminMemberPage';
 import AdminMemberDetailPage from './component/admin/AdminMemberDetailPage';
 import FindId from './component/member/FindId'; 
 import FindPassword from './component/member/FindPassword';
+import RequestDetail from './component/admin/RequestDetail';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -42,6 +43,7 @@ function App() {
             <Route path='/admin/selectReTrunBook' element={<SelectLentBook />}/>
             <Route path='/LenterBookDetil' element={<LenterBookDetil />} />
             <Route path='/requestBook/*' element={<RequestBookMain />} />
+            <Route path='/RequestDetail' element={<RequestDetail />} />
 
             <Route path='/admin/FixBookDetail' element={<FixBookDetail />} />
             <Route path='/admin/newBook' element={<NewBook />} />
