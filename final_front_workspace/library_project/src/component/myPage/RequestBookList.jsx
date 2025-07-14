@@ -34,7 +34,7 @@ export default function RequestBook(){
                   console.log(err);
             })
 
-      },[reqPage, loginMember]);
+      },[reqPage]);
 
 
       return(

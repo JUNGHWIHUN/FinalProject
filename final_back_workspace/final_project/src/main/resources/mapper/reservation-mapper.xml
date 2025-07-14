@@ -55,7 +55,7 @@
   
   <!-- 책 대출 상태 변경 -->
   <update id="updateBookCanLend" parameterType="string">
-  	update tbl_book set can_lend = 'T' where call_no = #{_parameter}
+  	update tbl_book set can_lend = 'L' where call_no = #{_parameter}
   </update>
   
   <!-- 예약 취소하기 -->
