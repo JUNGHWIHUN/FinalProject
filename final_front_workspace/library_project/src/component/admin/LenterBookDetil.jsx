@@ -17,7 +17,7 @@ export default function LenterBookDetil(){
         .then(function(res){
             if(res.data.resData === "OK"){
                 alert("반납 처리 완료");
-                navigate(-1);
+                navigate("/adminPage");
             } else {
                 alert("검색결과 없음");
             }

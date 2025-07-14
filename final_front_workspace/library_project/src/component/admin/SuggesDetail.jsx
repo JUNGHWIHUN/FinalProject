@@ -30,19 +30,14 @@ export default function SuggestDetail(){
             .then(function(res){
                 alert("삭제되었습니다.");
                 setIsCompleted(true);
+                navigate("/adminPage");
             })
             .catch(function(err){
             console.log(err); 
             });
      }
 
-     useEffect(() => {
-        // 새로고침 시 실행
-     if (performance.navigation.type === 1) {
-         alert("이 페이지는 새로고침할 수 없습니다.\n이전 페이지로 이동합니다.");
-        navigate(-1); // 이전 페이지로
-        }
-    }, []);
+  
 
     return(
         <div className="suggest-detail-wrapper">

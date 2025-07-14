@@ -4,6 +4,8 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { Route, Routes } from 'react-router-dom';
 import { Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
 
 import AdminPage from './component/admin/AdminPage';
 import Header from './component/common/Header';
@@ -21,23 +23,21 @@ import AdminMemberPage from './component/admin/AdminMemberPage';
 import FindId from './component/member/FindId'; 
 import KakaoMap from './component/libInfo/KakaoMap';
 import BoardMain from './component/board/BoardMain';
-
 import FixBookDetail from './component/admin/FixBookDetail';
 import RequestDetail from './component/admin/RequestDetail';
 import SuggestDetail from './component/admin/SuggesDetail';
 import LentBookDetail from './component/admin/LentBookDetail';
 import LenterBookDetil from './component/admin/LenterBookDetil';
 import AdminMemberDetailPage from './component/admin/AdminMemberDetailPage';
-
-
-
-
 import FindPassword from './component/member/FindPassword';
 import LibInfoMain from './component/libInfo/LibInfoMain';
 
-
 function App() {
   const [count, setCount] = useState(0)
+  const navigate = useNavigate();
+
+  
+
 
   return (
     <>
@@ -83,6 +83,8 @@ function App() {
         </div>
 
       <Footer />
+
+      
 
     </>
   )

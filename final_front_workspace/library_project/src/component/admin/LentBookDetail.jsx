@@ -2,11 +2,12 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import "./Admin.css";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function LentBookDetail() {
   const location = useLocation();
   const book = location.state.book;
-
+  const navigate = useNavigate();
   //유저 번호로 검색을 하기위한 유저 번호 저장
   const [user, setUser] = useState({
     memberNo : ""
@@ -64,6 +65,8 @@ export default function LentBookDetail() {
     .then(function(res){
       alert("대출이 완료되었습니다!");
     // 이후 페이지 이동이나 state 변경 필요 시 추가
+    navigate("/adminPage")
+
      })
      .catch(function(err){
        console.log(err);
