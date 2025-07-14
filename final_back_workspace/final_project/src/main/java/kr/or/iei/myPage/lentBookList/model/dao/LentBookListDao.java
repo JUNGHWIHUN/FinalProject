@@ -13,4 +13,6 @@ public interface LentBookListDao {
 
 	int renewBook(String lentBookNo);
 
+	int selectCheckReservation(String lentBookNo);
+
 }

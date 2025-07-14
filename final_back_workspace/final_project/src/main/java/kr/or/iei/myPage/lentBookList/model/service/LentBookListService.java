@@ -23,6 +23,17 @@ public class LentBookListService {
 	//대출 연장할 메소드
 	public int renewBook(String lentBookNo) {
 		
-		return dao.renewBook(lentBookNo);
+		System.out.println("책번호 : " + lentBookNo);
+		int result = dao.selectCheckReservation(lentBookNo);
+		System.out.println("예약검증:" +  result);
+		
+		if(result > 0) {
+			
+			return -1;//예약되어있음
+		}else {
+			result = dao.renewBook(lentBookNo);//0= 연장불가 0> = 연장성공?
+		}
+		return result;
+		
 	}
 }

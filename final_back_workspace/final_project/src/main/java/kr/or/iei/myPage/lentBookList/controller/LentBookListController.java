@@ -33,9 +33,9 @@ public class LentBookListController {
 		
 		try {
 			ArrayList<LentBookList> lentBookList = service.selectBorrowBook(memberNo);
-			System.out.println(memberNo);
+			System.out.println("memberNo : " + memberNo);
 			res = new ResponseDto(HttpStatus.OK, "", lentBookList, "success");
-			System.out.println(lentBookList);
+			System.out.println("lentBookList : " +lentBookList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -51,12 +51,15 @@ public class LentBookListController {
 		try {
 			int result = service.renewBook(lentBookNo);
 			
+			System.out.println(result);
 			
-			if(result > 0) {
+			if(result == -1) {
 				
-				res = new ResponseDto(HttpStatus.OK, "대출 기간이 7일 연장되었습니다.", result, "success");
-			}else {
 				res = new ResponseDto(HttpStatus.OK, "예약된 도서입니다.", result, "warning");
+			}else if (result == 0){
+				res = new ResponseDto(HttpStatus.OK, "이미 연장하셨습니다.", result, "warning");
+			}else {
+				res = new ResponseDto(HttpStatus.OK, "연장에 성공하였습니다.", result, "success");
 			}
 			
 		} catch (Exception e) {

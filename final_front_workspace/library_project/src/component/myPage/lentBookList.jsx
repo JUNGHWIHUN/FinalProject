@@ -14,6 +14,8 @@ export default function LentBookList() {
     const { loginMember } = useUserStore();
     const navigate = useNavigate();
 
+   
+
     // 대출 목록 불러오기
     function getLentBookList() {
         let options = {
@@ -87,6 +89,8 @@ export default function LentBookList() {
                     const returnDateParts = lentBook.returnDate.split("/"); // "25/07/09" → ["25", "07", "09"]
                     const returnDate = new Date("20" + returnDateParts[0], returnDateParts[1] - 1, returnDateParts[2]); // 년, 월, 일
                     const isOverdue = returnDate < today;
+
+                    console.log(isOverdue);
                 
                     return (
                     <div key={"lentBook" + index} className="book-item">
