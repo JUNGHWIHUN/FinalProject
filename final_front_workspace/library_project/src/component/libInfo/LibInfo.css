@@ -1,0 +1,80 @@
+.LibInfo-wrapper {
+    width: 90%; /* 전체 마이페이지 영역 너비 */
+    max-width: 1200px; /* 최대 너비 */
+    margin: 40px auto; /* 상하 여백 40px, 좌우 자동 (가운데 정렬) */
+    padding: 0 20px; /* 좌우 패딩 */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column; /* 제목과 콘텐츠를 세로로 정렬 */
+}
+
+.LibInfo-content-wrapper {
+    display: flex; /* LeftMenu와 메인 콘텐츠를 가로로 나란히 배치 */
+    gap: 40px; /* LeftMenu와 메인 콘텐츠 사이의 간격 */
+    flex-grow: 1; /* 남은 공간을 차지하도록 */
+    align-items: flex-start; /* 상단 정렬 */
+}
+
+.LibInfo-main-content {
+    flex-grow: 1; /* Routes가 렌더링되는 영역이 남은 공간을 모두 차지하도록 */
+    min-width: 0; /* flex 아이템이 내용물보다 커지지 않도록 */
+}
+
+.LibInfo-title-section {
+    padding-bottom: 20px; /* 제목 아래 여백 */
+    border-bottom: 1px solid #ddd; /* 제목 아래 구분선 */
+    margin-bottom: 30px; /* 제목 영역과 콘텐츠 영역 사이 간격 */
+}
+
+.LibInfo-title-section h1 {
+    font-size: 2em; /* 마이페이지 제목 크기 */
+    color: #333;
+    margin: 0;
+}
+
+
+/*## 도서관 소개 ##*/
+.greeting-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  border: 1px solid #ccc;
+  border-radius: 12px; /* 뭉툭한 사각형 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fdfdfd;
+}
+
+.greeting-text {
+  flex: 2;
+  padding-right: 20px;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.greeting-director {
+  flex: 1;
+  text-align: center;
+}
+
+.LibDirector-icon-img {
+  width: 350px;
+  height: 350px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.director-name {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  text-align: center;
+  line-height: 1.4;
+  letter-spacing: 1px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
