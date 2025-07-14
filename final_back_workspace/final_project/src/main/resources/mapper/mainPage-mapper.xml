@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.iei.mainPage.model.dao.MainPageDao">
+   
+   <!-- 책중에서 무작위 5권 가져오기 -->
+   <select id="selectReco" resultType="BookList">
+   select call_no as bookNo,
+			   author_info as author,
+			   title_info as title,
+			   pub_info as pub,
+			   pub_year_info as pubYear,
+			   reg_date as regDate,
+			   isbn as isbn,
+			   place_info as place,
+			   image_url as imageUrl,
+			   can_lend as canLent,
+			   remark as remark
+			from (
+			SELECT 
+            call_no,
+            author_info,
+            title_info,
+            pub_info,
+            pub_year_info,
+            reg_date,
+            isbn,
+            place_info,
+            image_url,
+            can_lend,
+            remark
+        FROM tbl_book
+        ORDER BY DBMS_RANDOM.VALUE
+			)
+			WHERE ROWNUM &lt;= 5
+   </select>
+   
+   <!-- 대출량이 가장 많은 책 4권 가져오기 -->
+   <select id="selectBest" resultType="BookList">
+    SELECT 
+        b.call_no AS bookNo,
+        b.author_info AS author,
+        b.title_info AS title,
+        b.pub_info AS pub,
+        b.pub_year_info AS pubYear,
+        b.reg_date AS regDate,
+        b.isbn AS isbn,
+        b.place_info AS place,
+        b.image_url AS imageUrl,
+        b.can_lend AS canLent,
+        b.remark AS remark
+    FROM (
+        SELECT 
+            lb.lent_call_no,
+            COUNT(*) AS lentCount
+        FROM tbl_lent_book lb
+        GROUP BY lb.lent_call_no
+        ORDER BY lentCount DESC
+    ) ranked
+    JOIN tbl_book b
+    ON ranked.lent_call_no = b.call_no
+    WHERE ROWNUM &lt;= 4
+   </select>
+</mapper>
