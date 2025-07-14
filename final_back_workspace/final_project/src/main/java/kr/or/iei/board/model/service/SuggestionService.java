@@ -85,6 +85,7 @@ public class SuggestionService {
 		return dao.insertSuggestion(board); // 건의사항 게시글 삽입
 	}
 
+
 	/**
      * selectOneSuggestion
      * 기능: 특정 건의사항 게시글의 상세 정보를 조회합니다.

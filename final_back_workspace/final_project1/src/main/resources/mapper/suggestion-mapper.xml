@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.iei.board.model.dao.SuggestionDao">
+
+    <select id='selectSuggestionCount' resultType='_int'>
+        select count(*) from TBL_BOARD
+        where BOARD_CODE = 'S'
+    </select>
+
+<select id='selectSuggestionList' parameterType='map' resultType='BoardDto'>
+    select b.board_no boardNo,
+           b.board_title boardTitle,
+           (select member_id from tbl_member where member_no = b.MEMBER_NO) boardWriterId,
+           b.MEMBER_NO boardWriter,
+           b.board_date boardDate,
+           b.IS_SECRET isSecret,
+           (select count(*) from TBL_COMMENT tc where tc.BOARD_NO = b.BOARD_NO) commentCount from (
+            select rownum rnum, a.*
+              from (
+                    select board_no, board_title, member_no, board_date, IS_SECRET
+                    from TBL_BOARD
+                    where BOARD_CODE = 'S'
+                    order by board_no desc
+                   ) a
+            ) b
+    left join TBL_MEMBER m on b.MEMBER_NO = m.MEMBER_NO
+    where rnum between #{pageInfo.start} and #{pageInfo.end}
+    ORDER BY BOARD_NO DESC
+</select>
+
+    <select id='selectBoardNo' resultType="_int">
+        select seq_board.nextval from dual
+    </select>
+
+    <insert id='insertSuggestion' parameterType='BoardDto'>
+    insert into TBL_BOARD (BOARD_NO, BOARD_TITLE, BOARD_CONTENT, MEMBER_NO, BOARD_DATE, BOARD_CODE, IS_SECRET, IS_IMPORTANT)
+    values (
+        #{boardNo},
+        #{boardTitle},
+        #{boardContent},
+        #{boardWriter},
+        sysdate,
+        'S',                #{isSecret},        'N'                 )
+    </insert>
+
+    <resultMap type='BoardDto' id='suggestionMap'>
+        <id column='board_no' property='boardNo'/>
+        <result column='board_title' property='boardTitle'/>
+        <result column='board_content' property='boardContent'/>
+        <result column='member_no' property='boardWriter'/>
+        <result column='board_date' property='boardDate'/>
+        <result column='board_code' property='boardCode'/>
+        <result column='is_important' property='isImportant'/>
+        <result column='is_secret' property='isSecret'/>
+        <result column='member_id' property='boardWriterId'/>
+        </resultMap>
+
+    <select id='selectOneSuggestion' parameterType='map' resultMap="suggestionMap"> select b.board_no,
+               b.board_title,
+               b.board_content,
+               b.member_no board_writer,
+               b.board_date,
+               b.board_code,
+               b.is_important,
+               b.is_secret,
+               m.member_id
+               from TBL_BOARD b
+          left join TBL_MEMBER m on b.member_no = m.member_no
+         where b.board_no = #{boardNo} and b.BOARD_CODE = 'S'
+    </select>
+
+    <update id='updateSuggestion' parameterType='BoardDto'>
+    update TBL_BOARD
+       set board_title = #{boardTitle},
+           board_content = #{boardContent},
+           IS_SECRET = #{isSecret}
+     where board_no = #{boardNo}
+       and BOARD_CODE = 'S'
+    </update>
+
+    <delete id='deleteSuggestion' parameterType='_int'>
+    delete from TBL_BOARD
+    where board_no = #{_parameter}
+      and BOARD_CODE = 'S'
+    </delete>
+
+    <insert id='insertComment' parameterType='kr.or.iei.board.model.dto.CommentDto'>
+        INSERT INTO TBL_COMMENT (COMMENT_NO, BOARD_NO, MEMBER_NO, COMMENT_CONTENT, COMMENT_DATE)
+        VALUES (SEQ_COMMENT.NEXTVAL, #{boardNo}, #{memberNo}, #{commentContent}, SYSDATE)
+    </insert>
+
+    <select id='selectCommentList' parameterType='_int' resultType='kr.or.iei.board.model.dto.CommentDto'>
+        SELECT tc.COMMENT_NO commentNo,
+               tc.BOARD_NO boardNo,
+               tc.MEMBER_NO memberNo,
+               tc.COMMENT_CONTENT commentContent,
+               tc.COMMENT_DATE commentDate,
+               tm.MEMBER_ID commentWriterId
+               FROM TBL_COMMENT tc LEFT JOIN TBL_MEMBER tm ON tc.MEMBER_NO = tm.MEMBER_NO
+         WHERE tc.BOARD_NO = #{boardNo}
+         ORDER BY tc.COMMENT_DATE ASC
+    </select>
+
+    <update id='updateComment' parameterType='kr.or.iei.board.model.dto.CommentDto'>
+        UPDATE TBL_COMMENT
+           SET COMMENT_CONTENT = #{commentContent}
+               WHERE COMMENT_NO = #{commentNo}
+    </update>
+
+    <delete id='deleteComment' parameterType='_int'>
+        DELETE FROM TBL_COMMENT WHERE COMMENT_NO = #{commentNo}
+    </delete>
+
+    <select id='selectCommentWriterMemberNo' parameterType='_int' resultType='string'>
+        SELECT MEMBER_NO FROM TBL_COMMENT WHERE COMMENT_NO = #{commentNo}
+    </select>
+</mapper>

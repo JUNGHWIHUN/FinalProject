@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.iei.member.model.dao.MemberDao">
+
+	<!-- 아이디 중복체크 -->
+	<select id='chkMemberId' parameterType='string'>
+	select count(*) from tbl_member where member_id = #{_parameter}
+	</select>
+	
+	<!-- 이메일 중복체크 -->
+	<select id='chkMemberEmail' parameterType='string'>
+	select count(*) from tbl_member where member_email = #{_parameter}
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id='insertMember' parameterType='Member' useGeneratedKeys="true" keyProperty="memberNo">
+		<selectKey keyProperty="memberNo" resultType="String" order="BEFORE">
+	        SELECT TO_CHAR(SYSDATE,'YYMMDD') || LPAD(SEQ_MEMBER.NEXTVAL, 4,'0') FROM DUAL
+	    </selectKey> <!-- 회원가입 본인인증을 위해 새로 추가된 컬럼들 추가 -->
+		insert into tbl_member (
+	        member_no, member_id, member_pw, member_name, member_email,
+	        member_phone, is_admin, enroll_date, can_comment, overdue_day_count,
+	        borrowed_book_count, max_borrow_count, can_borrow, cant_borrow_day,
+	        no_lent_count, can_request, auth_code, member_status, member_addr
+	    ) values (
+	        #{memberNo}, #{memberId}, #{memberPw}, #{memberName}, #{memberEmail},
+	        #{memberPhone}, default, default, default, default,
+	        default, default, default, default,
+	        default, default, #{authCode}, #{memberStatus}, #{memberAddr}
+	    )	
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id='memberLogin' parameterType='string' resultType='Member'>
+	select member_no as memberNo,
+		   member_id as memberId,
+		   member_pw as memberPw,
+		   member_name as memberName,
+		   member_email as memberEmail,
+		   member_phone as memberPhone,
+		   is_admin as isAdmin,
+		   enroll_date as enrollDate,
+		   can_comment as canComment,
+		   overdue_day_count as overdueDayCount,
+		   borrowed_book_count as borrowedBookCount,
+		   max_borrow_count as maxBorrowCount,
+		   can_borrow as canBorrow,
+		   cant_borrow_day as cantBorrowDay,
+		   no_lent_count as noLentCount,
+		   can_request as canRequest,
+		   member_status as memberStatus
+	  from tbl_member
+	 where member_id = #{_parameter}
+	</select>
+	
+	<!-- 회원 1명 조회 -->
+	<select id="selectOneMember" parameterType="String" resultType="Member">
+		select member_no as memberNo,
+			   member_id as memberId,
+			   member_pw as memberPw,
+			   member_name as memberName,
+			   member_email as memberEmail,
+			   member_phone as memberPhone,
+			   is_admin as isAdmin,
+			   enroll_date as enrollDate,
+			   can_comment as canComment,
+			   overdue_day_count as overdueDayCount,
+			   borrowed_book_count as borrowedBookCount,
+			   max_borrow_count as maxBorrowCount,
+			   can_borrow as canBorrow,
+			   cant_borrow_day as cantBorrowDay,
+			   no_lent_count as noLentCount,
+			   can_request as canRequest,
+			   member_status as memberStatus
+			   from tbl_member 
+			   where member_no = #{_parameter}
+	</select>
+	
+	<!-- 회원가입 후 본인인증 절차를 거쳐 로그인 권한을 얻도록 하는 로직들 -->
+    <update id='updateMemberStatus'>
+        UPDATE TBL_MEMBER
+        SET MEMBER_STATUS = 'Y', AUTH_CODE = NULL 
+        WHERE MEMBER_EMAIL = #{memberEmail} 
+          AND AUTH_CODE = #{authCode} 
+          AND MEMBER_STATUS = 'N' 
+    </update>
+ 
+ 	<!-- 이메일을 입력하 아이디 찾기 -->   
+    <select id='findMemberIdByEmail' parameterType='string' resultType='string'>
+        SELECT MEMBER_ID FROM TBL_MEMBER 
+        WHERE MEMBER_EMAIL = #{memberEmail} 
+          AND MEMBER_STATUS = 'Y'
+    </select>
+
+    <select id='countActiveMemberByIdAndEmail' parameterType='map' resultType='int'>
+        SELECT COUNT(*) FROM TBL_MEMBER 
+        WHERE MEMBER_ID = #{memberId} 
+          AND MEMBER_EMAIL = #{memberEmail} 
+          AND MEMBER_STATUS = 'Y'
+    </select>
+
+	<!-- 이메일 인증을 통해 임시 비밀번호 발급 -->
+    <update id='updatePasswordByIdAndEmail' parameterType='map'>
+        UPDATE TBL_MEMBER
+        SET MEMBER_PW = #{newPassword} 
+        WHERE MEMBER_ID = #{memberId} 
+          AND MEMBER_EMAIL = #{memberEmail} 
+          AND MEMBER_STATUS = 'Y' 
+    </update>
+</mapper>

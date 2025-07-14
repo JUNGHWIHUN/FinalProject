@@ -50,15 +50,5 @@ public interface NoticeDao { // 클래스 이름 BoardDao -> NoticeDao로 변경
     // 두 개 이상의 파라미터를 받을 때는 @Param을 사용하여 매퍼에서 참조할 이름을 명시하는 것이 좋습니다.
     int updateIsImportant(@Param("boardNo") int boardNo, @Param("isImportant") String isImportant);
 
-    // ***********************************************************************************
-    // 향후 추가될 메서드 (현재 NoticeService에서 직접 호출되지는 않지만, 로직 분리 시 필요)
-    // ***********************************************************************************
-    // 특정 게시판 코드에 해당하는 총 게시글 수를 조회합니다.
-    // int selectBoardCountByBoardCode(@Param("boardCode") String boardCode);
 
-    // 특정 게시판 코드에 해당하는 게시글 목록을 페이지 정보에 따라 조회합니다.
-    // ArrayList<BoardDto> selectBoardListByBoardCode(@Param("pageInfo") PageInfoDto pageInfo, @Param("boardCode") String boardCode);
-
-    // 특정 게시글의 비밀글 상태를 업데이트합니다. (건의사항 게시판용)
-    // int updateIsSecret(@Param("boardNo") int boardNo, @Param("isSecret") String isSecret);
 }

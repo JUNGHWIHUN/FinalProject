@@ -1,5 +1,4 @@
-// src/component/board/SuggestionList.jsx
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom"; // useSearchParams 추가
 import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
 import { useEffect, useState, useMemo } from "react";
@@ -10,17 +9,35 @@ export default function SuggestionList() {
     const serverUrl = import.meta.env.VITE_BACK_SERVER;
     const memoizedAxiosInstance = useMemo(() => createInstance(), []);
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams(); // URL 쿼리 파라미터를 위한 훅
 
     const [boardList, setBoardList] = useState([]);
     const [pageInfo, setPageInfo] = useState({ start: 1, end: 1, pageNo: 1, pageNaviSize: 5, totalPage: 1 });
+    // reqPage 상태는 이제 URL 쿼리 파라미터에서 초기화됩니다.
     const [reqPage, setReqPage] = useState(1);
     const { loginMember } = useUserStore();
 
+    // --- 중요 변경 시작: URL 쿼리 파라미터에서 reqPage 읽어오기 ---
+    useEffect(() => {
+        // URL에서 'page' 쿼리 파라미터를 읽어옵니다. (예: ?page=2)
+        const page = searchParams.get('page');
+        // 파라미터가 없으면 1페이지로, 있으면 해당 페이지 번호로 변환합니다.
+        const pageNum = page ? parseInt(page) : 1; 
+
+        // 현재 reqPage와 URL에서 읽어온 페이지 번호가 다르면 상태를 업데이트합니다.
+        // 이로써 reqPage가 변경되고, 아래 데이터 로딩 useEffect가 다시 실행됩니다.
+        if (pageNum !== reqPage) {
+            setReqPage(pageNum);
+        }
+    }, [searchParams]); // searchParams가 변경될 때마다 이 useEffect가 실행됩니다.
+    // --- 중요 변경 끝 ---
+
     useEffect(function() {
+        // reqPage가 유효한 값일 때만 API 요청을 보냅니다.
         if (reqPage === 0) return;
 
         let options = {};
-        options.url = serverUrl + "/suggestion/list/" + reqPage;
+        options.url = serverUrl + "/suggestion/list/" + reqPage; // 현재 reqPage에 해당하는 건의사항 목록 요청
         options.method = 'get';
         options.params = {
             loginMemberNo: loginMember?.memberNo,
@@ -41,29 +58,40 @@ export default function SuggestionList() {
                 console.error("건의사항 목록 조회 실패:", error);
                 // 오류 처리 (예: 스윗얼럿)
             });
-    }, [reqPage, serverUrl, memoizedAxiosInstance, loginMember]);
+    }, [reqPage, serverUrl, memoizedAxiosInstance, loginMember, searchParams]); // searchParams를 의존성 배열에 추가
+
+    // --- 중요 변경 시작: PageNavi에 전달할 페이지 변경 핸들러 ---
+    // 페이지네이션 컴포넌트(PageNavi)에서 페이지 번호가 클릭되면 이 함수가 호출됩니다.
+    const handlePageChange = (pageNumber) => {
+        // reqPage 상태를 직접 변경하는 대신, URL 쿼리 파라미터를 업데이트합니다.
+        // 이 변경은 위에서 추가한 useEffect를 트리거하여 reqPage 상태를 업데이트합니다.
+        setSearchParams({ page: pageNumber }); 
+    };
+    // --- 중요 변경 끝 ---
 
     return (
         <section className="section board-list">
-            <div className="page-title">건의사항</div>
-            {loginMember
-                ? <Link to="/board/suggestion/write" className="btn-primary">글쓰기</Link>
-                : ''}
+            <div className="page-header-container">
+                <div className="page-title">건의사항</div>
+                {loginMember
+                    ? <Link to="/board/suggestion/write" className="btn-primary btn-write">글쓰기</Link>
+                    : ''}
+            </div>
             <div className="board-list-wrap">
                 <table className="tbl">
                     <thead>
                         <tr>
                             <th style={{ width: '10%' }}>글번호</th>
                             <th style={{ width: 'auto' }}>제목</th>
-                            <th style={{ width: '15%' }}>글쓴이</th> {/* 폭 조정 */}
-                            <th style={{ width: '15%' }}>작성일</th> {/* 폭 조정 */}
-                            <th style={{ width: '10%' }}>답변 상태</th> {/* -- 변경 시작: 답변 상태 컬럼 추가 -- */}
+                            <th style={{ width: '15%' }}>글쓴이</th>
+                            <th style={{ width: '15%' }}>작성일</th>
+                            <th style={{ width: '10%' }}>답변 상태</th>
                         </tr>
                     </thead>
                     <tbody>
                         {boardList.length === 0 ? (
                             <tr>
-                                <td colSpan="5">등록된 게시글이 없습니다.</td> {/* -- 변경: colspan 조정 (컬럼 수 증가) -- */}
+                                <td colSpan="5">등록된 게시글이 없습니다.</td>
                             </tr>
                         ) : (
                             boardList.map(function(board, index) {
@@ -71,24 +99,15 @@ export default function SuggestionList() {
                                     <tr key={"board" + index} onClick={function() {
                                         navigate('/board/suggestion/view/' + board.boardNo);
                                     }}><td>{board.boardNo}</td><td className="board-title">{board.boardTitle}
-                                        {board.isSecret === 'Y' && (
-                                            <span className="material-icons" style={{ fontSize: '1.2em', verticalAlign: 'middle', marginLeft: '5px', color: '#666' }}>
-                                                lock
-                                            </span>
-                                        )}</td><td>{board.boardWriterId}</td><td>{board.boardDate}</td>
-                                        {/* -- 변경 시작: 답변 상태 표시 -- */}
-                                        <td>
-                                            {/* board.commentList는 상세 조회 시에만 가져오므로, 여기서는 댓글 수를 직접 판단할 수 없음.
-                                                백엔드에서 BoardDto에 commentCount 필드를 추가하여 전달해 주거나,
-                                                별도의 API 호출이 필요합니다.
-                                                현재는 댓글 목록이 조회되는 가정 하에, BoardDto에 commentCount 필드가 있다는 전제로 작성합니다.
-                                                만약 BoardDto에 commentCount가 없다면, 백엔드 BoardDto와 selectSuggestionList 쿼리 수정이 필요합니다.
-                                                여기서는 일단 BoardDto에 commentCount가 있다는 가정하에 작성합니다.
-                                            */}
-                                            {board.commentCount > 0 ? '답변 완료' : '답변 대기'}
-                                        </td>
-                                        {/* -- 변경 끝 -- */}
-                                    </tr>
+                                            {board.isSecret === 'Y' && (
+                                                <span className="material-icons" style={{ fontSize: '1.2em', verticalAlign: 'middle', marginLeft: '5px', color: '#666' }}>
+                                                    lock
+                                                </span>
+                                            )}</td><td>{board.boardWriterId}</td><td>{new Date(board.boardDate).toLocaleDateString('ko-KR')}</td>
+                                            <td>
+                                                {board.commentCount > 0 ? '답변 완료' : '답변 대기'}
+                                            </td>
+                                        </tr>
                                 );
                             })
                         )}
@@ -96,7 +115,8 @@ export default function SuggestionList() {
                 </table>
             </div>
             <div className="board-paging-wrap">
-                <PageNavi pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage} />
+                {/* PageNavi 컴포넌트에 새로운 페이지 변경 핸들러를 전달합니다. */}
+                <PageNavi pageInfo={pageInfo} reqPage={reqPage} setReqPage={handlePageChange} />
             </div>
         </section>
     );

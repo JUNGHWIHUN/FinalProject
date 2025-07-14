@@ -91,6 +91,8 @@ public class SuggestionController {
 
         try {
             BoardDto board = service.selectOneSuggestion(boardNo, loginMemberNo, isAdmin);
+            
+            System.out.println("컨트롤러: "+board.getBoardWriter());
 
             if (board == null) {
                 return new ResponseEntity<ResponseDto>(new ResponseDto(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다.", null, "error"), HttpStatus.NOT_FOUND);
@@ -158,18 +160,18 @@ public class SuggestionController {
         return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
     }
 
-    // --- 건의사항 댓글 API ---
+    // --- 건의사항 답변 API ---
 
-    // 댓글 등록
+    // 답변 등록
     @PostMapping("/comments")
     // -- 변경 시작: isAdmin 파라미터 추가, HttpSession 제거 --
     public ResponseEntity<ResponseDto> insertComment(@RequestBody BoardCommentDto comment, @RequestParam String isAdmin) {
     // -- 변경 끝 --
-        ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "댓글 등록 중 통신 오류가 발생했습니다.", null, "error");
+        ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "답변 등록 중 통신 오류가 발생했습니다.", null, "error");
 
         // 관리자 권한 체크
         if (!"T".equals(isAdmin)) {
-            return new ResponseEntity<ResponseDto>(new ResponseDto(HttpStatus.FORBIDDEN, "댓글은 관리자만 작성할 수 있습니다.", null, "error"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<ResponseDto>(new ResponseDto(HttpStatus.FORBIDDEN, "답변은 관리자만 작성할 수 있습니다.", null, "error"), HttpStatus.FORBIDDEN);
         }
 
         try {
@@ -178,9 +180,9 @@ public class SuggestionController {
             int result = service.insertSuggestionComment(comment, isAdmin);
 
             if (result > 0) {
-                res = new ResponseDto(HttpStatus.OK, "댓글이 등록되었습니다.", true, "success");
+                res = new ResponseDto(HttpStatus.OK, "답변이 등록되었습니다.", true, "success");
             } else {
-                res = new ResponseDto(HttpStatus.BAD_REQUEST, "댓글 등록에 실패했습니다.", false, "error");
+                res = new ResponseDto(HttpStatus.BAD_REQUEST, "답변 등록에 실패했습니다.", false, "error");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -188,11 +190,11 @@ public class SuggestionController {
         return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
     }
 
-    // 댓글 목록 조회 (변경 없음)
+    // 답변 목록 조회 (변경 없음)
     @GetMapping("/{boardNo}/comments")
     @NoTokenCheck
     public ResponseEntity<ResponseDto> selectCommentList(@PathVariable int boardNo) {
-        ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "댓글 조회 중 통신 오류가 발생했습니다.", null, "error");
+        ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "답변 조회 중 통신 오류가 발생했습니다.", null, "error");
 
         try {
             ArrayList<BoardCommentDto> commentList = service.selectSuggestionCommentList(boardNo);
@@ -205,31 +207,26 @@ public class SuggestionController {
         return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
     }
 
-    // 댓글 수정
-    // @PatchMapping("/comments") // 이 부분은 현재 SuggestionController에서 주석 처리되어 있음 (프론트에서도 수정 UI 없음)
-    // public ResponseEntity<ResponseDto> updateComment(@RequestBody CommentDto comment, @RequestParam String isAdmin) {
-    //     // ... 기존 로직 ...
-    // }
 
-    // 댓글 삭제
+    // 답변 삭제
     @DeleteMapping("/comments/{commentNo}")
     // -- 변경 시작: isAdmin 파라미터 추가, HttpSession 제거 --
     public ResponseEntity<ResponseDto> deleteComment(@PathVariable int commentNo, @RequestParam String isAdmin) {
     // -- 변경 끝 --
-        ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "댓글 삭제 중 통신 오류가 발생했습니다.", false, "error");
+        ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "답변 삭제 중 통신 오류가 발생했습니다.", false, "error");
 
         // 관리자 권한 체크
         if (!"T".equals(isAdmin)) {
-            return new ResponseEntity<ResponseDto>(new ResponseDto(HttpStatus.FORBIDDEN, "댓글은 관리자만 삭제할 수 있습니다.", false, "error"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<ResponseDto>(new ResponseDto(HttpStatus.FORBIDDEN, "답변은 관리자만 삭제할 수 있습니다.", false, "error"), HttpStatus.FORBIDDEN);
         }
 
         try {
             int result = service.deleteSuggestionComment(commentNo, isAdmin);
 
             if (result > 0) {
-                res = new ResponseDto(HttpStatus.OK, "댓글이 삭제되었습니다.", true, "success");
+                res = new ResponseDto(HttpStatus.OK, "답변이 삭제되었습니다.", true, "success");
             } else {
-                res = new ResponseDto(HttpStatus.BAD_REQUEST, "댓글 삭제에 실패했습니다.", false, "error");
+                res = new ResponseDto(HttpStatus.BAD_REQUEST, "답변 삭제에 실패했습니다.", false, "error");
             }
         } catch (Exception e) {
             e.printStackTrace();
