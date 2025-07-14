@@ -10,9 +10,9 @@ export default function Main () {
     const navigate = useNavigate(); // useNavigate를 사용하지 않더라도 선언은 유지
 
     // 추후 추천 도서 등의 상세 페이지로 이동할 때 사용될 수 있습니다.
-    // function goToBookDetail(bookId) {
-    //     navigate(`/book/detail/${bookId}`);
-    // }
+    function goToBookDetail(bookId) {
+        navigate(`/book/searchResultDetail/${bookId}`);
+    }
 
     //도서 추천용
     const [recommendedBooks, setRecommendedBooks] = useState([]);
@@ -47,7 +47,7 @@ export default function Main () {
                     <div className="recommended-books-list">
                         {recommendedBooks.map(function(book, index) {
                             return (
-                            <div className="book-card" key={index}>
+                            <div className="book-card" key={index} onClick={() => goToBookDetail(book.bookNo)}>
                                 <img src={book.imageUrl} alt={book.title} />
                                 <p className="book-title">{book.title}</p>
                             </div>
@@ -98,7 +98,7 @@ export default function Main () {
                     <div className="bestseller-books-list">
                         {bestsellerBooks.slice(0, 4).map(function(book, index) {
                             return (
-                                <div className="book-card" key={index}>
+                                <div className="book-card" key={index} onClick={() => goToBookDetail(book.bookNo)}>
                                 <img src={book.imageUrl} alt={book.title} />
                                 {/* 제목 출력 여부는 디자인에 따라 추가 가능 */}
                                 {/* <p className="book-title">{book.title}</p> */}
