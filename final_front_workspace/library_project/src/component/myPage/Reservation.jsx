@@ -41,7 +41,7 @@ export default function Reservation(){
         .catch(function(err){
             console.log(err);
         });
-    },[reqPage, loginMember, refreshTrigger]);
+    },[reqPage, refreshTrigger]);
 
 
     //예약취소하기 버튼 누를 시 호출할 함수
@@ -82,14 +82,15 @@ export default function Reservation(){
     }
 
     // 날짜 형식을 YY/MM/DD로 변환하는 헬퍼 함수
-    const formatDate = (dateString) => {
-        if (!dateString) return '';
-        const date = new Date(dateString);
-        const year = String(date.getFullYear()).slice(-2); // 뒤의 두 자리만 가져옴
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // 2자리로, 앞에 0 채움
-        const day = String(date.getDate()).padStart(2, '0'); // 2자리로, 앞에 0 채움
-        return `${year}/${month}/${day}`;
-    };
+        const formatDate = (dateString) => {
+            if (!dateString || dateString.length !== 8) return '';
+
+            const year = dateString.slice(2, 4);   // "25"
+            const month = dateString.slice(4, 6);  // "07"
+            const day = dateString.slice(6, 8);    // "14"
+
+            return `${year}/${month}/${day}`;      // "25/07/14"
+        };
 
     return(
         <div className="reservation-container"> {/* 전체 컨테이너 추가 */}
@@ -98,7 +99,7 @@ export default function Reservation(){
             {reservations.length === 0 ? (
                 <p className="no-reservations-message">예약 내역이 없습니다.</p>
             ) : (
-                <table className="reservation-table"> {/* 테이블에 클래스 추가 */}
+                <table className="reservation-table">
                     <thead>
                         <tr>
                             <th>책제목</th>
@@ -111,7 +112,7 @@ export default function Reservation(){
                     </thead>
                     <tbody>
                         {reservations.map(function(reservation,index){
-                            {/* 날짜 형식 yy/mm/dd 로 변경해 넣기 */}
+                           
                             const formattedDate = formatDate(reservation.reservationDate);
 
                             return (

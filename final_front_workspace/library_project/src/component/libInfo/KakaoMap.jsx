@@ -31,7 +31,7 @@ const KakaoMap = () => {
       };
       const map = new window.kakao.maps.Map(container, options);
 
-      const markerPosition = new window.kakao.maps.LatLng(37.566826, 126.9786567);
+      const markerPosition = new window.kakao.maps.LatLng(37.49899194925545, 127.03285492011584);
       const marker = new window.kakao.maps.Marker({
         position: markerPosition,
       });

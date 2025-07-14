@@ -1,7 +1,14 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import React from 'react'; // React를 명시적으로 import
+import useUserStore from "../../store/useUserStore";
+import Swal from "sweetalert2";
+
 
 export default function RequestInfo(){
+
+    const {isLogined, setIsLogined, loginMember, setLoginMember, setAccessToken, setRefreshToken} = useUserStore();
+
+    const navigate = useNavigate();
 
     return(
         <div className="request-info-wrap"> {/* 전체 희망도서 신청 정보 컨테이너 */}
@@ -64,7 +71,21 @@ export default function RequestInfo(){
             </div><br/>
 
             <div className="button-container">
-                <Link to="/requestBook/wishBook" className="request-button-link">
+                <Link
+                    to={isLogined ? "/requestBook/wishBook" : '#'}
+                    onClick={(e) => {
+                        if (!isLogined) {
+                            e.preventDefault(); // 기본 이동 막기
+                            Swal.fire({
+                                title : '알림',
+                                text : '로그인이 필요합니다',
+                                icon : 'warning',
+                                confirmButtonText : '확인'
+                            })
+                            navigate("/login");
+                        }
+                    }}
+                    className="request-button-link">
                     <button className="request-button">신청하기</button>
                 </Link>
             </div>

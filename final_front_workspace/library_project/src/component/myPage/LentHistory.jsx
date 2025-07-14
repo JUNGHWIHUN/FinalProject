@@ -36,7 +36,7 @@ export default function LentHistory(){
         .catch(function(err){
             console.log(err);
         });
-    },[reqPage, loginMember]);
+    },[reqPage]);
 
     return(
         <div className="lent-history-container"> {/* 전체 컨테이너 추가 */}
@@ -46,7 +46,7 @@ export default function LentHistory(){
             {lentHistoryList.length === 0 ? (
                 <p className="no-history-message">대출 이력이 없습니다.</p>
             ) : (
-                <table className="lent-history-table"> {/* 테이블에 클래스 추가 */}
+                <table className="lent-history-table"> 
                     <thead>
                         <tr>
                             <th>제목</th>
@@ -76,7 +76,7 @@ export default function LentHistory(){
                             return (
                                 <tr key={"lentHistory" +index}>
                                     <td>{lentHistory.title}</td>
-                                    <td>{category}</td> {/* 변수 사용 */}
+                                    <td>{category}</td> 
                                     <td>{lentHistory.lentDate}</td>
                                     <td>{lentHistory.actualReturnDate}</td>
                                 </tr>
