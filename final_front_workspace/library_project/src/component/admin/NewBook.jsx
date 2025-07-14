@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import "./Admin.css";
 
 export default function NewBook(){
     //도서 등록 페이지
@@ -41,32 +42,28 @@ export default function NewBook(){
 
     return(
         <>
-            <h3>도서 등록하기</h3>
-            {/*+이미지 url, 도서비치일? */}
-            <div>
-                <p></p>
-                <p>표제: <input type="text" name="titleInfo"  onChange={handleChange} /></p>
-                <p>이미지url: <input type="text" name="imageUrl"  onChange={handleChange} /></p>
-                {newBook.imageUrl && (
-                    <p>
-                        <img src={newBook.imageUrl} alt="미리보기" style={{ maxWidth: '200px', marginTop: '10px' }} />
-                    </p>
-                )}
-
-                <p>출판사: <input type="text" name="pubInfo"  onChange={handleChange} /></p>
-                <p>저자: <input type="text" name="authorInfo"  onChange={handleChange} /></p>
-                <br />
-                <p>청구기호: <input type="text" name="callNo" onChange={handleChange} /></p>
-                <p>ISBN: <input type="text" name="isbn"  onChange={handleChange} /></p>
-                <p>발행년도: <input type="text" name="pubYear"  onChange={handleChange} /></p>
-
-                <p>자료 있는 곳: <input type="text" name="placeInfo"  onChange={handleChange} /></p>
-                <p>대출가능 여부: <input type="text" name="canLend"  onChange={handleChange} /></p>
-                <p>비고: <input type="text" name="remark"  onChange={handleChange} /></p>
-
-            </div>
-            <button onClick={inputNewBook}>도서 등록하기</button>
-
-        </>
+    <div className="newbook-container">
+      <h3>도서 등록하기</h3>
+      <div className="newbook-form">
+        <p>표제: <input type="text" name="titleInfo" onChange={handleChange} /></p>
+        <p>이미지url: <input type="text" name="imageUrl" onChange={handleChange} /></p>
+        {newBook.imageUrl && (
+          <p>
+            <img src={newBook.imageUrl} alt="미리보기" />
+          </p>
+        )}
+        <p>출판사: <input type="text" name="pubInfo" onChange={handleChange} /></p>
+        <p>저자: <input type="text" name="authorInfo" onChange={handleChange} /></p>
+        <br />
+        <p>청구기호: <input type="text" name="callNo" onChange={handleChange} /></p>
+        <p>ISBN: <input type="text" name="isbn" onChange={handleChange} /></p>
+        <p>발행년도: <input type="text" name="pubYear" onChange={handleChange} /></p>
+        <p>자료 있는 곳: <input type="text" name="placeInfo" onChange={handleChange} /></p>
+        <p>대출가능 여부: <input type="text" name="canLend" onChange={handleChange} /></p>
+        <p>비고: <input type="text" name="remark" onChange={handleChange} /></p>
+      </div>
+      <button className="newbook-btn" onClick={inputNewBook}>도서 등록하기</button>
+    </div>
+  </>
     )
 }

@@ -1,7 +1,7 @@
 import { Route, Routes, useLocation } from "react-router-dom"; // useLocation 임포트 추가
 import StatisTics from "./StatisTics";
 import Reservation from "./Reservation";
-import LentBookList from "./lentBookList";
+import LentBookList from "./LentBookList";
 import LentHistory from "./LentHistory";
 import RequestBookList from './RequestBookList';
 

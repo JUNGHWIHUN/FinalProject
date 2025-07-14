@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import "./Admin.css";
 
 export default function FixBookDetail(){
   
@@ -80,26 +81,24 @@ export default function FixBookDetail(){
 
     return(
         <>
-        <div>
-        <img src={updateBook.imageUrl}  />
-       <h3>표제: <input type="text" name="titleInfo" value={updateBook.titleInfo || ""} onChange={handleChange} /></h3>
-        
-        <p>출판사: <input type="text" name="pubInfo" value={updateBook.pubInfo || ""} onChange={handleChange} /></p>
-        <p>저자: <input type="text" name="authorInfo" value={updateBook.authorInfo || ""} onChange={handleChange} /></p>
-        <br />
-        <p>청구기호: <input type="text" name="callNo" value={updateBook.callNo || ""} readOnly/> 청구기호는 변경불가</p>
-        <p>ISBN: <input type="text" name="isbn" value={updateBook.isbn || ""} onChange={handleChange} /></p>
-        <p>발행년도: <input type="text" name="pubYear" value={updateBook.pubYear || ""} onChange={handleChange} /></p>
+         <div className="fix-book-container">
+              <img src={updateBook.imageUrl} />
+              <h3>표제: <input type="text" name="titleInfo" value={updateBook.titleInfo || ""} onChange={handleChange} /></h3>
+              <p>출판사: <input type="text" name="pubInfo" value={updateBook.pubInfo || ""} onChange={handleChange} /></p>
+              <p>저자: <input type="text" name="authorInfo" value={updateBook.authorInfo || ""} onChange={handleChange} /></p>
+              <p>청구기호: <input type="text" name="callNo" value={updateBook.callNo || ""} readOnly /> 청구기호는 변경불가</p>
+              <p>ISBN: <input type="text" name="isbn" value={updateBook.isbn || ""} onChange={handleChange} /></p>
+              <p>발행년도: <input type="text" name="pubYear" value={updateBook.pubYear || ""} onChange={handleChange} /></p>
+              <p>자료 있는 곳: <input type="text" name="placeInfo" value={updateBook.placeInfo || ""} onChange={handleChange} /></p>
+              <p>대출가능 여부: <input type="text" name="canLend" value={updateBook.canLend || ""} onChange={handleChange} /></p>
+              <p>비고: <input type="text" name="remark" value={updateBook.remark || ""} onChange={handleChange} /></p>
+            </div>
 
-        <p>자료 있는 곳: <input type="text" name="placeInfo" value={updateBook.placeInfo || ""} onChange={handleChange} /></p>
-        <p>대출가능 여부: <input type="text" name="canLend" value={updateBook.canLend || ""} onChange={handleChange} /></p>
-        <p>비고: <input type="text" name="remark" value={updateBook.remark || ""} onChange={handleChange} /></p>
+            <div className="fix-book-btn-group">
+              <button onClick={handleCancel}>취소</button>
+              <button onClick={fixbook}>수정하기</button>
+              <button onClick={deleteBook}>삭제하기</button>
         </div>
-
-        <button onClick={handleCancel}>취소</button>
-        <button onClick={fixbook}>수정하기</button>
-
-        <button onClick={deleteBook}>삭제하기</button>
         </>
     )
 }

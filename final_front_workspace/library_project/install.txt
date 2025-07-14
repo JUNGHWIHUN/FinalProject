@@ -17,3 +17,6 @@ npm install react-modal         팝업창을 띄우기 위한 도구인 modal �
 
 2025-07-08 서용준
 npm install fast-xml-parser     국립중앙도서관 API 를 활용하기 위한 라이브러리 설치 (xml 파일 변환기)
+
+2025-07-12 왕윤식
+npm install @toast-ui/react-editor --force      글쓰기 에디터 적용

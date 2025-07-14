@@ -32,30 +32,29 @@ export default function Suggestion(){
     }
 
     return(
-        <>
-        <h3>건의사항 목록</h3>
+        <div className="suggestion-wrapper">
+            <h3>건의사항 목록</h3>
 
-            <table border="1">
-                        <thead>
-                          <tr>
-                              <th>회원이름</th>
-                              <th>건의사항 제목</th>
-                              <th>건의 일자</th>
-                              <th>처리</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {suggesList.map(function(list, index){
-                             
-                             return <ListItem key={"list"+index} list={list}/>
-                          })}
-                         </tbody>
+            <table className="suggestion-table">
+                <thead>
+                    <tr>
+                        <th>회원이름</th>
+                        <th>건의사항 제목</th>
+                        <th>건의 일자</th>
+                        <th>처리</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {suggesList.map(function(list, index){
+                        return <ListItem key={"list"+index} list={list} />;
+                    })}
+                </tbody>
             </table>
-        <div>
-            <PageNaviNew pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage}></PageNaviNew>
-        </div>
 
-        </>
+            <div>
+                <PageNaviNew pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage}></PageNaviNew>
+            </div>
+        </div>
     )
 }
 
@@ -89,13 +88,19 @@ function ListItem(props){
     }
 
     return(
-        <>
-        <tr>
-             <td><Link to="/SuggestDetail" state={{ list : list }}>{list.memberName}</Link></td>
+         <tr>
+            <td><Link to="/SuggestDetail" state={{ list: list }}>{list.memberName}</Link></td>
             <td>{list.suggesTitle}</td>
             <td>{list.suggesDate}</td>
-            <td><button onClick={deleteList} disabled={isCompleted}>{isCompleted ? "처리완료" : "삭제"}</button></td>
+            <td>
+                <button 
+                    className="suggestion-button" 
+                    onClick={deleteList} 
+                    disabled={isCompleted}
+                >
+                    {isCompleted ? "처리완료" : "삭제"}
+                </button>
+            </td>
         </tr>
-        </>
     )
 }
