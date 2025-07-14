@@ -70,7 +70,7 @@ function ListItem(props){
     const list = props.list;
 
     //타입 저장용
-    const [selectType, setSelectType] = useState();
+    const [selectType, setSelectType] = useState('yes');
     //확인 버튼 상태 변경용
     const [isCompleted, setIsCompleted] = useState(false);
 
@@ -83,7 +83,7 @@ function ListItem(props){
         if (!confirmUpdate) {
                 return; // 취소하면 함수 종료
             }
-
+        console.log(selectType);
         let options = {};
             options.url='http://localhost:9999/admin/requestUpdate';
             options.method = 'post';

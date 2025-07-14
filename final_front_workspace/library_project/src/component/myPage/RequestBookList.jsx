@@ -44,7 +44,7 @@ export default function RequestBook(){
                   {requestBooks.length === 0 ? (
                         <p className="no-request-books-message">희망도서 신청 내역이 없습니다.</p>
                   ) : (
-                        <table className="request-book-table"> {/* 테이블에 클래스 추가 */}
+                        <table className="request-book-table"> 
                               <thead>
                                     <tr>
                                           <th>책제목</th>
@@ -69,7 +69,7 @@ export default function RequestBook(){
                                                 <td>{requestBook.requestedBookName}</td>
                                                 <td>{requestBook.requestedBookAuthor}</td>
                                                 <td>{requestBook.requestedBookPub}</td>
-                                                <td>{statusText}</td> {/* 변환된 상태 텍스트 사용 */}
+                                                <td>{statusText}</td> 
                                           </tr>
                                           );
                                     })}
