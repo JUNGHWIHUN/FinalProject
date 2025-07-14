@@ -21,7 +21,7 @@ import RequestBookMain from './component/requestBook/requestBookMain';
 import NewBook from './component/admin/NewBook';
 import AdminMemberPage from './component/admin/AdminMemberPage';
 import FindId from './component/member/FindId'; 
-
+import KakaoMap from './component/libInfo/KakaoMap';
 import NoticeMain from './component/notice/NoticeMain';
 
 import FixBookDetail from './component/admin/FixBookDetail';
@@ -31,6 +31,7 @@ import LentBookDetail from './component/admin/LentBookDetail';
 import LenterBookDetil from './component/admin/LenterBookDetil';
 import AdminMemberDetailPage from './component/admin/AdminMemberDetailPage';
 import FindPassword from './component/member/FindPassword';
+import LibInfoMain from './component/libInfo/LibInfoMain';
 
 
 
@@ -79,7 +80,9 @@ function App() {
             <Route path="/find-id" element={<FindId />} />
             <Route path="/find-password" element={<FindPassword />} />
 
-          
+            {/*도서관 안내 메인 페이지*/}
+            <Route path='/libInfo/*' element={ <LibInfoMain />} />
+
           </Routes>
         </div>
 

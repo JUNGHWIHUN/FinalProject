@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
+import "./Admin.css";
 
 export default function LentBookDetail() {
   const location = useLocation();
@@ -71,40 +72,43 @@ export default function LentBookDetail() {
   }
 
   return (
-    <>
-    {/*
-    책에 대한 상세 정보 불러오기, 이후 대출 가능하다면 유저 번호검색도 활성화.
-    */}
-      <h1>{book.title}</h1>
-      <img src={book.imageUrl}  />
-      <p>책 번호: {book.bookNo} </p>
-      <p>저자: {book.author}</p>
-      <p>출판사: {book.pub}</p>
-      <p>출판년도: {book.pubYear}</p>
-      <p>ISBN: {book.isbn}</p>
-      <p>보관 장소: {book.place}</p>
-      <p>대출 가능: {book.canLent}</p>
-      <p>비고: {book.remark}</p>
+    <div className="lent-detail-container">
+    <h1>{book.title}</h1>
+    <img src={book.imageUrl} />
+    <p>책 번호: {book.bookNo}</p>
+    <p>저자: {book.author}</p>
+    <p>출판사: {book.pub}</p>
+    <p>출판년도: {book.pubYear}</p>
+    <p>ISBN: {book.isbn}</p>
+    <p>보관 장소: {book.place}</p>
+    <p>대출 가능: {book.canLent}</p>
+    <p>비고: {book.remark}</p>
 
-      <br />
-
-      {book.canLent == 'T' && (
-        <div>
-        대출자 번호 : <input type="text" id="memberNo" value={user.memberNo} onChange={changeUser} />
+    {book.canLent === 'T' && (
+      <div className="lent-detail-input-group">
+        대출자 번호 :
+        <input
+          type="text"
+          id="memberNo"
+          value={user.memberNo}
+          onChange={changeUser}
+        />
         <button onClick={selectLentMember}>검색</button>
-        </div>
-      )}
-      {userInfo.memberName && (
-        <div>
-          <p>이름: {userInfo.memberName}</p>
-          <p>대출 가능 여부: {userInfo.memberBorrow}</p>
+      </div>
+    )}
 
-          <button onClick={lentThisBook} disabled={userInfo.memberBorrow !== 'T'}>대출하기</button>
-
-        </div>
-      )}
-
-
-    </>
+    {userInfo.memberName && (
+      <div className="lent-detail-user-info">
+        <p>이름: {userInfo.memberName}</p>
+        <p>대출 가능 여부: {userInfo.memberBorrow}</p>
+        <button
+          onClick={lentThisBook}
+          disabled={userInfo.memberBorrow !== 'T'}
+        >
+          대출하기
+        </button>
+      </div>
+    )}
+  </div>
   );
 }
