@@ -2,26 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="kr.or.iei.board.model.dao.NoticeDao">
 
-	<select id='selectBoardCount' resultType='_int'>
-	select count(*) from tbl_board </select>
+<select id='selectBoardCount' resultType='_int'>
+    select count(*) from tbl_board where BOARD_CODE = 'N'
+</select>
+
+<resultMap type='kr.or.iei.board.model.dto.BoardDto' id='boardListMap'>
+    <id column='board_no' property='boardNo'/>
+    <result column='board_title' property='boardTitle'/>
+    <result column='member_no' property='boardWriter'/>
+    <result column='board_date' property='boardDate'/>
+    <result column='is_important' property='isImportant'/>
+    <result column='is_secret' property='isSecret'/>
+    <result column='board_code' property='boardCode'/>
+    <result column='member_id' property='boardWriterId'/>
+    
+    <collection property='fileList' select='selectBoardFileList' column='board_no' javaType='java.util.List' ofType='kr.or.iei.board.model.dto.BoardFileDto'>
+        <id column='BOARD_FILE_NO' property='boardFileNo'/>
+        <result column='FILE_NAME' property='fileName'/>
+        <result column='FILE_PATH' property='filePath'/>
+        <result column='FILE_UPLOAD_DATE' property='fileUploadDate'/>
+    </collection>
+</resultMap>
 
 <select id='selectBoardList' parameterType='PageInfoDto' resultType='BoardDto'>
-select b.board_no boardNo,
-       b.board_title boardTitle,
-       b.MEMBER_NO boardWriter,
-       b.board_date boardDate,
-       b.IS_IMPORTANT isImportant,
-       b.IS_SECRET isSecret,
-       b.BOARD_CODE boardCode,  m.MEMBER_ID boardWriterId
-  from (
-        select rownum rnum, a.*
-          from (
-                select board_no, board_title, MEMBER_NO, board_date, IS_IMPORTANT, IS_SECRET, BOARD_CODE from tbl_board
-                where BOARD_CODE = 'N' order by board_date desc
-               ) a
-        ) b
-left join TBL_MEMBER m on b.MEMBER_NO = m.MEMBER_NO
-   where rnum between #{start} and #{end}
+    select b.board_no boardNo,
+           b.board_title boardTitle,
+           b.MEMBER_NO boardWriter,
+           b.board_date boardDate,
+           b.IS_IMPORTANT isImportant,
+           b.IS_SECRET isSecret,
+           b.BOARD_CODE boardCode,  m.MEMBER_ID boardWriterId
+      from (
+            select rownum rnum, a.*
+              from (
+                    select board_no, board_title, MEMBER_NO, board_date, IS_IMPORTANT, IS_SECRET, BOARD_CODE from tbl_board
+                    where BOARD_CODE = 'N' 
+                    order by board_date desc 
+                    ) a
+            ) b
+    left join TBL_MEMBER m on b.MEMBER_NO = m.MEMBER_NO
+       where rnum between #{start} and #{end}
 </select>
 
 	<select id='selectBoardNo' resultType="_int">

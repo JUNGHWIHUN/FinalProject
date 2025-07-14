@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.iei.myPage.memberPwChg.model.dao.MemberPwChgDao">
+	<!-- 회원 1명 조회 -->
+	<select id="selectOneMemeber" parameterType="string" resultType="kr.or.iei.myPage.memberPwChg.model.dto.MemberPwChg">
+			select member_no as memberNo, member_pw as memberPw , member_id as memberId ,member_name as memberName, member_phone as memberPhone, member_addr as memberAddr
+  	 			from tbl_member where member_Id = #{parameter}
+	</select>
+  
+  
+  	<!-- 비밀번호 변경  -->
+  	<update id="updateMemberPw" parameterType="kr.or.iei.myPage.memberPwChg.model.dto.MemberPwChg">
+  		update tbl_member
+  		set member_pw = #{memberPw}
+  		where member_id = #{memberId}
+  	</update>
+</mapper>

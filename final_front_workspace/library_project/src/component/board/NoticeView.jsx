@@ -51,6 +51,10 @@ export default function NoticeView(){
             cancelButtonText: '취소'
         }).then((result) => {
             if (result.isConfirmed) {
+                const form = new FormData();
+                form.append('boardNo', boardNo);
+                form.append('isAdmin', loginMember?.isAdmin || 'F'); 
+
                 let options = {};
                 options.url = serverUrl + '/notice/' + boardNo;
                 options.method = 'delete';
@@ -90,141 +94,144 @@ export default function NoticeView(){
             cancelButtonText: '취소'
         }).then((result) => {
             if (result.isConfirmed) {
-                // -- 변경 시작: FormData를 사용하여 데이터 전송 --
                 const form = new FormData();
-                form.append('boardNo', boardNo); // 게시글 번호도 함께 보냄
+                form.append('boardNo', boardNo);
                 form.append('isImportant', newIsImportant);
-                // 백엔드 컨트롤러의 @RequestParam String isAdmin에 맞춰 isAdmin도 FormData에 추가
                 form.append('isAdmin', loginMember?.isAdmin || 'F'); 
 
                 let options = {};
                 options.url = serverUrl + '/notice/important/' + boardNo;
                 options.method = 'patch';
-                options.data = form; // FormData를 data에 할당
+                options.data = form;
                 options.headers = {
-                    'Content-Type': 'multipart/form-data', // FormData 사용 시 명시 (Axios가 자동 설정해주기도 함)
+                    'Content-Type': 'multipart/form-data',
                 };
-                options.processData = false; // FormData 사용 시 필수
-                // options.params = { isAdmin: loginMember?.isAdmin }; // 쿼리 파라미터 대신 FormData에 포함
-                // -- 변경 끝 --
+                options.processData = false;
 
                 memoizedAxiosInstance(options)
                 .then(function(res) {
                     if (res.data.resData) {
                         Swal.fire('성공!', res.data.resMsg || '중요 공지 상태가 업데이트되었습니다.', 'success')
                             .then(() => {
-                                // 상태 변경 후 바로 리렌더링될 수 있도록 setBoard 상태 업데이트
                                 setBoard(prevBoard => ({ ...prevBoard, isImportant: newIsImportant }));
-                                // navigate('/board/notice/list'); // 목록으로 이동 대신 현재 페이지 상태 업데이트
                             });
                     } else {
                         Swal.fire('실패!', res.data.resMsg || '중요 공지 상태 업데이트에 실패했습니다.', 'error');
-                        // 실패 시 체크박스 상태 롤백 (이전 값으로 되돌림)
                         setBoard(prevBoard => ({ ...prevBoard, isImportant: board.isImportant }));
                     }
                 })
                 .catch(function(error) {
                     console.error("중요 공지 업데이트 실패:", error);
                     Swal.fire('오류 발생', '중요 공지 상태 변경 중 문제가 발생했습니다.', 'error');
-                    // 실패 시 체크박스 상태 롤백
                     setBoard(prevBoard => ({ ...prevBoard, isImportant: board.isImportant }));
                 });
             } else {
-                // 사용자가 취소한 경우 체크박스 상태 롤백
                 setBoard(prevBoard => ({ ...prevBoard, isImportant: board.isImportant }));
             }
         });
     }
 
+    if (!board || Object.keys(board).length === 0) {
+        return (
+            <section className="section board-view-wrap">
+                <div className="page-title">공지사항 상세 보기</div>
+                <div className="board-view-content notice-view-container">
+                    <h2>게시글을 불러오는 중이거나 존재하지 않습니다.</h2>
+                </div>
+            </section>
+        );
+    }
 
     return (
         <section className="section board-view-wrap">
-            <div className="page-title">공지사항 상세 보기</div>
-            <div className="board-view-content">
+            <div className="board-view-content notice-view-container">
                 {loginMember && loginMember.isAdmin === 'T' && (
-                    <div style={{ marginBottom: '20px', padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f8f9fa' }}>
+                    <div className="admin-options">
                         <h5>관리자 옵션</h5>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <div className="important-toggle">
                             <input
                                 type="checkbox"
                                 id="isImportantCheckbox"
                                 checked={board.isImportant === 'Y'}
                                 onChange={handleImportantChange}
-                                style={{ marginRight: '8px', transform: 'scale(1.2)' }}
                             />
-                            <label htmlFor="isImportantCheckbox" style={{ marginBottom: '0' }}>
+                            <label htmlFor="isImportantCheckbox">
                                 이 게시글을 중요 공지로 설정
                             </label>
                         </div>
                     </div>
                 )}
                 
-                <div className="board-view-info">
-                    <div className="board-thumbnail">
-                        <img src="/images/default_img.png" />
-                    </div>
-                    <div className="board-view-preview">
-                        <table className="tbl">
-                            <tbody>
-                                <tr>
-                                    <td className="left" colSpan={2}>
-                                        {board.boardTitle}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th style={{width:"20%"}}>작성자</th>
-                                    <td style={{width:"80%"}}>{board.boardWriter}</td>
-                                </tr>
-                                <tr>
-                                    <th style={{width:"20%"}}>작성일</th>
-                                    <td style={{width:"80%"}}>{board.boardDate}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <p className="file-title">첨부파일</p>
-                        <div className="file-zone">
-                            {board.fileList && board.fileList.length > 0
-                                ? board.fileList.map(function(file, index){
-                                    return <FileItem key={"file"+index} file={file} serverUrl={serverUrl} memoizedAxiosInstance={memoizedAxiosInstance}/>
-                                })
-                                : "첨부파일 없음"
-                            }
-                        </div>
-                    </div>
-                </div>
+                <table className="board-view-header-table">
+                    <tbody>
+                        <tr>
+                            <th className="view-table-label">제목</th>
+                            <td className="view-table-content view-table-title-content" colSpan="2">
+                                {board.boardTitle}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className="view-table-label">작성일</th>
+                            <td className="view-table-content" colSpan="2">
+                                {new Date(board.boardDate).toLocaleDateString('ko-KR')}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th className="view-table-label">첨부파일</th>
+                            <td className="view-table-content" colSpan="2">
+                                {board.fileList && board.fileList.length > 0
+                                    ? board.fileList.map(function(file, index){
+                                        return (
+                                            <a key={"file-link-"+index} href={`${serverUrl}/notice/file/${file.boardFileNo}`} download={file.fileName} className="file-download-link">
+                                                {file.fileName} <span className="material-icons file-download-icon">file_download</span>
+                                            </a>
+                                        );
+                                    })
+                                    : "첨부파일 없음"
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 
-                <hr/>
+                <hr className="content-divider"/>
 
-                <div className="board-content-wrap" >
+                <div className="board-content-body">
                     {board.boardContent
                         ? <Viewer initialValue={board.boardContent} /> 
                         : ""
                     }
                 </div>
+                {/* -- 변경 시작: 목록 버튼을 먼저 렌더링하고 그 아래에 수정/삭제 버튼 -- */}
+                <div className="btn-area"> {/* 목록 버튼 영역 */}
+                    <button type="button" className="btn-secondary" onClick={() => navigate('/board/notice/list')}>
+                        목록
+                    </button>
+                </div>
                 {
                     loginMember && loginMember.isAdmin === 'T'
                     ?
-                    <div className="view-btn-zone">
-                        <Link to={'/board/notice/update/' + board.boardNo} className='btn-primary lg'>수정하기</Link>
+                    <div className="view-btn-zone"> {/* 수정/삭제 버튼 영역 */}
+                        <button ><Link to={'/board/notice/update/' + board.boardNo} className='btn-primary lg' >수정하기</Link></button>
                         <button type='button' className="btn-secondary lg" onClick={deleteBoard}>삭제하기</button>
                     </div>
                     :
                     ""
                 }
+                {/* -- 변경 끝 -- */}
             </div>
         </section>
     );
 }
 
-// 파일 1개 정보 (NoticeView.jsx 내부에 있었던 FileItem)
 function FileItem(props) {
     const file = props.file;
     const serverUrl = props.serverUrl;
-    const axiosInstance = props.memoizedAxiosInstance; // props로 전달받은 인스턴스 사용
+    const axiosInstance = props.memoizedAxiosInstance;
 
     function fileDown(){
         let options = {};
-        options.url = serverUrl + '/notice/file/' + file.boardFileNo; // URL 변경
+        options.url = serverUrl + '/notice/file/' + file.boardFileNo;
         options.method = 'get';
         options.responseType = 'blob';
 
@@ -251,8 +258,8 @@ function FileItem(props) {
     }
 
     return (
-        <div className="board-file">
-            <span className="material-icons file-icon" onClick={fileDown}>file_download</span>
+        <div className="file-item">
+            <span className="material-icons file-download-icon" onClick={fileDown}>file_download</span>
             <span className="file-name">{file.fileName}</span>
         </div>
     );

@@ -36,4 +36,6 @@ public class BoardDto {
 	
 	//삭제 파일 번호 배열 저장 변수
 	private int [] delBoardFileNo;
+	
+	private int commentCount;
 }
