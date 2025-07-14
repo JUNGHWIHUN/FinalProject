@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import useUserStore from "../../store/useUserStore";
 import { Link } from "react-router-dom";
 import './Common.css'; // 메인 컴포넌트에서도 Common.css를 사용
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 //메인(루트 접근 시) 컴포넌트
 export default function Main () {
@@ -12,6 +14,29 @@ export default function Main () {
     //     navigate(`/book/detail/${bookId}`);
     // }
 
+    //도서 추천용
+    const [recommendedBooks, setRecommendedBooks] = useState([]);
+    const [bestsellerBooks, setBestsellerBooks] = useState([]);
+
+
+    useEffect(function(){
+        let option = {};
+            option.url = 'http://localhost:9999/mainPage/recomendedBook';
+            option.method = 'get';
+            
+        axios(option)
+        .then(function(res){
+            setRecommendedBooks(res.data.resData.recoList);
+            setBestsellerBooks(res.data.resData.bestList);
+        })
+        .catch(function(err){
+            console.log(err); 
+        });
+
+        
+
+    },[])
+
     return (
         <main className="main-content"> {/* 메인 콘텐츠의 최상위 래퍼 */}
             <div className="main-container"> {/* 콘텐츠 중앙 정렬을 위한 컨테이너 */}
@@ -20,27 +45,17 @@ export default function Main () {
                 <section className="recommended-books-section">
                     <h2 className="section-title">추천 도서</h2>
                     <div className="recommended-books-list">
-                        {/* 실제 데이터로 맵핑하여 사용할 예정이지만, 일단 플레이스홀더 이미지로 대체 */}
-                        <div className="book-card">
-                            <img src="/images/book_placeholder_1.png" alt="추천도서 1" />
-                            <p className="book-title">도서명 1</p>
-                        </div>
-                        <div className="book-card">
-                            <img src="/images/book_placeholder_2.png" alt="추천도서 2" />
-                            <p className="book-title">도서명 2</p>
-                        </div>
-                        <div className="book-card">
-                            <img src="/images/book_placeholder_3.png" alt="추천도서 3" />
-                            <p className="book-title">도서명 3</p>
-                        </div>
-                        <div className="book-card">
-                            <img src="/images/book_placeholder_4.png" alt="추천도서 4" />
-                            <p className="book-title">도서명 4</p>
-                        </div>
-                        <div className="book-card">
-                            <img src="/images/book_placeholder_5.png" alt="추천도서 5" />
-                            <p className="book-title">도서명 5</p>
-                        </div>
+                        {recommendedBooks.map(function(book, index) {
+                            return (
+                            <div className="book-card" key={index}>
+                                <img src={book.imageUrl} alt={book.title} />
+                                <p className="book-title">{book.title}</p>
+                            </div>
+                             );
+                        })}
+
+
+                    
                     </div>
                 </section>
 
@@ -81,20 +96,18 @@ export default function Main () {
                 <section className="bestseller-section">
                     <h2 className="section-title">베스트 셀러</h2>
                     <div className="bestseller-books-list">
-                        {/* 실제 데이터로 맵핑하여 사용할 예정이지만, 일단 플레이스홀더 이미지로 대체 */}
-                        <div className="book-card">
-                            <img src="/images/bestseller_1.png" alt="베스트셀러 1" />
-                            {/* <p className="book-title">도서명 1</p> */} {/* 스크린샷에 제목이 없음 */}
-                        </div>
-                        <div className="book-card">
-                            <img src="/images/bestseller_2.png" alt="베스트셀러 2" />
-                        </div>
-                        <div className="book-card">
-                            <img src="/images/bestseller_3.png" alt="베스트셀러 3" />
-                        </div>
-                        <div className="book-card">
-                            <img src="/images/bestseller_4.png" alt="베스트셀러 4" />
-                        </div>
+                        {bestsellerBooks.slice(0, 4).map(function(book, index) {
+                            return (
+                                <div className="book-card" key={index}>
+                                <img src={book.imageUrl} alt={book.title} />
+                                {/* 제목 출력 여부는 디자인에 따라 추가 가능 */}
+                                {/* <p className="book-title">{book.title}</p> */}
+                                </div>
+                            );
+                        })}
+
+
+
                     </div>
                 </section>
 
