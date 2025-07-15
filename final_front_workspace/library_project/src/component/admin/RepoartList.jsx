@@ -50,7 +50,7 @@ export default function ReportList(){
                               <th>신고번호</th>
                               <th>신고사유</th>
                               <th>신고한 댓글번호</th>
-                              <th>신고한 회원 번호</th>
+                              <th>신고한 회원 아이디</th>
                               <th>처리</th>
                             </tr>
                         </thead>
@@ -112,7 +112,7 @@ function ListItem(props){
             <td onClick={() => goDetail(list.commentCallNo)}>{list.repartNo}</td>
             <td>{list.repartReson}</td>
             <td>{list.commentNo}</td>
-            <td>{list.repoterNo}</td>
+            <td>{list.repoterId}</td>
             <td><button onClick={deleteList} disabled={isCompleted}>{isCompleted ? "처리완료" : "삭제"}</button></td>
         </tr>
         </>

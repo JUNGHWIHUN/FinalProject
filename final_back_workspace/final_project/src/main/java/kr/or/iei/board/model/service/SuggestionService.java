@@ -43,7 +43,8 @@ public class SuggestionService {
 		// 게시글 목록 조회
         // 비밀글인 경우 본인만 보이거나 관리자만 보이도록 쿼리 로직 필요
 		ArrayList<BoardDto> boardList = dao.selectSuggestionList(pageInfo, loginMemberNo);
-	
+		
+
 		HashMap<String, Object> boardMap = new HashMap<>();
 		boardMap.put("boardList", boardList);
 		boardMap.put("pageInfo", pageInfo);

@@ -142,6 +142,18 @@ export default function SearchResultDetail (){
 
     //도서 예약 함수
     function reservation(){
+
+        if(!isLogined){
+            Swal.fire({
+                title : '알림',
+                text : '로그인이 필요합니다',
+                icon : 'warning',
+                confirmButtonText : '확인'
+                
+            })
+            navigate('/login', { state: { from: location.pathname } });
+        }else
+            
         Swal.fire({
             title : '알림',
             text : '도서를 예약하시겠습니까?',
