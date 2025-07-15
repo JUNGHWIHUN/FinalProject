@@ -375,6 +375,7 @@ footer {
 
 /* 2. 메인 메뉴 아이콘 섹션 및 도서관 운영 시간 섹션 */
 .main-features-section {
+    height: 160px;
     display: flex;
     gap: 30px; /* 아이콘 메뉴와 운영시간 카드 사이 간격 */
 }
@@ -387,8 +388,12 @@ footer {
     background-color: #fff;
     border: 1px solid #eee;
     border-radius: 8px;
-    padding: 20px;
+    padding-left: 70px;
+    padding-right: 70px;
+    padding-top: 20px;
+    padding-bottom: 30px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    
 }
 
 .menu-icon-item {
@@ -403,19 +408,29 @@ footer {
     margin-bottom: 10px; /* 줄바꿈 시 하단 간격 */
 }
 
-.menu-icon-item img {
+.menu-icon-item {
     width: 60px; /* 아이콘 크기 */
     height: 60px;
     margin-bottom: 8px;
     border-radius: 50%; /* 원형 배경 */
     background-color: #e0f0d0; /* 연한 녹색 배경 */
-    padding: 10px; /* 아이콘과 배경 사이 패딩 */
+    padding: 15px; /* 아이콘과 배경 사이 패딩 */
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.menu-icon-item:hover img {
-    background-color: #c0e0a0; /* 호버 시 색상 변경 */
+.menu-icon-item-span {
+    margin-top: 35px;
+    width: 100px;
+    font-size: medium;
+    font-weight: bold;
 }
+
+.icons-img {
+    margin-top: 7px;
+    width: 70%;
+    height: auto;
+}
+
 
 .library-hours-card {
     background-color: #fff;
@@ -435,7 +450,7 @@ footer {
     font-size: 16px;
     font-weight: bold;
     color: #333;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     padding-bottom: 10px;
     border-bottom: 1px dashed #eee; /* 점선 아래줄 */
 }
@@ -444,7 +459,8 @@ footer {
     font-size: 28px; /* 날짜 글자 크기 */
     font-weight: bold;
     color: #4CAF50; /* 녹색 강조 */
-    margin-bottom: 5px;
+    margin-top: 5px;
+    margin-bottom: 5PX;
 }
 
 .hours-day span {
@@ -456,13 +472,14 @@ footer {
 .hours-time {
     font-size: 15px;
     color: #777;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
+    margin-top: 0px;
 }
 
 .hours-holiday {
     font-size: 15px;
     color: #777;
-    margin-top: 10px;
+    margin-top: 0px;
     padding-top: 5px;
     border-top: 1px dashed #eee; /* 점선 위쪽 줄 */
 }
@@ -681,7 +698,16 @@ footer {
     padding-left: 17px; /* 경계선과 텍스트 간격 */
 }
 
-/* 추가적으로 MyPageMain 컴포넌트에서 LeftMenu를 감싸는 div에 클래스를 적용해야 할 수 있습니다.
+/*홈페이지 아이콘 하단 텍스트 */
+.menu-icon-item:hover span {
+  color: #2e7d32; /* 예: 녹색 계열 */
+}
+
+.menu-icon-item:hover {
+    text-decoration: none;
+}
+
+    /* 추가적으로 MyPageMain 컴포넌트에서 LeftMenu를 감싸는 div에 클래스를 적용해야 할 수 있습니다.
    예시: <div className="left-menu-wrapper"><LeftMenu /></div>
    LeftMenu.jsx 파일 자체에 직접 클래스를 추가하는 것은 지시사항에 어긋나지 않습니다. */
 
