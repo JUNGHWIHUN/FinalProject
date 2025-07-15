@@ -46,9 +46,9 @@ export default function SuggestionWrite() {
             text: '정말 작성하시겠습니까?',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#5cb85c',
             cancelButtonColor: '#d33',
-            confirmButtonText: '예, 작성합니다!',
+            confirmButtonText: '작성',
             cancelButtonText: '취소'
         }).then((result) => {
             if (result.isConfirmed) {

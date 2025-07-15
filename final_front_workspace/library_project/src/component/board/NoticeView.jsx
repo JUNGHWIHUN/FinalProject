@@ -45,9 +45,9 @@ export default function NoticeView(){
             text: '삭제된 게시글은 복구할 수 없습니다.',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#5cb85c',
             cancelButtonColor: '#d33',
-            confirmButtonText: '예, 삭제합니다!',
+            confirmButtonText: '삭제',
             cancelButtonText: '취소'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -88,7 +88,7 @@ export default function NoticeView(){
             text: `이 게시글을 ${isChecked ? '중요 공지로 설정' : '일반 공지로 해제'}하시겠습니까?`,
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
+            confirmButtonColor: '#5cb85c',
             cancelButtonColor: '#d33',
             confirmButtonText: '확인',
             cancelButtonText: '취소'

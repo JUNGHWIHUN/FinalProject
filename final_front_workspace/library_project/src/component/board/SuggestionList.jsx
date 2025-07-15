@@ -3,6 +3,8 @@ import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
 import { useEffect, useState, useMemo } from "react";
 import PageNavi from "../common/PageNavi";
+import Swal from 'sweetalert2'; // Swal 임포트
+
 
 // 건의사항 게시글 목록
 export default function SuggestionList() {
@@ -17,7 +19,6 @@ export default function SuggestionList() {
     const [reqPage, setReqPage] = useState(1);
     const { loginMember } = useUserStore();
 
-    // --- 중요 변경 시작: URL 쿼리 파라미터에서 reqPage 읽어오기 ---
     useEffect(() => {
         // URL에서 'page' 쿼리 파라미터를 읽어옵니다. (예: ?page=2)
         const page = searchParams.get('page');
@@ -30,7 +31,6 @@ export default function SuggestionList() {
             setReqPage(pageNum);
         }
     }, [searchParams]); // searchParams가 변경될 때마다 이 useEffect가 실행됩니다.
-    // --- 중요 변경 끝 ---
 
     useEffect(function() {
         // reqPage가 유효한 값일 때만 API 요청을 보냅니다.
@@ -60,14 +60,33 @@ export default function SuggestionList() {
             });
     }, [reqPage, serverUrl, memoizedAxiosInstance, loginMember, searchParams]); // searchParams를 의존성 배열에 추가
 
-    // --- 중요 변경 시작: PageNavi에 전달할 페이지 변경 핸들러 ---
     // 페이지네이션 컴포넌트(PageNavi)에서 페이지 번호가 클릭되면 이 함수가 호출됩니다.
     const handlePageChange = (pageNumber) => {
         // reqPage 상태를 직접 변경하는 대신, URL 쿼리 파라미터를 업데이트합니다.
         // 이 변경은 위에서 추가한 useEffect를 트리거하여 reqPage 상태를 업데이트합니다.
         setSearchParams({ page: pageNumber }); 
     };
-    // --- 중요 변경 끝 ---
+
+    //비밀글일 경우 글 확인 불가 로직
+    function boardView(board){
+        if(board.isSecret === 'Y'){
+            if(board.boardWriter == loginMember.memberNo || loginMember.isAdmin === 'T'){
+                console.log(board);
+                console.log('작성자' + board.boardWriter);
+                console.log(loginMember.memberNo);
+                console.log(loginMember.isAdmin);
+                navigate('/board/suggestion/view/' + board.boardNo);
+            }else{
+                Swal.fire({
+                    title: '알림',
+                    text: '비밀글입니다',
+                    icon: 'warning'
+                })
+            }
+        }else{
+            navigate('/board/suggestion/view/' + board.boardNo);
+        }
+    }
 
     return (
         <section className="section board-list">
@@ -96,9 +115,9 @@ export default function SuggestionList() {
                         ) : (
                             boardList.map(function(board, index) {
                                 return (
-                                    <tr key={"board" + index} onClick={function() {
-                                        navigate('/board/suggestion/view/' + board.boardNo);
-                                    }}><td>{board.boardNo}</td><td className="board-title">{board.boardTitle}
+                                    <tr key={"board" + index} onClick={() => boardView(board)} >
+                                            <td>{board.boardNo}</td>
+                                            <td className="board-title">{board.boardTitle}
                                             {board.isSecret === 'Y' && (
                                                 <span className="material-icons" style={{ fontSize: '1.2em', verticalAlign: 'middle', marginLeft: '5px', color: '#666' }}>
                                                     lock
