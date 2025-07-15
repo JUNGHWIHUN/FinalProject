@@ -26,6 +26,7 @@ export default function AllbookPage(){
     const [filterType, setFilterType] = useState("title");
     const [keyword, setKeyword] = useState("");
 
+    //책검색
     function fetchAllBooks(page = reqPage){
          let options = {};
             options.url='http://localhost:9999/admin/allBookList/'+ reqPage;
@@ -43,6 +44,7 @@ export default function AllbookPage(){
             });
     }
 
+    //대출된 책 검색
     function fetchLendBooks(page = reqPage){
         let options = {};
             options.url='http://localhost:9999/admin/allLendBookList/'+ reqPage;
@@ -60,10 +62,12 @@ export default function AllbookPage(){
             });
     }
 
+    //처음 목록을 한번 보여주기 위한 실행
    useEffect(function(){
       fetchAllBooks();
     }, []);
 
+    //검색 조건 밀어넣기
     function keywordType(e){
       setFilterType(e.target.value);
     }
@@ -76,6 +80,7 @@ export default function AllbookPage(){
       navigate("/admin/newBook");
     }
 
+    //목록 전환용
     useEffect(function(){
     if(subMode === "bookList") {
         fetchAllBooks(reqPage);

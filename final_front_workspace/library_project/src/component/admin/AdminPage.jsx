@@ -18,13 +18,20 @@ import "./Admin.css";
 
 export default function AdminPage(){
 
+    //목록 전환용
     const [mode, setMode] = useState("lend");
     const [subMode, setSubMode] = useState("");
+
+    //대출을 위한 책 정보
     const [bookList, setBookList] = useState([]);
+    //책 검색 조건
     const [books, setBooks] = useState({ title : "", author : "", isbn : "" });
+    //반납을 위한 책 정보
     const [returnBooksList, setreturnBooksList] = useState([]);
+    //책 검색 조건
     const [returnBooks, setRetrunBooks] = useState({ callNo : "" });
 
+    //조건 밀어넣기
     function changebookValue(e){
         books[e.target.id] = e.target.value;
         setBooks({...books});
@@ -32,6 +39,7 @@ export default function AdminPage(){
 
     const navigate = useNavigate();
 
+    //책 검색
     function selectBooks(){
         let options = {
             url:'http://localhost:9999/admin/selectBooks',
@@ -54,11 +62,13 @@ export default function AdminPage(){
         });
     }
 
+    //조건 밀어넣기
     function changeBookReturn(e){
         returnBooks[e.target.id] = e.target.value;
         setRetrunBooks({...returnBooks});
     }
 
+    //책검색
     function selectReturnBooks(){
         let options = {
             url:'http://localhost:9999/admin/selectRetrunBooks',

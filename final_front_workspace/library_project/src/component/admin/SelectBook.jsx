@@ -4,10 +4,7 @@ import "./Admin.css";
 
 export default function SelectBook(){
 
-   
-
-    
-
+   //정보 가져오기
     const location = useLocation();
     const bookList = location.state?.bookList;
 

@@ -36,6 +36,7 @@ export default function AdminMemberPage(){
       setKeyword(e.target.value);
     }
 
+    //실행시 유저 검색
     function fetAllMemberList(page = reqPage){
         let options = {};
         options.url='http://localhost:9999/admin/allMemberList/'+ reqPage;
@@ -53,6 +54,7 @@ export default function AdminMemberPage(){
         }); 
     }
 
+    //실행시 대출중인 유저 검색
     function fetOverdueList(page = reqPage){
         let options = {};
         options.url='http://localhost:9999/admin/overMemberList/'+ reqPage;
@@ -70,6 +72,7 @@ export default function AdminMemberPage(){
         }); 
     }
 
+    //페이지 전환을 위한 용도
     useEffect(() => {
         if (subMode === "userList") {
             fetAllMemberList(reqPage);

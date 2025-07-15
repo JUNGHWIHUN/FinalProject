@@ -12,5 +12,6 @@ public class AdRepartDto {
 	private String repartNo;
 	private String repartReson;
 	private String commentNo;
-	private String repoterNo;
+	private String commentCallNo;
+	private String repoterId;
 }

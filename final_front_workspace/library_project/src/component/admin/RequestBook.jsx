@@ -7,12 +7,18 @@ import "./Admin.css";
 
 
 export default function RequestBook(){
+    //건의사항
 
+    //건의사항 목록
     const [requestList, setRequestList] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
+
+    //페이지 정보
     const [reqPage, setReqPage] = useState(1); 
     const [pageInfo, setPageInfo] = useState({});
 
+
+    //리스트 가져오기
     useEffect(() => {
             let options = {};
             options.url='http://localhost:9999/admin/requestList/'+reqPage;
@@ -31,7 +37,7 @@ export default function RequestBook(){
     }, [reqPage])
 
 
-
+    
     if (!requestList) {
         return <div>정보를 불러오는 중...</div>;
         }
