@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import './Common.css'; // 메인 컴포넌트에서도 Common.css를 사용
 import axios from "axios";
 import { useState, useEffect } from "react";
+import createInstance from "../../axios/Interceptor";
 
 //메인(루트 접근 시) 컴포넌트
 export default function Main () {
@@ -17,6 +18,26 @@ export default function Main () {
     //도서 추천용
     const [recommendedBooks, setRecommendedBooks] = useState([]);
     const [bestsellerBooks, setBestsellerBooks] = useState([]);
+
+    //공지사항 리스트용 state변수
+    const [noticeList, setNoticeList] = useState([]);
+    const serverUrl = import.meta.env.VITE_BACK_SERVER;
+    const axiosInstacne = createInstance();
+
+    useEffect(function(){
+        let options = {};
+        options.url = serverUrl + "/notice/noticeList"
+        options.method = "get"
+
+        axiosInstacne(options)
+        .then(function(res){
+            console.log(res.data.resData);
+            setNoticeList(res.data.resData);
+        })
+        .catch(function(err){
+            console.log(err);
+        })
+    },[])
 
 
     useEffect(function(){
@@ -70,7 +91,7 @@ export default function Main () {
                             <img src="/icons/icon_request_book.png" alt="희망도서 신청" />
                             <span>희망도서 신청</span>
                         </Link>
-                        <Link to="/news" className="menu-icon-item">
+                        <Link to="/board/notice/list" className="menu-icon-item">
                             <img src="/icons/icon_notice.png" alt="공지사항" />
                             <span>공지사항</span>
                         </Link>
@@ -116,20 +137,21 @@ export default function Main () {
                     <div className="notice-board">
                         <h2 className="section-title">공지사항</h2>
                         <ul>
-                            <li><Link to="#">'Why?' 미지급자 및 '성' 도서를 포함한 정좌동 책바구니 도착.</Link></li>
-                            <li><Link to="#">도서관 운영 및 학사일정 관련 지침 현행화 안내.</Link></li>
-                            <li><Link to="#">도서관 이용 수칙 변경 안내.</Link></li>
-                            <li><Link to="#">도서관 자원봉사자 모집 안내(상시)</Link></li>
-                            <li><Link to="#">중앙광장 열람실 휴실 안내 (2025-07-22)</Link></li>
+                        {noticeList.slice(0, 5).map((notice) => (
+                            <li key={notice.boardNo}>
+                            <Link to={`/board/notice/view/${notice.boardNo}`}>
+                                {notice.boardTitle}
+                            </Link>
+                            </li>
+                        ))}
                         </ul>
                     </div>
+                    
                     <div className="campaign-ad">
                         <h2 className="section-title">진행중인 캠페인</h2>
-                        {/* 캠페인 이미지, 실제 이미지 경로로 변경 */}
                         <img src="/images/campaign_bookwave.png" alt="진행중인 캠페인 북웨이브" />
                     </div>
                 </section>
-
             </div>
         </main>
     );

@@ -363,4 +363,18 @@ public class NoticeController { // 클래스 이름 BoardController -> NoticeCon
 		}
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
+	
+	
+	@GetMapping("/noticeList")
+	public ResponseEntity<ResponseDto> selectNoticeList(){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "게시글 조회 중 오류가 발생하였습니다.", null, "error");
+		
+		try {
+			ArrayList<BoardDto> noticeList = service.selectNoticeList();
+			res = new ResponseDto(HttpStatus.OK, "", noticeList, "success");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
 }
