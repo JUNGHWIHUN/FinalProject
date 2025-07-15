@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.iei.book.model.dto.Book;
 import kr.or.iei.book.model.dto.BookComment;
+import kr.or.iei.book.model.dto.ReportDto;
 import kr.or.iei.book.model.service.BookService;
 import kr.or.iei.common.annotation.NoTokenCheck;
 import kr.or.iei.common.model.dto.ResponseDto;
@@ -169,7 +170,44 @@ public class BookController {
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
 	
-	
+    // 서평 신고 처리 엔드포인트
+    @PostMapping("/reportComment") // 프론트엔드에서 호출할 URL과 일치시킵니다.
+    public ResponseEntity<Map<String, Object>> reportComment(@RequestBody ReportDto reportDTO) {
+        Map<String, Object> response = new HashMap<>();
+        String clientMsg;
+        String alertIcon;
+
+        // 로그인 여부, 신고자 ID 등의 유효성 검사는 프론트에서 일차적으로 처리했지만,
+        // 백엔드에서도 한번 더 검증하는 것이 좋습니다.
+        if (reportDTO.getReportedMemberId() == null || reportDTO.getReportedMemberId().trim().isEmpty()) {
+            clientMsg = "로그인 정보가 유효하지 않습니다.";
+            alertIcon = "error";
+            response.put("clientMsg", clientMsg);
+            response.put("alertIcon", alertIcon);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        try {
+            int result = service.reportComment(reportDTO);
+            if (result > 0) {
+                clientMsg = "서평 신고가 성공적으로 접수되었습니다.";
+                alertIcon = "success";
+            } else {
+                clientMsg = "서평 신고에 실패했습니다. 다시 시도해주세요.";
+                alertIcon = "error";
+            }
+        } catch (Exception e) {
+            System.err.println("서평 신고 중 서버 오류 발생: " + e.getMessage());
+            e.printStackTrace();
+            clientMsg = "서평 신고 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+            alertIcon = "error";
+        }
+
+        response.put("clientMsg", clientMsg);
+        response.put("alertIcon", alertIcon);
+        return ResponseEntity.ok(response);
+    }
+
 	
     //이 분야의 인기 도서 조회
     @GetMapping("/popular/{genreCode}")

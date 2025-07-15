@@ -76,10 +76,10 @@ header {
     font-weight: bold;
     cursor: pointer;
     white-space: nowrap;
-}
 
-#simple-search-form-wrap form button.search-text-btn:hover {
-    background-color: #8cc46d;
+    cursor: default; /* 커서를 기본(화살표) 모양으로 변경 */
+    transition: none; /* 모든 transition 효과 제거 (호버 시 색 변하는 것 방지) */
+    border-radius: 0px; /* 모서리를 둥글지 않게 (원하는 각진 정도로 조절) */
 }
 
 #simple-search-form-wrap form input {
@@ -585,6 +585,10 @@ footer {
     height: auto;
     border-radius: 4px;
     margin-top: 10px;
+}
+
+.campaign-ad .section-title{
+    justify-content: start;
 }
 
 

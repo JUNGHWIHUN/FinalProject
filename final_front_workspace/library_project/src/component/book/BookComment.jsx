@@ -3,6 +3,8 @@ import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
 import Swal from "sweetalert2";
 import PageNavi from "../common/PageNavi";
+import Modal from 'react-modal';
+
 
 //도서 상세정보의 서평란 관리용 부모 컴포넌트
 export default function Comment (props) {
@@ -169,6 +171,12 @@ function CommentList({ callNo, axiosInstance, serverUrl, isLogined, loginMember,
     //서평 페이지네이션 정보
     const [pageInfo, setPageInfo] = useState({}); 
 
+    // ---- 신고 관련 상태 추가 ----
+    const [isReportModalOpen, setIsReportModalOpen] = useState(false); // 신고 모달 열림/닫힘 상태
+    const [reportReason, setReportReason] = useState(""); // 신고 사유 입력값
+    const [currentReportedComment, setCurrentReportedComment] = useState(null); // 현재 신고할 댓글 정보
+
+
     //callNo, currentPage, refreshTrigger 변경 시 서평 목록 조회
     useEffect(() => {
         if (!callNo) {
@@ -230,6 +238,90 @@ function CommentList({ callNo, axiosInstance, serverUrl, isLogined, loginMember,
         });
     };
 
+//서평 신고 함수 (신고 모달 열기)
+    function report(comment){
+        if (!isLogined) {
+            Swal.fire({
+                title: '알림',
+                text: '로그인이 필요합니다.',
+                icon: 'warning',
+                confirmButtonText: '확인'
+            });
+            return;
+        }
+        setCurrentReportedComment(comment); // 어떤 댓글을 신고할지 저장
+        setReportReason(""); // 모달 열기 전에 사유 초기화
+        setIsReportModalOpen(true); // 신고 모달 열기
+    }
+
+    // 신고 사유 입력 핸들러
+    const handleReportReasonChange = (e) => {
+        setReportReason(e.target.value);
+    };
+
+    // 신고 제출 함수
+    const submitReport = () => {
+        if (reportReason.trim() === "") {
+            Swal.fire({
+                title: '알림',
+                text: '신고 사유를 입력해주세요.',
+                icon: 'warning',
+                confirmButtonText: '확인'
+            });
+            return;
+        }
+
+        if (reportReason.length > 50) {
+            Swal.fire({
+                title: '알림',
+                text: '신고 사유는 50자를 초과할 수 없습니다.',
+                icon: 'warning',
+                confirmButtonText: '확인'
+            });
+            return;
+        }
+        
+        // 백엔드로 전송할 데이터 구성
+        const reportData = {
+            reportReason: reportReason,
+            reportedCommentNo: currentReportedComment.commentNo, // 신고된 댓글 번호
+            reportedCommentCallNo: callNo, // 신고된 서평이 작성된 책 청구기호
+            reportedMemberId: loginMember.memberId // 신고한 회원 아이디
+        };
+
+        // 백엔드 API 호출
+        axiosInstance.post(serverUrl + '/book/reportComment', reportData) // 실제 엔드포인트에 따라 변경 필요
+        .then(function(res){
+            Swal.fire({
+                title: '알림',
+                text: res.data.clientMsg || '서평 신고가 완료되었습니다.', 
+                icon: res.data.alertIcon || 'success',
+                confirmButtonText: '확인'
+            }).then(() => {
+                setIsReportModalOpen(false); // 모달 닫기
+                setCurrentReportedComment(null); // 신고 댓글 정보 초기화
+                setReportReason(""); // 사유 초기화
+                // 필요하다면 commentCheck()를 호출하여 목록을 갱신할 수 있습니다.
+            });
+        })
+        .catch(function(err){
+            console.error("서평 신고 중 오류 발생:", err);
+            Swal.fire({
+                title: '오류',
+                text: '서평 신고에 실패했습니다. 다시 시도해주세요.',
+                icon: 'error',
+                confirmButtonText: '확인'
+            });
+        });
+    };
+
+    // 신고 모달 닫기 함수
+    const closeReportModal = () => {
+        setIsReportModalOpen(false);
+        setReportReason(""); // 사유 초기화
+        setCurrentReportedComment(null); // 댓글 정보 초기화
+    };
+
 
     return (
         <div className="comment-list-container"> {/* 서평 목록 전체를 감싸는 div */}
@@ -257,7 +349,7 @@ function CommentList({ callNo, axiosInstance, serverUrl, isLogined, loginMember,
                                         </>
                                         :
                                         // 로그인하지 않았거나 다른 작성자의 서평일 경우
-                                        <button className="btn-comment-action btn-report">신고</button>
+                                        <button className="btn-comment-action btn-report" onClick={() => report(comment)}>신고</button>
                                     }
                                 </div>
                             </div>
@@ -274,6 +366,33 @@ function CommentList({ callNo, axiosInstance, serverUrl, isLogined, loginMember,
                     <PageNavi pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage} />
                 </div>
             )}
+
+<Modal
+    isOpen={isReportModalOpen}
+    onRequestClose={closeReportModal}
+    contentLabel="서평 신고"
+    className="report-modal"
+    overlayClassName="report-modal-overlay"
+>
+    <div className="modal-header"> {/* 헤더 클래스 추가 */}
+        <h2 className="modal-title">서평 신고</h2> {/* 타이틀 클래스 추가 */}
+    </div>
+    <div className="modal-content-area modal-body"> {/* 콘텐츠 영역 공통 클래스 및 개별 클래스 적용 */}
+        <p className="modal-label">신고 사유를 입력해주세요 (최대 50자):</p> {/* p 태그에 modal-label 클래스 적용 */}
+        <textarea
+            className="modal-input report-reason-textarea" // 공통 입력 필드 클래스 및 개별 클래스 적용
+            value={reportReason}
+            onChange={handleReportReasonChange}
+            maxLength={50}
+            placeholder="신고 사유를 자세히 입력해주세요."
+        />
+    </div>
+    <div className="modal-actions modal-footer"> {/* 버튼 그룹 공통 클래스 및 개별 클래스 적용 */}
+        <button className="btn-modal-confirm btn-report-submit" onClick={submitReport}>신고</button> {/* 공통 버튼 클래스 및 개별 클래스 적용 */}
+        <button className="btn-modal-cancel btn-report-cancel" onClick={closeReportModal}>취소</button> {/* 공통 버튼 클래스 및 개별 클래스 적용 */}
+    </div>
+</Modal>
+
         </div>
     );
 } 

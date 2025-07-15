@@ -1,5 +1,6 @@
 import { use, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function SearchDetail (){
 
@@ -42,7 +43,18 @@ export default function SearchDetail (){
 
     //검색 정보 제출 함수 : navigate 로 이동하며 저장된 book 객체를 함께 전달
     function search (){
-        navigate('/book/searchResultList', {state: {searchCriteria : book}}) //searchCriteria : 검색조건/키워드 전달 객체
+
+        if(book.titleInfo == "" && book.authorInfo == "" && book.pubInfo == "" &&
+            book.ISBN == "" && book.pubYearFrom == "" && book.pubYearTo ==""){
+            Swal.fire({
+                title: '알림',
+                text: '검색어를 입력해주세요', 
+                icon: 'warning', 
+                confirmButtonText: '확인'
+            })
+        }else{
+            navigate('/book/searchResultList', {state: {searchCriteria : book}}) //searchCriteria : 검색조건/키워드 전달 객체
+        }
     }
     
     //입력값 초기화 함수

@@ -71,10 +71,6 @@ export default function SuggestionList() {
     function boardView(board){
         if(board.isSecret === 'Y'){
             if(board.boardWriter == loginMember.memberNo || loginMember.isAdmin === 'T'){
-                console.log(board);
-                console.log('작성자' + board.boardWriter);
-                console.log(loginMember.memberNo);
-                console.log(loginMember.isAdmin);
                 navigate('/board/suggestion/view/' + board.boardNo);
             }else{
                 Swal.fire({

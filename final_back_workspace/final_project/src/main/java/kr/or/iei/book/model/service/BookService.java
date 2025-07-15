@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import kr.or.iei.book.model.dao.BookDao;
 import kr.or.iei.book.model.dto.Book;
 import kr.or.iei.book.model.dto.BookComment;
+import kr.or.iei.book.model.dto.ReportDto;
 import kr.or.iei.common.model.dto.PageInfoDto;
 import kr.or.iei.common.util.PageUtil;
 
@@ -122,6 +123,13 @@ public class BookService {
 	public int deleteComment(String commentNo) {
 		return dao.deleteComment(commentNo);
 	}
+    
+    // 서평 신고를 처리하는 메서드
+    public int reportComment(ReportDto reportDTO) {
+        // 여기에서 필요하다면 추가적인 비즈니스 로직 (예: 신고 내용 필터링, 중복 신고 방지 등)을 구현할 수 있습니다.
+        // 현재는 단순히 DAO를 호출하여 DB에 삽입합니다.
+        return dao.insertReport(reportDTO);
+    }
 
 	//이 분야 인기도서 조회
 	public List<Book> getPopularBooksByGenre(String genreCode) {
@@ -132,4 +140,6 @@ public class BookService {
 	public List<Book> getNewArrivalsByGenre(String genreCode) {
         return dao.selectNewArrivalBooksByGenre(genreCode);
 	}
+	
+	
 }

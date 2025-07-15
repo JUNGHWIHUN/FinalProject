@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import kr.or.iei.book.model.dto.Book;
 import kr.or.iei.book.model.dto.BookComment;
+import kr.or.iei.book.model.dto.ReportDto;
 
 @Mapper
 public interface BookDao {
@@ -36,5 +37,8 @@ public interface BookDao {
     List<Book> selectNewArrivalBooksByGenre(String genreCode);
 
 	int hasBeenLentCheck(BookComment comment);
+	
+    int insertReport(ReportDto reportDTO);
+
 
 }

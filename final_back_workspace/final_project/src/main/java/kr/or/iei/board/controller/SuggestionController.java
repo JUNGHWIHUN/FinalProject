@@ -37,9 +37,7 @@ public class SuggestionController {
     // 건의사항 게시글 목록 조회
     @GetMapping("/list/{reqPage}")
     @NoTokenCheck
-    // -- 변경 시작: loginMemberNo, isAdmin 파라미터 추가, HttpSession 제거 --
     public ResponseEntity<ResponseDto> selectSuggestionList(@PathVariable int reqPage, @RequestParam(required = false) String loginMemberNo, @RequestParam(required = false, defaultValue = "F") String isAdmin) {
-    // -- 변경 끝 --
         ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "건의사항 조회 중 통신 오류가 발생하였습니다.", null, "error");
 
         try {
@@ -56,9 +54,7 @@ public class SuggestionController {
 
     // 건의사항 게시글 작성
     @PostMapping
-    // -- 변경 시작: loginMemberNo, isAdmin 파라미터 추가, HttpSession 제거 --
     public ResponseEntity<ResponseDto> insertSuggestion(@ModelAttribute BoardDto board, @RequestParam String loginMemberNo, @RequestParam String isAdmin) {
-    // -- 변경 끝 --
         ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "건의사항 등록 중 통신 오류가 발생하였습니다", null, "error");
 
         // 로그인 여부 확인 (loginMemberNo가 비어있으면 로그인 안 된 것으로 간주)
@@ -84,19 +80,11 @@ public class SuggestionController {
     // 건의사항 게시글 1개 조회
     @GetMapping("/{boardNo}")
     @NoTokenCheck
-    // -- 변경 시작: loginMemberNo, isAdmin 파라미터 추가, HttpSession 제거 --
     public ResponseEntity<ResponseDto> selectOneSuggestion(@PathVariable int boardNo, @RequestParam(required = false) String loginMemberNo, @RequestParam(required = false, defaultValue = "F") String isAdmin) {
-    // -- 변경 끝 --
         ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "건의사항 정보 조회 중 통신 오류가 발생했습니다.", null, "error");
 
         try {
             BoardDto board = service.selectOneSuggestion(boardNo, loginMemberNo, isAdmin);
-            
-            System.out.println("컨트롤러: "+board.getBoardWriter());
-
-            if (board == null) {
-                return new ResponseEntity<ResponseDto>(new ResponseDto(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다.", null, "error"), HttpStatus.NOT_FOUND);
-            }
 
             res = new ResponseDto(HttpStatus.OK, "", board, "");
         } catch (Exception e) {
@@ -106,37 +94,10 @@ public class SuggestionController {
         return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
     }
 
-    // 건의사항 게시글 수정 (엔드포인트 주석 처리 유지)
-    /*
-    @PatchMapping
-    public ResponseEntity<ResponseDto> updateSuggestion(@ModelAttribute BoardDto board, @RequestParam String isAdmin) {
-        // ... (기존 수정 로직 - 파라미터만 변경) ...
-        ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "건의사항 수정 중 통신 오류가 발생했습니다.", false, "error");
-
-        if (!"T".equals(isAdmin)) { // 관리자 권한 체크
-            return new ResponseEntity<ResponseDto>(new ResponseDto(HttpStatus.FORBIDDEN, "수정 권한이 없습니다.", false, "error"), HttpStatus.FORBIDDEN);
-        }
-
-        try {
-            int result = service.updateSuggestion(board, isAdmin); // isAdmin 파라미터 전달
-
-            if (result > 0) {
-                res = new ResponseDto(HttpStatus.OK, "건의사항이 수정되었습니다.", true, "success");
-            } else {
-                res = new ResponseEntity<ResponseDto>(new ResponseDto(HttpStatus.FORBIDDEN, "수정 권한이 없거나 수정에 실패했습니다.", false, "error"), HttpStatus.FORBIDDEN);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
-    }
-    */
 
     // 건의사항 게시글 삭제
     @DeleteMapping("/{boardNo}")
-    // -- 변경 시작: isAdmin 파라미터 추가, HttpSession 제거 --
     public ResponseEntity<ResponseDto> deleteSuggestion(@PathVariable int boardNo, @RequestParam String isAdmin) {
-    // -- 변경 끝 --
         ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "건의사항 삭제 중 통신 오류가 발생했습니다.", false, "error");
 
         // 1. 관리자 권한 체크
@@ -160,13 +121,10 @@ public class SuggestionController {
         return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
     }
 
-    // --- 건의사항 답변 API ---
 
     // 답변 등록
     @PostMapping("/comments")
-    // -- 변경 시작: isAdmin 파라미터 추가, HttpSession 제거 --
     public ResponseEntity<ResponseDto> insertComment(@RequestBody BoardCommentDto comment, @RequestParam String isAdmin) {
-    // -- 변경 끝 --
         ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "답변 등록 중 통신 오류가 발생했습니다.", null, "error");
 
         // 관리자 권한 체크
@@ -210,9 +168,7 @@ public class SuggestionController {
 
     // 답변 삭제
     @DeleteMapping("/comments/{commentNo}")
-    // -- 변경 시작: isAdmin 파라미터 추가, HttpSession 제거 --
     public ResponseEntity<ResponseDto> deleteComment(@PathVariable int commentNo, @RequestParam String isAdmin) {
-    // -- 변경 끝 --
         ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "답변 삭제 중 통신 오류가 발생했습니다.", false, "error");
 
         // 관리자 권한 체크

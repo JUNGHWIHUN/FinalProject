@@ -94,13 +94,12 @@ export default function AdminPage(){
     return (
         <div className="admin-container">
             <div className="admin-menu">
-                <a href="#" onClick={(e) => { e.preventDefault(); setMode("allBook"); }}>도서관리</a> |
-                <a href="#" onClick={(e) => { e.preventDefault(); setMode("allMember"); }}>회원관리</a> |
-                <a href="#" onClick={(e) => { e.preventDefault(); setMode("suggestion"); }}>건의 사항</a> |
-                <a href="#" onClick={(e) => { e.preventDefault(); setMode("bookRequest"); }}>희망도서</a> |
-                <a href="#" onClick={(e) => { e.preventDefault(); setMode("report"); }}>신고</a> |
-                <a href="#" onClick={(e) => { e.preventDefault(); setMode("lend"); }}>대출</a> |
-                <a href="#" onClick={(e) => { e.preventDefault(); setMode("return"); }}>반납</a>
+                <a href="#" onClick={(e) => { e.preventDefault(); setMode("allBook"); }}>도서관리</a>|&nbsp;
+                <a href="#" onClick={(e) => { e.preventDefault(); setMode("allMember"); }}> 회원관리</a>|&nbsp;
+                <a href="#" onClick={(e) => { e.preventDefault(); setMode("bookRequest"); }}> 희망도서</a>|&nbsp;
+                <a href="#" onClick={(e) => { e.preventDefault(); setMode("report"); }}> 신고</a>|&nbsp;
+                <a href="#" onClick={(e) => { e.preventDefault(); setMode("lend"); }}> 대출</a>|&nbsp;
+                <a href="#" onClick={(e) => { e.preventDefault(); setMode("return"); }}> 반납</a>
             </div>
 
             {mode === "allBook" && <AllbookPage />}
