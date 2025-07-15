@@ -5,9 +5,12 @@ import "./Admin.css";
 
 export default function NewBook(){
     //도서 등록 페이지
+
+    //새 책에 넣을 정보
     const [newBook, setNewBook] = useState({});
     const navigate = useNavigate();
 
+    //정보 밀어넣기
     function handleChange(e) {
         const { name, value } = e.target;
         setNewBook(prevState => ({
@@ -16,6 +19,7 @@ export default function NewBook(){
         }));
     }
 
+    //새 책 등록
     function inputNewBook(){
          const confirmUpdate = window.confirm("정말 등록하시겠습니까?");
         if (!confirmUpdate) {

@@ -6,6 +6,8 @@ import "./Admin.css";
 
 export default function FixBookDetail(){
   
+  //useLocation = URL정보와 state 가져오기
+  //location.state?.bookDetails; ==이전 페이지에서 현재 페이지로 넘어올 때 넘긴 데이터
     const location = useLocation();
     const bookDetails = location.state?.bookDetails;
     const navigate = useNavigate();
@@ -19,6 +21,7 @@ export default function FixBookDetail(){
     setUpdateBook({ ...form });
   }
 
+  //수정을 위한 정보 밀어넣기
   function handleChange(e){
     const { name, value } = e.target;
         setUpdateBook((prev) => ({
@@ -28,6 +31,7 @@ export default function FixBookDetail(){
 
   }
 
+  //수정하기
   function fixbook(){
 
         const confirmUpdate = window.confirm("정말 수정하시겠습니까?");
@@ -53,6 +57,7 @@ export default function FixBookDetail(){
             });
   }
 
+  //삭제하기
   function deleteBook(){
      const confirmUpdate = window.confirm("정말 삭제하시겠습니까?");
         if (!confirmUpdate) {

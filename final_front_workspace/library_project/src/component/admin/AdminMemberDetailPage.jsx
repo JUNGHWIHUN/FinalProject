@@ -12,7 +12,9 @@ export default function AdminMemberDetailPage(){
     const from = queryParams.get("from");  // "member" 또는 "overdue"
     const bookNo = queryParams.get("bookNo"); // 있을 수도 있고, 없을 수도 있음
 
-    const [memberInfo, setMemberInfo] = useState(null);
+
+    //유저 정보 ,책 정보
+    const [memberInfo, setMemberInfo] = useState(null); 
     const [bookInfo, setBookInfo] = useState(null);
 
     const [canBorrow, setCanBorrow] = useState("");
@@ -21,6 +23,7 @@ export default function AdminMemberDetailPage(){
 
     const [refreshTrigger, setRefreshTrigger] = useState(0);
 
+    //유저의 번호 기준으로 정보 불러오기
     useEffect(() => {
             let options = {};
             options.url='http://localhost:9999/admin/memberDetails/'+ memberNo.memberNo;
@@ -37,6 +40,7 @@ export default function AdminMemberDetailPage(){
 
     }, [memberNo, refreshTrigger])
 
+    //필요한 정보 3개만 따로 추출
     useEffect(() => {
         if (memberInfo) {
         setCanBorrow(memberInfo.canBorrow);
@@ -46,7 +50,7 @@ export default function AdminMemberDetailPage(){
         console.log(memberInfo);
     }, [memberInfo, refreshTrigger]);
 
-    
+    //대출 받은경우 책정보 같이 불러오기
      useEffect(() => {
         if(from === "overdue" && bookNo) {
             let options = {};

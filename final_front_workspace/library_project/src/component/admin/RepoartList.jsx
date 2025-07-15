@@ -6,12 +6,16 @@ import PageNaviNew from './PageNaviNew';
 import "./Admin.css";
 
 export default function ReportList(){
+    //신고 목록 보기
 
+    //신고 목록 
     const [reportList, setReportList] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
+    //페이지 정보
     const [reqPage, setReqPage] = useState(1); 
     const [pageInfo, setPageInfo] = useState({});
 
+    //리스트 불러오기
     useEffect(() => {
             let options = {};
             options.url='http://localhost:9999/admin/reportList/'+reqPage;
@@ -62,11 +66,13 @@ export default function ReportList(){
 }
 
 function ListItem(props){
+    //받아온 리스트 가져오기
     const list = props.list;
 
     //확인 버튼 상태 변경용
     const [isCompleted, setIsCompleted] = useState(false);
 
+    //삭제
      function deleteList(){
         const confirmUpdate = window.confirm("정말 삭제하시겠습니까?");
         if (!confirmUpdate) {

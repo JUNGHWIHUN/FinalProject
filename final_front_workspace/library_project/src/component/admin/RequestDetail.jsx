@@ -4,16 +4,23 @@ import axios from "axios";
 import "./Admin.css";
 
 export default function RequestDetail(){
+
+  //페이지에서 넘겨받은 정보
     const location = useLocation();
     const list = location.state.list;
 
+
+    //반려 승인 전환. 기본값 승인
     const [selectType, setSelectType] = useState("yes");
     const [isCompleted, setIsCompleted] = useState(false);
 
+
+    //반려-승인 전환
      function keywordType(e){
       setSelectType(e.target.value);
     }
 
+    //수정하기
      function updateList(){
         const confirmUpdate = window.confirm("정말 수정하시겠습니까?");
         if (!confirmUpdate) {
