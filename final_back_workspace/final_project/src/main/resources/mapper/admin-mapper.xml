@@ -571,15 +571,17 @@
 	<select id="selectReportList" resultType="AdRepartDto">
 	SELECT 	comment_report_no  		 AS repartNo,
             report_reason   		 AS repartReson,
-            comment_no  	 		 AS commentNo,
-            reported_member_no 	 	 AS repoterNo
+            reported_comment_no  	 		 AS commentNo,
+            reported_comment_call_no AS commentCallNo,
+            reported_member_id 		 AS repoterId
     FROM (
         SELECT rownum rnum, a.*
         FROM (
             SELECT comment_report_no,
                    report_reason,
-                   comment_no,
-                   reported_member_no
+                   reported_comment_no,
+                   reported_comment_call_no,
+                   reported_member_id
             FROM tbl_report 
             ORDER BY comment_report_no DESC
         ) a

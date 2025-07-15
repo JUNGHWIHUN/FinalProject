@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PageNaviNew from './PageNaviNew';
 import "./Admin.css";
+import { useNavigate } from "react-router-dom";
 
 export default function ReportList(){
     //신고 목록 보기
@@ -11,6 +12,9 @@ export default function ReportList(){
     //신고 목록 
     const [reportList, setReportList] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
+
+    const navigate = useNavigate();
+
     //페이지 정보
     const [reqPage, setReqPage] = useState(1); 
     const [pageInfo, setPageInfo] = useState({});
@@ -72,6 +76,7 @@ function ListItem(props){
     //확인 버튼 상태 변경용
     const [isCompleted, setIsCompleted] = useState(false);
 
+    const navigate = useNavigate();
     //삭제
      function deleteList(){
         const confirmUpdate = window.confirm("정말 삭제하시겠습니까?");
@@ -96,10 +101,15 @@ function ListItem(props){
             });
     }
 
+    function goDetail(p){
+        console.log("그거"+p);
+        navigate("/book/searchResultDetail/"+p);
+    }
+
     return(
         <>
         <tr>
-             <td>{list.repartNo}</td>
+            <td onClick={() => goDetail(list.commentCallNo)}>{list.repartNo}</td>
             <td>{list.repartReson}</td>
             <td>{list.commentNo}</td>
             <td>{list.repoterNo}</td>
