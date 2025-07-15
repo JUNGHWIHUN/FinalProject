@@ -183,4 +183,9 @@ public class NoticeService {
 		// --- 디버깅 끝 ---
         return dao.updateIsImportant(boardNo, isImportant); 
 	}
+
+	public ArrayList<BoardDto> selectNoticeList() {
+		// TODO Auto-generated method stub
+		return dao.selectNoticeList();
+	}
 }

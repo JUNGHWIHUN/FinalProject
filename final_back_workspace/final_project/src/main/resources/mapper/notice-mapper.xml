@@ -182,5 +182,19 @@ select b.board_no,
 		 #{boardFileNo}
 		 </foreach>
 	</delete>
+	
+	
+	<!-- 게시글 리스트 조회 -->
+	<select id="selectNoticeList" resultType="BoardDto">
+	select  b.board_no boardNo,
+           b.board_title boardTitle,
+           b.MEMBER_NO boardWriter,
+           b.board_date boardDate,
+           b.IS_IMPORTANT isImportant,
+           b.IS_SECRET isSecret,
+           b.BOARD_CODE boardCode,  m.MEMBER_ID boardWriterId
+           from tbl_board b
+           join TBL_MEMBER m on b.MEMBER_NO = m.MEMBER_NO
+	</select>
 
     </mapper>
