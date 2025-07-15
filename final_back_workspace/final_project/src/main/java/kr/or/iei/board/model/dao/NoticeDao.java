@@ -50,5 +50,7 @@ public interface NoticeDao { // 클래스 이름 BoardDao -> NoticeDao로 변경
     // 두 개 이상의 파라미터를 받을 때는 @Param을 사용하여 매퍼에서 참조할 이름을 명시하는 것이 좋습니다.
     int updateIsImportant(@Param("boardNo") int boardNo, @Param("isImportant") String isImportant);
 
+	ArrayList<BoardDto> selectNoticeList();
+
 
 }

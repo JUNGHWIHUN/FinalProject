@@ -27,7 +27,6 @@ public interface SuggestionDao {
 
     // 특정 건의사항 게시글의 상세 정보를 조회합니다.
     // DAO는 순수하게 DB 조회만 담당하며, 권한 처리는 서비스 계층에서 수행합니다.
- // SuggestionDao.java
     BoardDto selectOneSuggestion(@Param("boardNo") int boardNo,
                                  @Param("loginMemberNo") String loginMemberNo,
                                  @Param("isAdmin") String isAdmin);
