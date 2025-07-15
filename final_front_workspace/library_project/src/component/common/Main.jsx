@@ -31,7 +31,6 @@ export default function Main () {
 
         axiosInstacne(options)
         .then(function(res){
-            console.log(res.data.resData);
             setNoticeList(res.data.resData);
         })
         .catch(function(err){
