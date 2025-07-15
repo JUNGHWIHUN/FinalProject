@@ -235,5 +235,23 @@
     )
     WHERE rnum &lt;= 5
     </select>
+    
+    <!-- 서평 신고 -->
+    <insert id="insertReport" parameterType="ReportDto">
+    
+     INSERT INTO TBL_REPORT (
+            COMMENT_REPORT_NO,
+            REPORT_REASON,
+            REPORTED_COMMENT_NO,
+            REPORTED_COMMENT_CALL_NO,
+            REPORTED_MEMBER_ID
+        ) VALUES (
+            'R' || LPAD(seq_comment_report.NEXTVAL, 9, '0'),
+            #{reportReason},
+            #{reportedCommentNo},
+            #{reportedCommentCallNo},
+            #{reportedMemberId}
+        )
+    </insert>
 
 </mapper>
