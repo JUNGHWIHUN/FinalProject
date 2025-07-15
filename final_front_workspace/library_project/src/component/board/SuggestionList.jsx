@@ -70,12 +70,12 @@ export default function SuggestionList() {
     //비밀글일 경우 글 확인 불가 로직
     function boardView(board){
         if(board.isSecret === 'Y'){
-            if(board.boardWriter == loginMember.memberNo || loginMember.isAdmin === 'T'){
+            if(loginMember != null && board.boardWriter == loginMember.memberNo || loginMember != null && loginMember.isAdmin === 'T'){
                 navigate('/board/suggestion/view/' + board.boardNo);
             }else{
                 Swal.fire({
                     title: '알림',
-                    text: '비밀글입니다',
+                    text: '비밀글입니다. 작성자 및 관리자만 볼 수 있습니다.',
                     icon: 'warning'
                 })
             }

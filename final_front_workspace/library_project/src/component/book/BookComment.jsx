@@ -138,6 +138,8 @@ function CommentInput ({ callNo, axiosInstance, serverUrl, loginMember, isLogine
         })
     }
 
+    
+
     return (
         // Comment 컴포넌트에서 이미 section-title을 포함한 comment-section을 감싸고 있으므로 이 div는 제거
         <div className="comment-input-container"> {/* 서평 입력 컨테이너 */}
@@ -147,7 +149,7 @@ function CommentInput ({ callNo, axiosInstance, serverUrl, loginMember, isLogine
             }}>
                 <div className="comment-input-area">
                     <textarea type="text" placeholder="비방, 욕설, 인신공격성 글은 삭제 처리될 수 있습니다." id='commentContent' className="comment-content-textarea"
-                    value={commentInputValues.commentContent} onFocus={isLoginedCheck} onChange={commentInput}
+                    value={commentInputValues.commentContent} onMouseDown={isLoginedCheck} onChange={commentInput}
                     maxLength={100}/>
                     <button type='submit'className="btn-comment-submit">{updateComment ? "수정" : "등록"}</button>
                     {updateComment && ( // 수정 모드일 때만 취소 버튼 노출
