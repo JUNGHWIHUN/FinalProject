@@ -136,7 +136,7 @@ export default function MyInfo() {
 
                 {/* 비밀번호 수정 버튼 그룹 */}
                 <div className="input-group password-change-group">
-                    <button type="button" onClick={() => navigate("/myPage/pwChg")} className="btn-password-change">
+                    <button type="button" onClick={() => navigate("/mypage/pwChg")} className="btn-password-change">
                         비밀번호 수정
                     </button>
                 </div>

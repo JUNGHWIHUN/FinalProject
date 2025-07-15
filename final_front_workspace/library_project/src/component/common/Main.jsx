@@ -94,7 +94,7 @@ export default function Main () {
 
                 {/* 3. 베스트 셀러 섹션 */}
                 <section className="bestseller-section">
-                    <h2 className="section-title">베스트 셀러</h2>
+                    <h2 className="section-title">인기 도서</h2>
                     <div className="bestseller-books-list">
                         {bestsellerBooks.slice(0, 4).map(function(book, index) {
                             return (
