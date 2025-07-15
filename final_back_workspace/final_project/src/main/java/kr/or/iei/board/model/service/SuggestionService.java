@@ -44,18 +44,7 @@ public class SuggestionService {
         // 비밀글인 경우 본인만 보이거나 관리자만 보이도록 쿼리 로직 필요
 		ArrayList<BoardDto> boardList = dao.selectSuggestionList(pageInfo, loginMemberNo);
 		
-		// 비밀글 처리 로직 (프론트에서 처리할 수도 있지만, 여기에서 데이터 가공도 가능)
-        for (BoardDto board : boardList) {
-            // 로그인하지 않았거나, 관리자가 아니면서, 비밀글이고, 글쓴이가 본인이 아닌 경우
-            if ("Y".equals(board.getIsSecret()) &&
-                (loginMemberNo == null || (!"T".equals(isAdmin) && !board.getBoardWriter().equals(loginMemberNo)))
-            ) {
-                // 비밀글이지만 열람 권한이 없는 경우 제목 변경 (예: "비밀글입니다.")
-                board.setBoardTitle("비밀글입니다.");
-                board.setBoardContent("해당 게시글은 비밀글입니다."); // 내용도 비워둠
-                // 필요하다면 isSecret 값을 프론트에 전달하여 프론트에서 UI 변경 (예: 자물쇠 아이콘)
-            }
-        }
+		System.out.println(boardList.get(0).getBoardWriter());
 
 		HashMap<String, Object> boardMap = new HashMap<>();
 		boardMap.put("boardList", boardList);
@@ -96,33 +85,7 @@ public class SuggestionService {
      * @return 조회된 게시글 정보 (BoardDto), 권한 없는 경우 제목/내용이 변경되어 반환
      */
 	public BoardDto selectOneSuggestion(int boardNo, String loginMemberNo, String isAdmin) {
-		// -- 변경 시작: DAO 호출 시 모든 파라미터 전달 --
 		BoardDto board = dao.selectOneSuggestion(boardNo, loginMemberNo, isAdmin); 
-		// -- 변경 끝 --
-		
-        // 1. 게시글이 없는 경우
-		if (board == null) {
-			return null;
-		}
-
-        // 2. 다른 게시판의 글인 경우 (혹시 모를 상황 대비)
-        if (!"S".equals(board.getBoardCode())) {
-            return null; // 건의사항이 아닌 다른 게시판의 글이면 반환하지 않음
-        }
-
-        // 3. 비밀글 권한 체크
-        // 조건: 비밀글(isSecret='Y') 이면서
-        //      (로그인 안 했거나 OR 로그인 회원이 관리자가 아니면서 OR 로그인 회원이 글쓴이가 아님)
-        if ("Y".equals(board.getIsSecret()) &&
-            (loginMemberNo == null || (!"T".equals(isAdmin) && !board.getBoardWriter().equals(loginMemberNo)))
-        ) {
-            // 권한이 없는 경우, 내용 대신 비밀글임을 알리는 정보 반환
-            // DTO의 특정 필드만 변경하여 프론트에서 처리하도록 할 수 있습니다.
-            board.setBoardTitle("비밀글입니다.");
-            board.setBoardContent("해당 게시글은 비밀글입니다. 작성자 또는 관리자만 열람할 수 있습니다.");
-            // fileList 등 다른 민감 정보도 모두 비워야 할 경우 추가 처리
-            board.setFileList(null); 
-        }
 
 		return board;
 	}

@@ -31,7 +31,6 @@ export default function Main () {
 
         axiosInstacne(options)
         .then(function(res){
-            console.log(res.data.resData);
             setNoticeList(res.data.resData);
         })
         .catch(function(err){
@@ -84,24 +83,26 @@ export default function Main () {
                 <section className="main-features-section">
                     <div className="main-menu-icons">
                         <Link to="/book/searchDetail" className="menu-icon-item">
-                            <img src="/icons/icon_book_search.png" alt="도서 검색" />
-                            <span>도서 검색</span>
+                            <img src="src/image/SearchBook.png" alt="도서 검색" className="icons-img"/>
+                            <span className="menu-icon-item-span">도서 검색</span>
                         </Link>
                         <Link to="/requestBook/requestBookInfo" className="menu-icon-item">
-                            <img src="/icons/icon_request_book.png" alt="희망도서 신청" />
-                            <span>희망도서 신청</span>
+                            <img src="src/image/WishBook.png" alt="희망도서 신청" className="icons-img"/>
+                            <span className="menu-icon-item-span">희망도서 신청</span>
                         </Link>
+
                         <Link to="/board/notice/list" className="menu-icon-item">
-                            <img src="/icons/icon_notice.png" alt="공지사항" />
-                            <span>공지사항</span>
+                            <img src="src/image/Notice.png" alt="공지사항" className="icons-img"/>
+                            <span className="menu-icon-item-span">공지사항</span>
+
                         </Link>
-                        <Link to="#" className="menu-icon-item"> {/* 임시 링크 */}
-                            <img src="/icons/icon_faq.png" alt="묻고 답하기" />
-                            <span>묻고 답하기</span>
+                        <Link to="/board/suggestion/list" className="menu-icon-item"> {/* 임시 링크 */}
+                            <img src="src/image/Q&A.png" alt="묻고 답하기" className="icons-img"/>
+                            <span className="menu-icon-item-span"> 묻고 답하기</span>
                         </Link>
-                        <Link to="#" className="menu-icon-item"> {/* 임시 링크 */}
-                            <img src="/icons/icon_map.png" alt="찾아오시는 길" />
-                            <span>찾아오시는 길</span>
+                        <Link to="/libInfo/Location" className="menu-icon-item"> {/* 임시 링크 */}
+                            <img src="src/image/Location.png" alt="찾아오시는 길" className="icons-img"/>
+                            <span className="menu-icon-item-span">찾아오시는 길</span>
                         </Link>
                     </div>
 
@@ -115,7 +116,7 @@ export default function Main () {
 
                 {/* 3. 베스트 셀러 섹션 */}
                 <section className="bestseller-section">
-                    <h2 className="section-title">베스트 셀러</h2>
+                    <h2 className="section-title">인기 도서</h2>
                     <div className="bestseller-books-list">
                         {bestsellerBooks.slice(0, 4).map(function(book, index) {
                             return (
@@ -149,7 +150,10 @@ export default function Main () {
                     
                     <div className="campaign-ad">
                         <h2 className="section-title">진행중인 캠페인</h2>
-                        <img src="/images/campaign_bookwave.png" alt="진행중인 캠페인 북웨이브" />
+
+                        {/* 캠페인 이미지, 실제 이미지 경로로 변경 */}
+                        <img src="src/image/Campaign.jpg" alt="진행중인 캠페인 북웨이브" />
+
                     </div>
                 </section>
             </div>
