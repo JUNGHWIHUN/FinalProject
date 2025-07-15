@@ -64,10 +64,13 @@ export default function SearchResultList (){
             </div>
             <div className="board-list-wrap">
                 <ul className="posting-wrap">
-                    {searchResultList.map(function(book, index){
+                    {
+                    searchResultList == null || searchResultList.length == 0 ?
+                        <h2> 검색 결과가 없습니다</h2>
+                    : (searchResultList.map(function(book, index){
                         //책 1개에 대한 jsx를 BoardItem 이 반환한 jsx로
                         return <BookItem key={"book"+index} book={book} axiosInstance={axiosInstance} serverUrl={serverUrl}/>
-                    })}
+                    }))}
                 </ul>
             </div>
             <div className="board-paging-wrap">

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
-//import "./lentBookList.css"; 아래 MyPage.css 로 통합
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import "./MyPage.css"
@@ -72,15 +71,16 @@ export default function LentBookList() {
             .catch(function (err) {
                 console.log(err);
             });
-    }
-
+        }
+        console.log("리스트"+lentBookList);
+        
     return (
         <div className="lent-book-list">
             <h2>대출 현황</h2>
-            {lentBookList.map(function (lentBook, index) {
-                {if(lentBookList.size == 0){
-                    <h2>대출중인 도서가 없습니다</h2>
-                }}
+            {lentBookList.length == 0 ?
+                <p className="no-history-message">대출중인 도서가 없습니다.</p>
+            :
+            lentBookList.map(function (lentBook, index) {
                 
                 const today = new Date();
                 today.setHours(0,0,0,0);        //시간을 00시로 초기화

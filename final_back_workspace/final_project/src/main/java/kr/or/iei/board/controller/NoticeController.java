@@ -193,6 +193,7 @@ public class NoticeController { // 클래스 이름 BoardController -> NoticeCon
 	
 	// 파일 다운로드
 	@GetMapping("/file/{boardFileNo}")
+	@NoTokenCheck
 	public ResponseEntity<Resource> fileDown (@PathVariable int boardFileNo) throws FileNotFoundException{
 		// --- 디버깅 시작 ---
 		System.out.println("[NoticeController] fileDown 호출. boardFileNo: " + boardFileNo);
@@ -366,6 +367,7 @@ public class NoticeController { // 클래스 이름 BoardController -> NoticeCon
 	
 	
 	@GetMapping("/noticeList")
+	@NoTokenCheck
 	public ResponseEntity<ResponseDto> selectNoticeList(){
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "게시글 조회 중 오류가 발생하였습니다.", null, "error");
 		

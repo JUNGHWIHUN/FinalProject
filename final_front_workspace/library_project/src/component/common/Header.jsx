@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom"
 import useUserStore from "../../store/useUserStore";
 
 import './Common.css'
+
 import Swal from "sweetalert2";
 
 export default function Header(){
@@ -38,7 +39,16 @@ export default function Header(){
 
     //검색 정보 제출 함수 : navigate 로 이동하며 저장된 book 객체를 함께 전달
     function search (){
-        navigate('/book/searchResultList', {state: {searchCriteria : book}}) //searchCriteria : 검색조건/키워드 전달 객체
+        if(book.titleInfo == ""){
+            Swal.fire({
+                title: '알림',
+                text: '검색어를 입력하세요', 
+                icon: 'warning', 
+                confirmButtonText: '확인'
+            })
+        }else{
+            navigate('/book/searchResultList', {state: {searchCriteria : book}}) //searchCriteria : 검색조건/키워드 전달 객체
+        }
     }
 
     return (
@@ -47,7 +57,6 @@ export default function Header(){
                 <div className="header-logo-search-wrap">
                     <div className="header-logo">
                         <Link to="/">
-                            {/* 실제 로고 이미지 경로로 변경해주세요. 스크린샷에 맞춰 책 아이콘으로 변경할 수도 있습니다. */}
                             <img src="src/image/final_logo.png" alt="책 아이콘" className="book-icon-img" />
                         </Link>
                     </div>
@@ -61,7 +70,9 @@ export default function Header(){
                             <button type="button" className="search-text-btn">도서 검색</button> {/* 버튼으로 변경 */}
                             <label htmlFor='simple-search-criteria-input' className="sr-only">검색할 도서정보 입력</label>
                             <input type='text' id='simple-search-criteria-input' value={book.titleInfo} onChange={chgValue} placeholder="검색할 도서정보를 입력하세요" />
-                            <button type='submit' className="search-icon-btn">🔍</button>
+                            <button type='submit' className="search-icon-btn">
+                                <i className="material-icons">search</i>
+                            </button>
                         </form>
                     </div>
                 </div>
