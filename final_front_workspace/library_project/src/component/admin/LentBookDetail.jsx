@@ -87,7 +87,7 @@ export default function LentBookDetail() {
     <p>대출 가능: {book.canLent}</p>
     <p>비고: {book.remark}</p>
 
-    {book.canLent === 'T' && (
+    {(book.canLent === 'T' || book.canLent === 'R') && (
       <div className="lent-detail-input-group">
         대출자 번호 :
         <input

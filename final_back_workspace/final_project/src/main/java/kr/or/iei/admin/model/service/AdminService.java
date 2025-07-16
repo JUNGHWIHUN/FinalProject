@@ -61,6 +61,9 @@ public class AdminService {
 		
 		//등록
 		dao.insertLentBook(bookLenter);
+		//예약된 같은 청구기호의 책 삭제
+		dao.deletereBook(bookLenter);
+		
 		System.out.println("1단계 성공");
 		result++;
 		
@@ -98,10 +101,12 @@ public class AdminService {
 		dao.updateactual(lentBook.getLentbookNo());
 		System.out.println("성공1");
 		//예약여부가 있다면 처리 없음. 없다면 대출 가능상태로 변경.
+		//예약 여부 없음
 		if(lentBook.getReservation().equals("F")) {
 			dao.updatecanLend(lentBook.getCallNo());
 			System.out.println("성공2");
 		//예약여부가 있다면 실제 반납날자 업데이트
+		//예약 여부 있음.
 		}else if(lentBook.getReservation().equals("T")){
 			dao.updateReservationActualReturnDate(lentBook.getCallNo());
 		}
