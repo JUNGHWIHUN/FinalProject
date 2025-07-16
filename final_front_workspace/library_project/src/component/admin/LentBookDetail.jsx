@@ -64,7 +64,14 @@ export default function LentBookDetail() {
 
     axios(options)
     .then(function(res){
-      alert("대출이 완료되었습니다!");
+      console.log(res);
+      
+      if(res.data.resData > 0){
+        alert("대출이 완료되었습니다!");
+      } else {
+        alert("예약된 도서입니다");
+      }
+
     // 이후 페이지 이동이나 state 변경 필요 시 추가
     navigate("/adminPage")
 
@@ -74,10 +81,6 @@ export default function LentBookDetail() {
        alert("대출 처리 중 오류가 발생했습니다.");
      });
   }
-
-  function goMode(mode) {
-        navigate("/admin", { state: { mode } });
-    }
 
   return (
 <>

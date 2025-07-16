@@ -52,6 +52,16 @@
 	select title_info from tbl_book where call_no = #{bookNo}
 	</select>
 	
+	<!-- 예약된 도서 여부 확인 -->
+	<select id="isReservated" parameterType="BookLenterDto" resultType="_int">
+	select count(*) from tbl_reservation where reservation_call_no = #{bookNo}
+	</select>
+	
+	<!-- 예약된 도서의 경우, 해당 인원이 예약자인지 확인 -->
+	<select id="isReservatedMember" parameterType="BookLenterDto" resultType="_int">
+	select count(*) from tbl_reservation where reservation_call_no = #{bookNo} and reservation_member_no = #{memberNo}
+	</select>
+	
 	<!-- 대출된 도서 테이블에 도서 등록 -->
 	<insert id="insertLentBook" parameterType="BookLenterDto">
 	insert into tbl_lent_book values(seq_lentbook.nextval, sysdate+14, default, #{memberNo}, #{bookNo}, default, null, sysdate, #{bookName}, #{memberName})
