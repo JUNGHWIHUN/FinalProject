@@ -82,10 +82,14 @@ public class ReservationService {
 		//책 테이블 can_lend 도서 대출 가능 여부 L-> T로 업데이트
 		int result = 0;
 		
-		result = dao.updateBookCanLend(reservation.getReservationCallNo());
+		String actualReturnDate = reservation.getActualReturnDate();
 		
-		
-		
+		//책이 현재 반납되지 않은 경우 : R -> L 로 (대출중)
+		if(actualReturnDate == null) {
+			result = dao.updateBookCanLendToL(reservation.getReservationCallNo());
+		//책이 현재 반납된 경우에서 예약취소를 누른 경우 : R -> T (대출가능)
+		} else if (actualReturnDate != null)
+			result = dao.updateBookCanLendToT(reservation.getReservationCallNo());
 		
 		//취소버튼 누를 시 해당 행 삭제하기 위한 메소드 
 		if(result > 0) {
