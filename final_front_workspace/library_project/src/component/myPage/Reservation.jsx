@@ -34,8 +34,8 @@ export default function Reservation(){
 
         axiosInstacne(options)
         .then(function(res){
-            setReservations(res.data.resData.reservationList);
             console.log(res.data.resData); // 개발자 도구 콘솔 확인용
+            setReservations(res.data.resData.reservationList);
             setPageInfo(res.data.resData.pageInfo);
         })
         .catch(function(err){
@@ -48,13 +48,15 @@ export default function Reservation(){
     function delReservation(props){
         const reservationCallNo = props.reservationCallNo;
         const reservationNo = props.reservationNo;
+        const actualReturnDate = props.actualReturnDate;
 
         let options = {};
         options.url = serverUrl + "/reservation/delete";
         options.method = "post";
         options.data = {
             reservationCallNo : reservationCallNo,
-            reservationNo : reservationNo
+            reservationNo : reservationNo,
+            actualReturnDate : actualReturnDate
         };
 
         axiosInstacne(options)

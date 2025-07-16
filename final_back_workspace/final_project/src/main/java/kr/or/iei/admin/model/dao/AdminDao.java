@@ -109,5 +109,7 @@ public interface AdminDao {
 
 	void deletereBook(BookLenterDto bookLenter);
 
+	int isReservated(BookLenterDto bookLenter);
 
+	int isReservatedMember(BookLenterDto bookLenter);
 }
