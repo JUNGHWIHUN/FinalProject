@@ -5,7 +5,7 @@
   <!-- 회원 1명 조회 -->
   <select id="selectOneMember" parameterType="string" resultType="kr.or.iei.myPage.myInfo.model.dto.MyInfo">
   	select 
-  		member_no as memberNo, member_id as memberId ,member_name as memberName, member_phone as memberPhone, member_addr as memberAddr
+  		member_no as memberNo, member_id as memberId ,member_name as memberName, member_phone as memberPhone, member_addr as memberAddr, is_admin as isAdmin
   	 from tbl_member where member_no = #{parameter}
   </select>
   
