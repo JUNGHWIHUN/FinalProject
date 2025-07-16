@@ -105,5 +105,7 @@ public interface AdminDao {
 
 	int insertSuggestion(@Param("memberNo") String memberNo,@Param("suggestion") AdSuggestion suggestion);
 
+	void updateReservationActualReturnDate(String callNo);
+
 
 }

@@ -12,7 +12,7 @@ import kr.or.iei.myPage.reservation.model.dto.Reservation;
 @Mapper
 public interface ReservationDao {
 
-	int selectReservationCount(String memberNo);
+	int selectReservationCount(String reservationMemberNo);
 
 	ArrayList<Reservation> selectReservationList(HashMap<String, Object> paramMap);
 	
@@ -25,6 +25,8 @@ public interface ReservationDao {
 	int reservateBook(Reservation reservateBook);
 
 	void updateBookIsReservated(String callNo);
+
+	void updateLentBookIsReservated(String callNo);
 
 
 

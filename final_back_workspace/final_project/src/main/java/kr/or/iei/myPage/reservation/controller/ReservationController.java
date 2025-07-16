@@ -53,11 +53,11 @@ public class ReservationController {
 	
 	//예약 목록 조회
 	@GetMapping("/{reqPage}")
-	public ResponseEntity<ResponseDto> selectReservationList(@PathVariable int reqPage ,@RequestParam String memberNo){
+	public ResponseEntity<ResponseDto> selectReservationList(@PathVariable int reqPage ,@RequestParam String reservationMemberNo){
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "예약현황 조회 중, 오류가 발생하였습니다.", null, "error");
 		
 		try {
-			HashMap<String, Object> reservationMap = service.selectReservationList(reqPage,memberNo);
+			HashMap<String, Object> reservationMap = service.selectReservationList(reqPage,reservationMemberNo);
 			res = new ResponseDto(HttpStatus.OK, "", reservationMap, "");
 			
 		}catch(Exception e) {

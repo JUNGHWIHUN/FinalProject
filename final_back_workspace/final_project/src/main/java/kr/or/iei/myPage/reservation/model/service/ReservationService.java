@@ -39,24 +39,29 @@ public class ReservationService {
 			if(result > 0) {
 				//정상적으로 예약되었을 때 해당 책의 대출상태를 '예약중' 으로 변경
 				dao.updateBookIsReservated(callNo);
+				
+				//대출도서 테이블의 예약 상태도 F 에서 T 로 변경
+				dao.updateLentBookIsReservated(callNo);
 			}
 		}
 		return result;
 	}
 	
+	
 	//예약현황 조회
-	public HashMap<String, Object> selectReservationList(int reqPage , String memberNo) {
+	public HashMap<String, Object> selectReservationList(int reqPage , String reservationMemberNo ) {
 		
 		int viewCnt = 10;
 		int pageNaviSize = 5;
-		int totalCount = dao.selectReservationCount(memberNo);
+		int totalCount = dao.selectReservationCount(reservationMemberNo);
 		
 		//페이지 네비게이션 정보
 		PageInfoDto pageInfo = pageUtil.getPageInfo(reqPage, viewCnt, pageNaviSize, totalCount);
 		
 	    HashMap<String, Object> paramMap = new HashMap<>();
 	    paramMap.put("pageInfo", pageInfo);
-	    paramMap.put("memberNo", memberNo);
+	    paramMap.put("memberNo", reservationMemberNo);
+	   
 
 		
 	

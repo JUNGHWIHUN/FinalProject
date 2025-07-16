@@ -101,6 +101,9 @@ public class AdminService {
 		if(lentBook.getReservation().equals("F")) {
 			dao.updatecanLend(lentBook.getCallNo());
 			System.out.println("성공2");
+		//예약여부가 있다면 실제 반납날자 업데이트
+		}else if(lentBook.getReservation().equals("T")){
+			dao.updateReservationActualReturnDate(lentBook.getCallNo());
 		}
 		
 		//회원에 대해 현재 대출 도서 권수 -1

@@ -20,9 +20,17 @@
   	update tbl_book set can_lend = 'R' where call_no = #{_parameter}
   </update>
   
+  <!-- 도서 예약 후 대출도서테이블의 예약상태 변경 -->
+  <update id="updateLentBookIsReservated" parameterType="string">
+  update tbl_lent_book set reservation = 'T' where lent_call_no = #{_parameter}
+  </update>
+  
+  
+  
+  
   <!-- 예약 갯수 조회 -->
-  <select id="selectReservationCount" parameterType="string" resultType="_int">
-  	select count(*) from tbl_reservation where reservation_member_no = #{_parameter}
+  <select id="selectReservationCount" parameterType="kr.or.iei.myPage.reservation.model.dto.Reservation" resultType="_int">
+  	select count(*) from tbl_reservation where reservation_member_no = #{reservationMemberNo}
   </select>
   
   <!-- 예약 목록 조회 -->

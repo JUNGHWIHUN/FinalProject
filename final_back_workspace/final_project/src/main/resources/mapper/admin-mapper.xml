@@ -131,6 +131,13 @@
 	update tbl_member set can_borrow = 'T' where member_no = #{memberNo}
 	</update>
 	
+	
+	<update id="updateReservationActualReturnDate" parameterType="String">
+	update tbl_reservation 
+	   set actual_return_date = sysdate
+	 where reservation_call_no = #{_parameter}  
+	</update>
+	
 	<!-- 전체 책 수 조회 -->
 	<select id="selectAllBookCount" resultType="_int">
 	select count(*)

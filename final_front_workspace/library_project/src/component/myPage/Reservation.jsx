@@ -29,8 +29,8 @@ export default function Reservation(){
         options.url = serverUrl + "/reservation/" + reqPage;
         options.method = "get";
         options.params = {
-            memberNo: loginMember.memberNo
-        };
+            reservationMemberNo : loginMember.memberNo
+            }
 
         axiosInstacne(options)
         .then(function(res){
