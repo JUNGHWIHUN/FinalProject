@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import "./Admin.css";
+import AdminMenu from "./AdminMenu";
+import { useNavigate } from "react-router-dom";
 
 export default function RequestDetail(){
+  const navigate = useNavigate();
 
   //페이지에서 넘겨받은 정보
     const location = useLocation();
@@ -49,8 +52,14 @@ export default function RequestDetail(){
     return <p>잘못된 접근입니다.</p>;
     }
 
+    function goMode(mode) {
+        navigate("/adminPage", { state: { mode } });
+    }
+
     return(
-         <div className="request-detail">
+      <>
+      <AdminMenu goMode={goMode} />
+       <div className="request-detail">
     <h3>{list.requestBookName}</h3>
     <p>신청자: {list.memberNo}</p>
     <p>저자: {list.requestBookAuthor}</p>
@@ -70,5 +79,7 @@ export default function RequestDetail(){
       </>
     )}
   </div>
+      </>
+        
     )
 }

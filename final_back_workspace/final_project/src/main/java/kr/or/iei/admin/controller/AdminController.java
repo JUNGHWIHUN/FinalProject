@@ -82,7 +82,9 @@ public class AdminController {
 		try {
 			int result = service.insertLentBook(bookLenter);
 	        if(result > 0) {
-	            res = new ResponseDto(HttpStatus.OK, "대출 완료", null, "");
+	            res = new ResponseDto(HttpStatus.OK, "대출 완료", result, "");
+	        }else if (result < 0) {
+	        	res = new ResponseDto(HttpStatus.OK, "예약자 있음", result, "");
 	        }
 		}catch(Exception e) {
 			e.printStackTrace();

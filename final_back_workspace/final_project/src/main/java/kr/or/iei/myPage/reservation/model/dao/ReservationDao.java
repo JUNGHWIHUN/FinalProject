@@ -18,9 +18,9 @@ public interface ReservationDao {
 	
 	int selfReservateCheck(Reservation reservateBook);
 
-	int updateBookCanLendToL(Reservation reservation);
+	int updateBookCanLendToL(String reservationCallNo);
 
-	int updateBookCanLendToT(Reservation reservation);
+	int updateBookCanLendToT(String reservationCallNo);
 	
 	int deleteReservation(long reservationNo);
 
@@ -29,6 +29,8 @@ public interface ReservationDao {
 	void updateBookIsReservated(String callNo);
 
 	void updateLentBookIsReservated(String callNo);
+
+	int updateLentBookReservation(String reservationCallNo);
 
 
 

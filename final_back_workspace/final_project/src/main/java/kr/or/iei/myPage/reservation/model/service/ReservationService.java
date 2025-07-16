@@ -83,24 +83,20 @@ public class ReservationService {
 		int result = 0;
 		
 		String actualReturnDate = reservation.getActualReturnDate();
-		System.out.println("공통 반납일자" + actualReturnDate);
+		
+		//대출도서 테이블에서 Reservation (예약여부) 를 T=>F 로 변경 (공통사항)
+		result = dao.updateLentBookReservation(reservation.getReservationCallNo());
 		
 		//책이 현재 반납되지 않은 경우 : R -> L 로 (대출중)
-		if(actualReturnDate == null) {
-			System.out.println("R->L 반납일자" + actualReturnDate);
-			result = dao.updateBookCanLendToL(reservation);
+		if(actualReturnDate == null && result > 0) {
+			result = dao.updateBookCanLendToL(reservation.getReservationCallNo());
 		//책이 현재 반납된 경우에서 예약취소를 누른 경우 : R -> T (대출가능)
-		} else {
-			
-			System.out.println("R->T 반납일자" + actualReturnDate);
-			result = dao.updateBookCanLendToT(reservation);
-		}
+		} else if (actualReturnDate != null && result > 0)
+			result = dao.updateBookCanLendToT(reservation.getReservationCallNo());
 		
 		//취소버튼 누를 시 해당 행 삭제하기 위한 메소드 
 		if(result > 0) {
 			result = dao.deleteReservation(reservation.getReservationNo());
-			
-			
 		}
 		
 		return result;

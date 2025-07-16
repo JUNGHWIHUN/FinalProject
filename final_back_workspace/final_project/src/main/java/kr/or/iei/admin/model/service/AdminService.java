@@ -44,6 +44,7 @@ public class AdminService {
 		return dao.selectOneUser(userOne);
 	}
 
+	//대출
 	@Transactional
 	public int insertLentBook(BookLenterDto bookLenter) {
 		
@@ -58,7 +59,45 @@ public class AdminService {
 		
 	    System.out.println(bookLenter.toString());
 
-		
+	    //예약된 도서인지 확인 (1 : 예약, 0 : 예약 X)
+	    int isReservated = dao.isReservated(bookLenter);
+	    
+	    //예약된 도서의 경우 예약자인지 확인
+	    if (isReservated > 0) {
+	    	int isReservatedMember = dao.isReservatedMember(bookLenter);
+	    	
+	    	//예약자의 경우 대출 진행
+	    	if(isReservatedMember > 0) {
+	    		//등록
+	    		dao.insertLentBook(bookLenter);
+	    		//예약된 같은 청구기호의 책 삭제
+	    		dao.deletereBook(bookLenter);
+	    		
+	    		System.out.println("1단계 성공");
+	    		result++;
+	    		
+	    		//책 상태 변경
+	    		dao.updateBookStatus(bookLenter.getBookNo());
+	    	    System.out.println("2단계 성공");
+	    	    result++;
+	    	    
+	    	    //유저 상태 변경
+	    	    dao.updateMemberBorrowCount(bookLenter.getMemberNo());
+	    	    System.out.println("3단계 성공");
+	    	    result++;
+	    	   //유저 상태 변경
+	    	    dao.updateMemberCanBorrow(bookLenter.getMemberNo());
+	    	    System.out.println("4단계 성공");
+	    	    result++;
+	    	    
+	    	    System.out.println("result :" + result);
+	    	    return result;
+	    	    
+	    	//예약자가 아닐 경우 -1 반환
+	    	}else return -1;
+	    }	    	
+	    //예약 도서가 아닐 경우 일반 대출절차 진행
+	    
 		//등록
 		dao.insertLentBook(bookLenter);
 		//예약된 같은 청구기호의 책 삭제
@@ -80,7 +119,6 @@ public class AdminService {
 	    dao.updateMemberCanBorrow(bookLenter.getMemberNo());
 	    System.out.println("4단계 성공");
 	    result++;
-	    
 	    
 	    System.out.println("result :" + result);
 	    return result;

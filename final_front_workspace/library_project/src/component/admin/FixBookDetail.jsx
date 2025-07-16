@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import "./Admin.css";
+import AdminMenu from "./AdminMenu";
 
 export default function FixBookDetail(){
   
@@ -56,7 +57,9 @@ export default function FixBookDetail(){
             console.log(err); 
             });
   }
-
+  function goMode(mode) {
+        navigate("/adminPage", { state: { mode } });
+    }
   //삭제하기
   function deleteBook(){
      const confirmUpdate = window.confirm("정말 삭제하시겠습니까?");
@@ -86,6 +89,8 @@ export default function FixBookDetail(){
 
     return(
         <>
+
+        <AdminMenu goMode={goMode} />
          <div className="fix-book-container">
               <img src={updateBook.imageUrl} />
               <h3>표제: <input type="text" name="titleInfo" value={updateBook.titleInfo || ""} onChange={handleChange} /></h3>
