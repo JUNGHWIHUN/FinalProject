@@ -82,6 +82,10 @@ export default function LentBookDetail() {
      });
   }
 
+  function goMode(mode){
+    navigate("/adminPage", { state: { mode }});
+  }
+
   return (
 <>
     <AdminMenu goMode={goMode} />
