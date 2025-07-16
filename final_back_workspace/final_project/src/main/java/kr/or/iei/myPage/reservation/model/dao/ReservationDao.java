@@ -30,6 +30,8 @@ public interface ReservationDao {
 
 	void updateLentBookIsReservated(String callNo);
 
+	int updateLentBookReservation(String reservationCallNo);
+
 
 
 

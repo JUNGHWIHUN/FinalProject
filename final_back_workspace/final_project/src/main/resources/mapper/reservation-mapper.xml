@@ -61,6 +61,11 @@
   WHERE rnum BETWEEN #{pageInfo.start} AND #{pageInfo.end}
   </select>
   
+  <!-- 도서예약 취소 시 대출도서 테이블 상태 변경 -->
+  <update id="updateLentBookReservation" parameterType="string">
+  update tbl_lent_book set reservation = 'F' where lent_call_no = #{_parameter}
+  </update>
+  
   <!-- 책 대출 상태 변경 : R -> L 로 (대출중) -->
   <update id="updateBookCanLendToL" parameterType="string">
   	update tbl_book set can_lend = 'L' where call_no = #{_parameter}
