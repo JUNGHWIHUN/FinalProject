@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Admin.css";
+import AdminMenu from "./AdminMenu";
+
 export default function LenterBookDetil(){
 
     const location = useLocation();
@@ -26,8 +28,13 @@ export default function LenterBookDetil(){
             console.log(err); 
         });
     }
+    function goMode(mode) {
+        navigate("/adminPage", { state: { mode } });
+    }
 
     return(
+        <>
+        <AdminMenu goMode={goMode} />
         <div className="return-book-detail-container">
             <h3 className="return-book-title">{book.title}</h3>
 
@@ -44,5 +51,8 @@ export default function LenterBookDetil(){
                 반납 처리
             </button>
         </div>
+        
+        </>
+        
     )
 }

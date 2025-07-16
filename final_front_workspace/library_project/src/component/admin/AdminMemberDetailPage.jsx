@@ -2,9 +2,12 @@ import axios from "axios";
 import { useParams, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./Admin.css";
+import AdminMenu from "./AdminMenu";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminMemberDetailPage(){
 
+    const navigate = useNavigate();
     const memberNo = useParams();
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
@@ -99,8 +102,15 @@ export default function AdminMemberDetailPage(){
 
     }
 
+    function goMode(mode) {
+        navigate("/adminPage", { state: { mode } });
+    }
+
     return(
         <>
+         <AdminMenu goMode={goMode} />
+    
+
         <h3 className="admin-title">회원 상세 정보</h3>
 
         <div className="admin-member-info">

@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import "./Admin.css";
 import { useNavigate, useParams } from "react-router-dom";
+import AdminMenu from "./AdminMenu";
 
 export default function LentBookDetail() {
   const location = useLocation();
@@ -74,7 +75,13 @@ export default function LentBookDetail() {
      });
   }
 
+  function goMode(mode) {
+        navigate("/admin", { state: { mode } });
+    }
+
   return (
+<>
+    <AdminMenu goMode={goMode} />
     <div className="lent-detail-container">
     <h1>{book.title}</h1>
     <img src={book.imageUrl} />
@@ -113,5 +120,7 @@ export default function LentBookDetail() {
       </div>
     )}
   </div>
+
+</>
   );
 }

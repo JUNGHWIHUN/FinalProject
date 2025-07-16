@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
+import { useLocation } from "react-router-dom";
 import axios from "axios";
 import AllbookPage from "./AllBookPage";
 import AdminMemberPage from "./AdminMemberPage";
@@ -7,6 +8,7 @@ import RequestBook from "./RequestBook";
 import Suggestion from "./Suggestion";
 import ReportList from "./RepoartList";
 import { Route, Routes } from 'react-router-dom';
+
 import FixBookDetail from "./FixBookDetail";
 import RequestDetail from "./RequestDetail";
 import SuggestDetail from "./SuggesDetail";
@@ -90,6 +92,13 @@ export default function AdminPage(){
             console.log(err); 
         });
     }
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state?.mode) {
+        setMode(location.state.mode);
+        }
+    }, [location.state]);   
 
     return (
         <div className="admin-container">
@@ -106,7 +115,7 @@ export default function AdminPage(){
             {mode === "allMember" && <AdminMemberPage />}
             {mode === "bookRequest" && <RequestBook />}
             {mode === "suggestion" && <Suggestion />}
-            {mode === "report" && <ReportList />}
+            {mode === "report" && <ReportList />}   
 
             {mode === "lend" && (
                 <>

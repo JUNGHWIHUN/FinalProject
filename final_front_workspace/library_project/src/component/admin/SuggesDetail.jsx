@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Admin.css";
+import AdminMenu from "./AdminMenu";
 
 export default function SuggestDetail(){
     const location = useLocation();
@@ -37,10 +38,17 @@ export default function SuggestDetail(){
             });
      }
 
+     function goMode(mode) {
+        navigate("/adminPage", { state: { mode } });
+    }
+
   
 
     return(
-        <div className="suggest-detail-wrapper">
+
+      <><AdminMenu goMode={goMode} />
+      
+      <div className="suggest-detail-wrapper">
       <h3 className="suggest-title">{list.suggesTitle}</h3>
 
       <p><strong>작성자 :</strong> {list.memberName}</p>
@@ -56,5 +64,7 @@ export default function SuggestDetail(){
         {isCompleted ? "처리완료" : "삭제"}
       </button>
     </div>
+      </>
+        
     )
 }
