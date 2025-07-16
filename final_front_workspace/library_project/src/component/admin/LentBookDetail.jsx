@@ -76,7 +76,7 @@ export default function LentBookDetail() {
   }
 
   function goMode(mode) {
-        navigate("/admin", { state: { mode } });
+        navigate("/adminPage", { state: { mode } });
     }
 
   return (
