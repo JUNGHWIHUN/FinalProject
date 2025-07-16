@@ -35,7 +35,7 @@
   
   <!-- 예약 목록 조회 -->
   <select id="selectReservationList" parameterType="map" resultType="kr.or.iei.myPage.reservation.model.dto.Reservation">
-  	 SELECT reservationNo, reservationMemberNo ,reservationCallNo ,title, author, publisher, reservationDate, status, canLend
+  	 SELECT reservationNo, reservationMemberNo ,reservationCallNo ,title, author, publisher, reservationDate, status, canLend, actualReturnDate
   FROM (
     SELECT rownum AS rnum, a.*
     FROM (
@@ -47,6 +47,7 @@
         b.author_info AS author,
         b.pub_info AS publisher,
         r.reservation_date as reservationDate,
+        r.actual_return_date as actualReturnDate,
         CASE 
           WHEN r.actual_return_date IS NULL THEN '예약중'
           ELSE '대출 가능'
@@ -62,13 +63,13 @@
   </select>
   
   <!-- 책 대출 상태 변경 : R -> L 로 (대출중) -->
-  <update id="updateBookCanLendToL" parameterType="string">
-  	update tbl_book set can_lend = 'L' where call_no = #{_parameter}
+  <update id="updateBookCanLendToL" parameterType="Reservation">
+  	update tbl_book set can_lend = 'L' where call_no = #{reservationCallNo}
   </update>
   
    <!-- 책 대출 상태 변경 : R -> T 로 (대출가능) -->
-  <update id="updateBookCanLendToT" parameterType="string">
- 	update tbl_book set can_lend = 'T' where call_no = #{_parameter}
+  <update id="updateBookCanLendToT" parameterType="Reservation">
+ 	update tbl_book set can_lend = 'T' where call_no = #{reservationCallNo}
   </update>
   
   <!-- 예약 취소하기 -->
