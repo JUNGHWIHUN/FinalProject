@@ -26,8 +26,7 @@ export default function Join() {
 
     //회원정보 onChange 호출 함수
     function chgMember(e){
-        member[`${e.target.id}`] = e.target.value; // 변경: 동적 키 접근에 템플릿 리터럴 사용
-        setMember({...member});
+        setMember({...member, [e.target.id]: e.target.value});
     }
 
     //비밀번호 확인 값 변경 시 저장 변수 및 처리 함수 : DB에 등록하지 않고 화면에서만 처리됨
@@ -86,25 +85,34 @@ export default function Join() {
 
         if(e.target.id === 'memberPw'){
             if(!regExp.test(e.target.value)){
-                setPwChk(2);
-            } else if(memberPwRe !== ''){
-                if(e.target.value === memberPwRe){
-                    setPwChk(1);
-                }else {
+                setPwChk(2); // 비밀번호 유효성 실패
+            } else {
+                // 비밀번호 확인값이 비어있지 않다면 비밀번호 일치 여부 확인
+                if(memberPwRe !== ''){
+                    if(e.target.value === memberPwRe){
+                        setPwChk(1); // 비밀번호 일치
+                    }else {
+                        setPwChk(3); // 비밀번호 불일치
+                    }
+                } else {
+                    // memberPwRe가 비어있으면 유효성만 통과 상태로 표시 (또는 초기 상태 유지)
+                    setPwChk(0); // 비밀번호 확인 대기 상태로 변경
+                }
+            }
+        }else { // memberPwRe (비밀번호 확인) 필드에서 onBlur 발생 시
+            // memberPwRe 값이 비어있지 않을 때만 비밀번호 일치 여부 확인
+            if (e.target.value !== '') { 
+                if(member.memberPw === e.target.value){
+                    if(regExp.test(member.memberPw)){
+                        setPwChk(1);
+                    } else {
+                        setPwChk(2);
+                    }
+                }else{
                     setPwChk(3);
                 }
-            } else {
-                setPwChk(1);
-            }
-        }else {
-            if(member.memberPw === e.target.value){
-                if(regExp.test(member.memberPw)){
-                    setPwChk(1);
-                } else {
-                    setPwChk(2);
-                }
-            }else{
-                setPwChk(3);
+            } else { // memberPwRe가 비어있으면 초기 상태로 설정
+                setPwChk(0); 
             }
         }
     }
@@ -189,13 +197,12 @@ export default function Join() {
     }
 
     return (
-        <div className="login-page-wrapper"> {/* join-page-wrapper 대신 login-page-wrapper 사용 */}
-            {/* 헤더 없음 */}
-            <main className="login-main-content"> {/* join-main-content 대신 login-main-content 사용 */}
-                <div className="join-form-container"> {/* join-form-container 대신 login-form-container 사용 */}
-                    <div className="join-logo-container"> {/* 로고 컨테이너는 기존 클래스 유지 또는 필요에 따라 수정 */}
+        <div className="login-page-wrapper">
+            <main className="login-main-content">
+                <div className="join-form-container">
+                    <div className="join-logo-container">
                         <img src={logoImage} alt="KH공감도서관 로고" className="join-logo-image" onClick={() => navigate('/')} style={{ cursor: 'pointer' }} />
-                        <h1 className="login-form-title">회원가입</h1> {/* join-form-title 대신 login-form-title 사용 */}
+                        <h1 className="login-form-title">회원가입</h1>
                     </div>
                     <form onSubmit={function(e){
                         e.preventDefault();
@@ -203,7 +210,7 @@ export default function Join() {
                     }}>
                         <div className="input-group">
                             <label htmlFor="memberId" className="input-label">아이디</label>
-                            <input type="text" id="memberId" value={member.memberId} onChange={chgMember} onBlur={checkMemberId} className="login-input"/> {/* join-input 대신 login-input 사용 */}
+                            <input type="text" id="memberId" value={member.memberId} onChange={chgMember} onBlur={checkMemberId} className="login-input"/>
                             <p className={"input-msg" + (idChk === 0 ? '' : idChk === 1 ? ' valid' : ' invalid')} >
                                 {
                                     idChk === 0 
@@ -218,7 +225,7 @@ export default function Join() {
                         </div>
                         <div className="input-group">
                             <label htmlFor="memberPw" className="input-label">비밀번호</label>
-                            <input type="password" id="memberPw" value={member.memberPw} onChange={chgMember} onBlur={checkMemberPw} className="login-input"/> {/* join-input 대신 login-input 사용 */}
+                            <input type="password" id="memberPw" value={member.memberPw} onChange={chgMember} onBlur={checkMemberPw} className="login-input"/>
                             <p className={"input-msg" + (pwChk === 0 ? '' : pwChk === 1 ? ' valid' : ' invalid')}>
                                 {
                                     pwChk === 0
@@ -233,7 +240,7 @@ export default function Join() {
                         </div>
                         <div className="input-group">
                             <label htmlFor="memberPwRe" className="input-label">비밀번호 확인</label>
-                            <input type="password" id="memberPwRe" value={memberPwRe} onChange={chgMemberPwRe} onBlur={checkMemberPw} className="login-input"/> {/* join-input 대신 login-input 사용 */}
+                            <input type="password" id="memberPwRe" value={memberPwRe} onChange={chgMemberPwRe} onBlur={checkMemberPw} className="login-input"/>
                             <p className={"input-msg" + (pwChk === 0 ? '' : pwChk === 1 ? ' valid' : ' invalid')}>
                                 {
                                     pwChk === 0
@@ -248,11 +255,11 @@ export default function Join() {
                         </div>
                         <div className="input-group">
                             <label htmlFor="memberName" className="input-label">이름</label>
-                            <input type="text" id="memberName" value={member.memberName} onChange={chgMember} className="login-input"/> {/* join-input 대신 login-input 사용 */}
+                            <input type="text" id="memberName" value={member.memberName} onChange={chgMember} className="login-input"/>
                         </div>
                         <div className="input-group">
                             <label htmlFor="memberEmail" className="input-label">이메일</label>
-                            <input type="text" id="memberEmail" value={member.memberEmail} onChange={chgMember} onBlur={checkMemberEmail} className="login-input"/> {/* join-input 대신 login-input 사용 */}
+                            <input type="text" id="memberEmail" value={member.memberEmail} onChange={chgMember} onBlur={checkMemberEmail} className="login-input"/>
                             <p className={"input-msg" + (emailChk === 0 ? '' : emailChk === 1 ? ' valid' : ' invalid')} > 
                                 {
                                     emailChk === 0 
@@ -267,18 +274,18 @@ export default function Join() {
                         </div>
                         <div className="input-group">
                             <label htmlFor="memberPhone" className="input-label">전화번호</label>
-                            <input type="text" id="memberPhone" value={member.memberPhone} onChange={chgMember} className="login-input"/> {/* join-input 대신 login-input 사용 */}
+                            <input type="text" id="memberPhone" value={member.memberPhone} onChange={chgMember} className="login-input"/>
                         </div>
                         <div className="input-group">
                             <label htmlFor="memberAddr" className="input-label">주소</label>
-                            <input type="text" id="memberAddr" value={member.memberAddr} onChange={chgMember} className="login-input"/> {/* join-input 대신 login-input 사용 */}
+                            <input type="text" id="memberAddr" value={member.memberAddr} onChange={chgMember} className="login-input"/>
                         </div>
-                        <div className="login-button-box"> {/* join-button-box 대신 login-button-box 사용 */}
-                            <button type="submit" className="btn-login-submit"> {/* btn-join-submit 대신 btn-login-submit 사용 */}
+                        <div className="login-button-box">
+                            <button type="submit" className="btn-login-submit">
                                 회원가입
                             </button>
                         </div>
-                        <div className="login-bottom-links"> {/* 로그인 페이지 하단 링크 스타일 적용 */}
+                        <div className="login-bottom-links">
                             <span className="link-item" onClick={() => navigate('/login')} style={{ cursor: 'pointer' }}>로그인</span>
                         </div>
                     </form>
