@@ -67,9 +67,15 @@
 	update tbl_member set borrowed_book_count = borrowed_book_count +1 where member_no = #{memberNo}
 	</update>
 	
+	<!-- 최대 대출상태인지 확인해서 최대와 같거나 높다면 대출 가능상태 'f'로 변경 -->
 	<update id="updateMemberCanBorrow" parameterType="String">
 	update tbl_member set can_borrow = 'F' where member_no = #{memberNo} and borrowed_book_count >= max_borrow_count
 	</update>
+	
+	<!-- 예약된 같은 청구기호의 책 삭제 -->
+	<delete id="deletereBook" parameterType="BookLenterDto">
+	 delete from tbl_reservation where RESERVATION_CALL_NO = #{bookNo}
+	</delete>
 	
 	<!-- 책번호 기준으로 대출 내역 검색 -->
 	<select id="selectLentBook" parameterType="LentBookDto" resultType="LentBookList">
@@ -126,7 +132,7 @@
     WHERE member_no = #{memberNo}
 	</update>
 	
-	<!-- 대출가능상태 변경 -->
+	<!-- 유저의 대출가능상태 변경 -->
 	<update id="updateborrowed" parameterType="String">
 	update tbl_member set can_borrow = 'T' where member_no = #{memberNo}
 	</update>

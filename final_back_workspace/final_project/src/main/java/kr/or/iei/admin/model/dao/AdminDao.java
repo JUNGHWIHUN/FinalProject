@@ -107,5 +107,7 @@ public interface AdminDao {
 
 	void updateReservationActualReturnDate(String callNo);
 
+	void deletereBook(BookLenterDto bookLenter);
+
 
 }
