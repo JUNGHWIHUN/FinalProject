@@ -4,6 +4,7 @@ import createInstance from "../../axios/Interceptor";
 import PageNavi from "../common/PageNavi";
 import useUserStore from "../../store/useUserStore";
 import MyLibraryModal from "./MyLibraryModal";
+import Swal from 'sweetalert2';
 
 
 export default function SearchResultList (){

@@ -37,12 +37,20 @@ export default function MemberPwChg(){
         axiosInstance(options)
         .then(function(res){
 
+
             if(res.data.resData){
                 setIsAuth(true);
 
                 //기존 비밀번호 일치한 경우, 새 비밀번호를 입력받아 memeber.memberPw에 저장(재사용)을 위해, 초기화 처리
                 member.memberPw='';
                 setMember({...member});
+            } else{
+                Swal.fire({
+                    title : '알림',
+                    text : '비밀번호가 일치하지 않습니다.',
+                    icon : 'warning',
+                    confirmButtonText : '확인'
+               });
             }
         })
     }

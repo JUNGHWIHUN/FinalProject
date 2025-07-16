@@ -254,9 +254,8 @@ export default function SuggestionView() {
                 {/* -- 변경 시작: 답변 섹션 - 삭제 버튼 위치 조정 -- */}
                 <div className="comment-section">
                     <div className="comment-list">
-                        {comments.length === 0 ? (
-                            <p className="no-comments">등록된 답변이 없습니다.</p>
-                        ) : (
+                        {comments.length === 0 ? ""
+                         : (
                             comments.map(comment => (
                                 // 각 답변 항목을 감싸는 div (position: relative의 기준)
                                 <div key={comment.commentNo} className="comment-item-wrapper">
@@ -325,11 +324,7 @@ export default function SuggestionView() {
                                 </div>
                             </div>
                         </div>
-                    ) : (
-                        <p className="login-prompt-for-comment">
-                            답변은 관리자만 작성할 수 있습니다. {/* "답변"으로 유지 */}
-                        </p>
-                    )}
+                    ) : ""}
                 </div>
                 {/* -- 변경 끝: 답변 섹션 -- */}
 
