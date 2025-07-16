@@ -109,6 +109,11 @@
      where call_no = #{_parameter} 
 	</select>
 	
+	<!-- 대출도서의 경우 반납일 조회 -->
+	<select id="selectReturnDate" parameterType='string' resultType="string">
+	select return_date as returnDate from tbl_lent_book where lent_call_no = #{_parameter} and actual_return_date is null
+	</select>
+	
 	<!-- 각 도서의 서평 갯수 조회 -->
     <select id="selectCommentCount" parameterType="String" resultType="int">
         SELECT COUNT(*)

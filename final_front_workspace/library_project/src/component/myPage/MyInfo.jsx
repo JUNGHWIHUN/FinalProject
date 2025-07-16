@@ -33,6 +33,7 @@ export default function MyInfo() {
 
         axiosInstance(options)
             .then(function(res) {
+                console.log(res.data.resData);
                 setMember(res.data.resData);
             })
             .catch(function(err) {
@@ -111,7 +112,7 @@ export default function MyInfo() {
                             delete axiosInstance.defaults.headers.common['Authorization'];
 
 
-                            navigate('/login'); // 로그인 컴포넌트로 전환
+                            navigate('/'); // 로그인 컴포넌트로 전환
                         }
                     })
             }
@@ -176,7 +177,11 @@ export default function MyInfo() {
 
                 <div className="myinfo-button-box"> {/* 버튼 박스 */}
                     <button type="submit" className="btn-login-submit">정보수정</button> {/* 로그인 버튼 스타일 활용 */}
-                    <button type="button" onClick={deleteMember} className="btn-delete-member">회원 탈퇴</button> {/* 새로운 탈퇴 버튼 스타일 */}
+                    {member.isAdmin !== 'T' && (
+                        <button type="button" onClick={deleteMember} className="btn-delete-member">
+                            회원 탈퇴
+                        </button>
+                    )}
                 </div>
             </form>
         </section>

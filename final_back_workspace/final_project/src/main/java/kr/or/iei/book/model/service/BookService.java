@@ -54,7 +54,14 @@ public class BookService {
 
 	//도서 1권 조회(상세보기)
 	public Book selectOneBook(String callNo) {
-		return dao.selectOneBook(callNo);
+		Book book = new Book();
+		book = dao.selectOneBook(callNo);
+		
+		//대출이 되었을 경우 반납예정일 조회
+		String returnDate = dao.selectReturnDate(callNo);
+		book.setReturnDate(returnDate);
+		 
+		return book;
 	}
 	
 	//서평 목록 조회

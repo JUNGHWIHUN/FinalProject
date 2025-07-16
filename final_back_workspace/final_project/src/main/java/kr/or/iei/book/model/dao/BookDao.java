@@ -40,5 +40,7 @@ public interface BookDao {
 	
     int insertReport(ReportDto reportDTO);
 
+	String selectReturnDate(String callNo);
+
 
 }

@@ -15,5 +15,6 @@ public class MyInfo {
 	private String memberPhone;		//전화번호
 	private String memberAddr;		//주소
 	private String memberpw;		//비밀번호
+	private String isAdmin;			//관리자 여부
 	
 }

@@ -247,7 +247,8 @@ export default function SearchResultDetail (){
                                     : '대출불가'}
                                 </td>
                                 <td className="return-date-cell">
-                                    {book.canLend === 'L' ? book.returnDate : '-'} {/* 대출중일 때만 반납예정일 표시 */}
+                                    {book.returnDate} {/* 대출중일 때만 반납예정일 표시 */}
+                                    {console.log("반납예정일" + book.returnDate)}
                                 </td> 
                                 <td className="reservation-cell">
                                     {book.canLend === 'L' ? 

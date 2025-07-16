@@ -26,4 +26,7 @@ public class Book {
 	//도서검색을 위한 변수 추가 : 연도 범위
 	private String pubYearFrom;
 	private String pubYearTo;
+	
+	//도서가 대출되었을 경우 반납예정일 표시
+	private String returnDate;
 }
