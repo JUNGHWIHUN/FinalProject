@@ -1,6 +1,7 @@
 import { use, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import useUserStore from "../../store/useUserStore";
+import final_logo from '../../image/final_logo.png';
 
 import './Common.css'
 
@@ -57,7 +58,7 @@ export default function Header(){
                 <div className="header-logo-search-wrap">
                     <div className="header-logo">
                         <Link to="/">
-                            <img src="src/image/final_logo.png" alt="책 아이콘" className="book-icon-img" />
+                            <img src={final_logo} alt="책 아이콘" className="book-icon-img" />
                         </Link>
                     </div>
 
