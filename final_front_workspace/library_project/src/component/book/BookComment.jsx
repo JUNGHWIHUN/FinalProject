@@ -343,8 +343,8 @@ function CommentList({ callNo, axiosInstance, serverUrl, isLogined, loginMember,
                                     )}
                                 </span>
                                 <div className="comment-actions">
-                                    {/* 로그인한 회원이 서평 작성자일 때 수정/삭제 버튼 보이게 */}
-                                    {isLogined && loginMember.memberId === comment.memberId ?
+                                    {/* 로그인한 회원이 서평 작성자일 때/관리자일 때  수정/삭제 버튼 보이게 */}
+                                    {(isLogined && loginMember.memberId === comment.memberId) ||(isLogined && loginMember.isAdmin === 'T') ?
                                         <>
                                             <button onClick={() => commentUpdate(comment)} className="btn-comment-action btn-update">수정</button>
                                             <button onClick={() => commentDelete(comment)} className="btn-comment-action btn-delete">삭제</button>

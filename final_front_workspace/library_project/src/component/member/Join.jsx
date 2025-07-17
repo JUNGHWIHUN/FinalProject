@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
 import createInstance from "../../axios/Interceptor";
@@ -152,11 +152,41 @@ export default function Join() {
         }
     }
 
+    const [phoneChk, setPhoneChk] = useState(0);
+
+    //전화번호 유효성 검사 및 중복 체크 이벤트 핸들러 함수
+    function checkMemberPhone(e){
+        const phoneRegExp = /^\d{3}-\d{4}-\d{4}$/;
+
+        if(!phoneRegExp.test(member.memberPhone)){
+            setEmailChk(2);
+        } else {
+            let options = {};
+            options.url = serverUrl + '/member/' + member.memberPhone + '/chkPhone'; 
+            options.method = 'get';
+
+            axiosInstance(options)
+            .then(function(res){
+                console.log(res);
+                if(res.data.resData === 1){
+                    setPhoneChk(3);
+                } else {
+                    setPhoneChk(1);
+                }
+            })
+            .catch(function(err){
+                console.log(err);
+                setPhoneChk(0);
+            })
+        }
+    }
+
+
     const navigate = useNavigate();
 
     //회원가입 처리 함수 (이메일 인증 흐름 반영)
     function join(){
-        if(idChk === 1 && pwChk === 1 && emailChk === 1 && member.memberName !== '' && member.memberPhone !== '' && member.memberAddr !== ''){
+        if(idChk === 1 && pwChk === 1 && emailChk === 1 && member.memberName !== '' && member.memberPhone !== '' && member.memberAddr !== '' && phoneChk === 1 ){
             let options = {};
             options.url = serverUrl + '/member/signup';
             options.method = 'post';
@@ -274,7 +304,18 @@ export default function Join() {
                         </div>
                         <div className="input-group">
                             <label htmlFor="memberPhone" className="input-label">전화번호</label>
-                            <input type="text" id="memberPhone" value={member.memberPhone} onChange={chgMember} className="login-input"/>
+                            <input type="text" id="memberPhone" value={member.memberPhone} onChange={chgMember} onBlur={checkMemberPhone} className="login-input"/>
+                            <p className={"input-msg" + (phoneChk === 0 ? '' : phoneChk === 1 ? ' valid' : ' invalid')} > 
+                                {
+                                    phoneChk === 0 
+                                    ? ''
+                                    : phoneChk === 1
+                                    ? '사용 가능한 전화번호입니다.'
+                                    : phoneChk === 2
+                                    ? "전화번호는 '-' 를 포함해 13자리를 입력하세요."
+                                    : '이미 사용중인 전화번호입니다.'
+                                }
+                            </p>
                         </div>
                         <div className="input-group">
                             <label htmlFor="memberAddr" className="input-label">주소</label>

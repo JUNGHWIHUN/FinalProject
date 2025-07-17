@@ -38,6 +38,11 @@ public class MemberService {
     public int chkMemberEmail(String memberEmail) {
         return dao.chkMemberEmail(memberEmail);
     }
+    
+    // 전화번호 중복체크
+    public int chkMemberPhone(String memberPhone) {
+        return dao.chkMemberPhone(memberPhone);  
+    }
 
     // 회원가입 (이메일 인증 기능 추가)
     @Transactional

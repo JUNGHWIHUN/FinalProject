@@ -242,6 +242,8 @@ export default function MyLibrary() {
                     bookToMove={bookToMove}
                     myLibraryList={myLibraryList}
                     selectMyLibraryBooks={selectMyLibraryBooks}
+                    openLibraries={openLibraries} // 추가
+                    setOpenLibraries={setOpenLibraries} // 추가
                 />
             )}
         </div>

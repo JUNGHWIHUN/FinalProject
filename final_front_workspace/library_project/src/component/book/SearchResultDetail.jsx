@@ -107,7 +107,7 @@ export default function SearchResultDetail (){
             setNewArrivalBooks(newArrivalsRes.data.resData);
         })
         
-    },[refreshTrigger])
+    },[refreshTrigger, callNo])
 
     //유사 장르 도서 불러오기를 위한 청구기호 첫 2자리 숫자 추출
     function extractGenreCode(callNo) {
@@ -317,7 +317,8 @@ function SameGenreBooks({ book, navigate }) {
     
     //책 표지를 클릭하면 해당 책의 상세 페이지로 이동
     const clickImg = () => {
-        navigate('/book/searchResultDetail/' + book.callNo);
+        navigate('/book/searchResultDetail/' + book.callNo, { replace: true });
+        window.scrollTo(0, 0); 
     };
 
     return (

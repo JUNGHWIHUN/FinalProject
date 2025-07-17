@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router-dom";
 import useUserStore from "../../store/useUserStore";
 import createInstance from "../../axios/Interceptor";
+import logoImage from "../../image/final_logo.png"; // 로고 이미지 임포트
 import './Member.css';
 
 //로그인
@@ -112,7 +113,7 @@ export default function Login() {
             <main className="login-main-content">
                 <div className="login-form-container">
                     <div>
-                        <img onClick={home} src="src/image/final_logo.png" />
+                        <img onClick={home} src={logoImage} />
                         <h1 className="login-form-title">로그인</h1>
                     </div>
                     <form autoComplete="off" onSubmit={function(e){

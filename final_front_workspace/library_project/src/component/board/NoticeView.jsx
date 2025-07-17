@@ -182,9 +182,9 @@ export default function NoticeView(){
                                 {board.fileList && board.fileList.length > 0
                                     ? board.fileList.map(function(file, index){
                                         return (
-                                            <a key={"file-link-"+index} href={`${serverUrl}/notice/file/${file.boardFileNo}`} download={file.fileName} className="file-download-link">
-                                                {file.fileName} <span className="material-icons file-download-icon">file_download</span>
-                                            </a>
+                    <a key={"file-link-"+index} href={`${serverUrl}/notice/file/${file.boardFileNo}`} className="file-download-link">
+                        {file.fileName} <span className="material-icons file-download-icon">file_download</span>
+                    </a>
                                         );
                                     })
                                     : "첨부파일 없음"

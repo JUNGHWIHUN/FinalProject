@@ -3,6 +3,7 @@ package kr.or.iei.board.controller; // 패키지 경로는 그대로 유지
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam; // @RequestParam 임포트 유지
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
 
 import kr.or.iei.board.model.dto.BoardDto;
 import kr.or.iei.board.model.dto.BoardFileDto;
@@ -206,7 +208,8 @@ public class NoticeController { // 클래스 이름 BoardController -> NoticeCon
 		Resource resource = new InputStreamResource(new FileInputStream(file));
 		
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;");	
+		String encodedFileName = UriUtils.encode(boardFile.getFileName(), StandardCharsets.UTF_8.toString());
+		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedFileName + "\";");	
 		headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
 		
 		return ResponseEntity.status(HttpStatus.OK).headers(headers).contentLength(file.length()).body(resource);

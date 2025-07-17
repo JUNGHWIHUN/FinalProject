@@ -1,6 +1,7 @@
 package kr.or.iei.board.model.dao; // 패키지 경로는 그대로 유지 (원한다면 notice로 변경 가능)
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param; // @Param 어노테이션 임포트
@@ -18,6 +19,8 @@ public interface NoticeDao { // 클래스 이름 BoardDao -> NoticeDao로 변경
     // BOARD_CODE를 추가하여 특정 게시판의 글만 조회할 수 있도록 변경 필요 (추후 진행)
 	ArrayList<BoardDto> selectBoardList(PageInfoDto pageInfo);
 
+    List<BoardFileDto> selectBoardFilesByBoardNos(@Param("boardNos") List<Integer> boardNos);
+	
 	int selectBoardNo();
 
 	// 새로운 게시글 정보를 삽입합니다. (첨부파일은 별도 처리)

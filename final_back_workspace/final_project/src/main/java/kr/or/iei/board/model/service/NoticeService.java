@@ -2,6 +2,9 @@ package kr.or.iei.board.model.service; // 패키지 경로는 그대로 유지
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,29 @@ public class NoticeService {
 		    boardList.forEach(board -> System.out.println("  게시글: No=" + board.getBoardNo() + ", Title=" + board.getBoardTitle() + ", Code=" + board.getBoardCode() + ", Writer=" + board.getBoardWriter() + ", WriterId=" + board.getBoardWriterId()));
 		}
 		// --- 디버깅 끝 ---
+		
+        // 게시글 번호 목록 추출
+        List<Integer> boardNos = boardList.stream()
+                                          .map(BoardDto::getBoardNo)
+                                          .collect(Collectors.toList());
+
+        // ★★★ 게시글에 파일이 있는 경우에만 파일 목록 조회 ★★★
+        if (!boardNos.isEmpty()) {
+            List<BoardFileDto> allFiles = dao.selectBoardFilesByBoardNos(boardNos); // 모든 파일 한 번에 조회
+
+            // 각 게시글에 파일 목록 매핑
+            // boardNo를 키로 하는 Map으로 변환하여 효율적으로 접근
+            Map<Integer, List<BoardFileDto>> filesByBoardNo = allFiles.stream()
+                                                                       .collect(Collectors.groupingBy(BoardFileDto::getBoardNo));
+
+            for (BoardDto board : boardList) {
+                // 해당 게시글의 파일 목록을 Map에서 찾아 설정
+                board.setFileList(filesByBoardNo.getOrDefault(board.getBoardNo(), new ArrayList<>()));
+                System.out.println("  게시글 " + board.getBoardNo() + "에 " + board.getFileList().size() + "개 파일 매핑됨.");
+            }
+        } else {
+             System.out.println("[NoticeService] 조회된 게시글이 없어 파일 목록을 조회하지 않습니다.");
+        }
 		
 		HashMap<String, Object> boardMap = new HashMap<>();
 		boardMap.put("boardList", boardList);

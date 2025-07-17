@@ -220,7 +220,7 @@
 
 /* 첨부파일 아이콘 색상 */
 .board-wrapper td .material-icons {
-    color: #5cb85c; /* 초록색으로 변경 */
+    color: #666; /* 초록색으로 변경 */
 }
 
 
@@ -464,11 +464,6 @@
 /* 잠금 아이콘 색상 (List 페이지 및 SuggestionView의 제목) */
 .board-wrapper .board-title .material-icons {
     color: #666;
-}
-
-/* 첨부파일 아이콘 색상 (List 페이지) */
-.board-wrapper td .material-icons {
-    color: #5cb85c;
 }
 
 
