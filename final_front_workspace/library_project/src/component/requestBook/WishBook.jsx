@@ -205,8 +205,13 @@ export default function WishBook() {
                         );
                     })
                 ) : (
-                    <p className="wishbook-no-results">검색 결과가 없습니다.</p>
+                    <p className="wishbook-no-results">검색 결과가 없습니다. <br /></p>
                 )}
+                 <div className="button-group">
+                    <Link to={"/requestBook/wishBookDirect"} className="link-button">
+                        <button type="button" className="direct-input-button">원하는 책이 없어요!</button>
+                    </Link>
+                </div>
             </ul>
 
             {totalResults > 0 && (

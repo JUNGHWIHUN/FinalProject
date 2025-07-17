@@ -643,3 +643,7 @@
 .submit-button:hover {
     background-color: #ffa726;
 }
+
+.direct-input-button {
+    margin-top: 50px;
+}
