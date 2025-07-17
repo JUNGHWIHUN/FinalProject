@@ -12,6 +12,11 @@
 	select count(*) from tbl_member where member_email = #{_parameter}
 	</select>
 	
+	<!-- 전화번호 중복체크 -->
+	<select id='chkMemberPhone' parameterType='string'>
+	select count(*) from tbl_member where member_phone = #{_parameter}
+	</select>
+	
 	<!-- 회원가입 -->
 	<insert id='insertMember' parameterType='Member' useGeneratedKeys="true" keyProperty="memberNo">
 		<selectKey keyProperty="memberNo" resultType="String" order="BEFORE">

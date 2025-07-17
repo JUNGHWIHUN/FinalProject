@@ -33,6 +33,8 @@ public interface MemberDao {
 
     // 비밀번호 찾기: 특정 회원의 비밀번호 업데이트
     int updatePasswordByIdAndEmail(@Param("memberId") String memberId, @Param("memberEmail") String memberEmail, @Param("newPassword") String newPassword);
+
+	int chkMemberPhone(String memberPhone);
 	
 }
 

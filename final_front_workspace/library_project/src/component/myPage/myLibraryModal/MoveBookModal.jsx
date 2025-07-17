@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import Modal from 'react-modal';
 import createInstance from "../../../axios/Interceptor";
 import Swal from "sweetalert2";
-import './MyLibraryModal.css'; // 새로 생성한 통합 CSS 파일 임포트
+import './MyLibraryModal.css';
 
-// react-modal을 위한 커스텀 스타일 (JSX 파일 내에 유지)
 const customModalStyles = {
     overlay: {
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -38,9 +37,11 @@ const customModalStyles = {
 export default function MoveBookModal({
     isVisible,
     closeMoveBookModal,
-    bookToMove, // 이동할 책 정보
-    myLibraryList, // 내 서재 목록
-    selectMyLibraryBooks, // 책 목록 갱신 함수
+    bookToMove,
+    myLibraryList,
+    selectMyLibraryBooks,
+    openLibraries,
+    setOpenLibraries
 }) {
     const serverUrl = import.meta.env.VITE_BACK_SERVER;
     const axiosInstance = createInstance();
@@ -77,18 +78,32 @@ export default function MoveBookModal({
         const payload = {
             myLibraryBookNo: bookToMove.myLibraryBookNo,
             myLibraryNo: targetLibraryNo,
-            myLibraryCallNo : bookToMove.myLibraryCallNo
+            myLibraryCallNo: bookToMove.myLibraryCallNo
         };
 
         try {
-            const res = await axiosInstance.patch(serverUrl + `/myLibrary/moveBooktoAnotherLibrary`, payload);
+            const res = await axiosInstance.patch(
+                serverUrl + `/myLibrary/moveBooktoAnotherLibrary`,
+                payload
+            );
+
             Swal.fire({
                 title: '알림',
                 text: res.data.clientMsg,
                 icon: res.data.alertIcon
             });
+
+            // 책 목록 갱신
             selectMyLibraryBooks(bookToMove.myLibraryNo);
             selectMyLibraryBooks(targetLibraryNo);
+
+            // 서재 열기 상태 갱신
+            setOpenLibraries(prev => {
+                const updated = new Set(prev);
+                updated.add(bookToMove.myLibraryNo);
+                updated.add(targetLibraryNo);
+                return Array.from(updated);
+            });
 
             closeMoveBookModal();
         } catch (err) {
@@ -97,7 +112,9 @@ export default function MoveBookModal({
         }
     }
 
-    const filteredLibraries = myLibraryList.filter(lib => lib.myLibraryNo !== bookToMove?.myLibraryNo);
+    const filteredLibraries = myLibraryList.filter(
+        lib => lib.myLibraryNo !== bookToMove?.myLibraryNo
+    );
 
     return (
         <Modal
@@ -110,10 +127,12 @@ export default function MoveBookModal({
             <div className="modal-header">
                 <h2 className="modal-title">책 이동</h2>
             </div>
+
             <div className="modal-content-area">
                 {bookToMove && (
                     <p className="modal-message">
-                        <strong>'{bookToMove.book.titleInfo}'</strong><br/> 책을 어느 서재로 옮기시겠습니까?
+                        <strong>'{bookToMove.book.titleInfo}'</strong><br />
+                        책을 어느 서재로 옮기시겠습니까?
                     </p>
                 )}
                 <select
@@ -134,9 +153,20 @@ export default function MoveBookModal({
                     )}
                 </select>
             </div>
+
             <div className="modal-actions">
-                <button onClick={moveBookToAnotherLibrary} className="btn-modal-confirm">이동</button>
-                <button onClick={closeMoveBookModal} className="btn-modal-cancel">취소</button>
+                <button
+                    onClick={moveBookToAnotherLibrary}
+                    className="btn-modal-confirm"
+                >
+                    이동
+                </button>
+                <button
+                    onClick={closeMoveBookModal}
+                    className="btn-modal-cancel"
+                >
+                    취소
+                </button>
             </div>
         </Modal>
     );

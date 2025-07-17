@@ -68,6 +68,20 @@ public class MemberController {
 		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
 	}
 	
+	// 전화번호 중복체크
+	@GetMapping("/{memberPhone}/chkPhone")
+	@NoTokenCheck
+	public ResponseEntity<ResponseDto> chkMemberPhone (@PathVariable String memberPhone){
+		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "전화번호 중복 체크 중 통신 오류가 발생하였습니다.", false, "error");
+		try {
+			int count = service.chkMemberPhone(memberPhone);
+			res = new ResponseDto(HttpStatus.OK, "", count, "success");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return new ResponseEntity<ResponseDto>(res, res.getHttpStatus());
+	}
+	
     //회원가입 (이메일 인증 링크 발송 포함)
     @PostMapping("/signup") // 회원가입 엔드포인트명 변경 (React와의 통신 명확화)
     @NoTokenCheck
