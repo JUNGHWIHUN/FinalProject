@@ -199,12 +199,15 @@ public class MemberController {
 	@NoTokenCheck
 	public ResponseEntity<ResponseDto> memberLogin (@RequestBody Member member){
 		ResponseDto res = new ResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, "로그인 중, 오류가 발생하였습니다.", null, "error");
-		
+		System.out.println("컨트롤러 진입 여부");
+		System.out.println("프론트 전달한 멤버"+member);
 		try {
 			LoginMember loginMember = service.memberLogin(member);
+			System.out.println("컨트롤러 로그인 멤버" +loginMember);
 			
 			if(loginMember == null) { 
 				res = new ResponseDto(HttpStatus.OK, "아이디 및 비밀번호를 확인하세요.", null, "warning");
+				System.out.println("컨트롤러 응답 여부");
                 // 이메일 인증이 필요한 경우, 여기서 메시지를 더 구체화할 수 있습니다.
                 // 예: res.setMessage("이메일 인증이 필요합니다. 이메일을 확인해주세요.");
 			}else { 

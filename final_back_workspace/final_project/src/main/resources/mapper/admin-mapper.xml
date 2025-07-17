@@ -445,6 +445,7 @@
                            member_name
                       from tbl_lent_book
                  <where>
+                 actual_return_date is null AND 
 	  				(TRUNC(sysdate) - TO_DATE(return_date, 'YY/MM/DD')) > 0
     				<if test="keyword != null and keyword != ''">
         			<choose>
@@ -515,7 +516,8 @@
 	
 	<!-- 희망도서 정보 리스트 검색 -->
 	<select id="selectRequestList" resultType="RequestBook">
-		select member_no as memberNo,
+		select request_book_no as requestBookNo,
+			   member_no as memberNo,
 			   requested_reason as requestReason,
 			   requested_book_name as requestBookName,
 			   requested_book_author as requestBookAuthor,
@@ -525,7 +527,8 @@
 	  from (
 	  		select rownum rnum, a.*
 	  		  from (
-	  		  		  select member_no,
+	  		  		  select request_book_no,
+	  		  		  	   member_no,
                            requested_reason,
                            requested_book_name,
                            requested_book_author,
@@ -542,12 +545,12 @@
 	
 	<!-- 희망도서 상태 변경'승인' -->
 	<update id="requestUpdateYes" parameterType="String">
-	update tbl_book_request set request_status = 2 where member_no = #{target}
+	update tbl_book_request set request_status = 2 where request_book_no = #{target}
 	</update>
 	
 	<!-- 희망도서 상태 변경'반려' -->
 	<update id="requestUpdateNo" parameterType="String">
-	update tbl_book_request set request_status = 1 where member_no = #{target}
+	update tbl_book_request set request_status = 1 where request_book_no = #{target}
 	</update>
 	
 	<!-- 건의사항 목록 수 검색 -->

@@ -34,7 +34,7 @@ export default function RequestDetail(){
             options.url='http://localhost:9999/admin/requestUpdate';
             options.method = 'post';
             options.data = {
-                type : selectType, target : list.memberNo
+                type : selectType, target : list.requestBookNo
             }
             
 

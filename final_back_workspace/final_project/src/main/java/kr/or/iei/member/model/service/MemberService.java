@@ -126,6 +126,7 @@ public class MemberService {
     //로그인
     public LoginMember memberLogin(Member member) {
         Member chkMember = dao.memberLogin(member.getMemberId());
+        System.out.println("체크멤버 널 체크"+chkMember);
         
         if(chkMember == null) {
             return null;
@@ -137,17 +138,29 @@ public class MemberService {
             // 로그인 실패 로직에 포함시키거나 별도로 처리할 수 있습니다.
             return null; // 또는 LoginMember 객체에 특정 상태 코드/메시지 추가
         }
+        
+        System.out.println("인코딩 전 비밀번호" + member.getMemberPw());
 
+        System.out.println("인코딩 비밀번호" + (encoder.encode(member.getMemberPw())));
+        
+        System.out.println("DB 비밀번호" + chkMember.getMemberPw());
+                
         if(encoder.matches(member.getMemberPw(), chkMember.getMemberPw())) {
+        	System.out.println("입력값" + member.getMemberPw());
+        	System.out.println("DB값" + chkMember.getMemberPw());
             String accessToken = jwtUtils.createAccessToken(chkMember.getMemberId());
             String refreshToken = jwtUtils.createRefreshToken(chkMember.getMemberId());
             
             chkMember.setMemberPw(null);
             
+            
+            
             LoginMember loginMember = new LoginMember(chkMember, accessToken, refreshToken);
             
+            System.out.println("서비스 최종 반환 로그인 멤버" + loginMember);
             return loginMember;
         }else {
+        	System.out.println("비밀번호 불일치 널 진입?");
             return null;
         }
     }

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class RequestBook {
 	
+	private String requestBookNo;		//희망도서 신청번호
 	private String memberNo;			//회원번호
 	private String requestReason;		//신청사유
 	private String requestBookName;		//신청도서제목
