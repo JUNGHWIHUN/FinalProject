@@ -112,7 +112,7 @@ export default function MyInfo() {
                             delete axiosInstance.defaults.headers.common['Authorization'];
 
 
-                            navigate('/'); // 로그인 컴포넌트로 전환
+                            navigate('/'); //메인화면 컴포넌트로 전환
                         }
                     })
             }
